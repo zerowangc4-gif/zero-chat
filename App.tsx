@@ -1,11 +1,11 @@
-import { Text } from "react-native"
-import { SafeAreaProvider } from "react-native-safe-area-context"
+import { SafeAreaProvider } from "react-native-safe-area-context";
+import { ChatListScreen } from "@/features/chat";
 function App() {
   return (
     <SafeAreaProvider>
-      <Text>this is my app</Text>
+      <ChatListScreen />
     </SafeAreaProvider>
-  )
+  );
 }
 
-export default App
+export default App;
