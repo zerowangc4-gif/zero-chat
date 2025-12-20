@@ -16,6 +16,10 @@ function App() {
   console.error(myBadVariable)
   console.error(myBadVariable)
   console.error(myBadVariable)
+  console.error(myBadVariable)
+  console.error(myBadVariable)
+  console.error(myBadVariable)
+  console.error(myBadVariable)
   return (
     <SafeAreaProvider>
       <StatusBar barStyle={isDarkMode ? "light-content" : "dark-content"} />
