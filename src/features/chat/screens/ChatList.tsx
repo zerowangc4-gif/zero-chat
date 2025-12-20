@@ -1,9 +1,10 @@
-import { Text, View } from "react-native";
+import { Text } from "react-native";
+import { ScreenContainer } from "@/components";
 function ChatList() {
   return (
-    <View>
+    <ScreenContainer>
       <Text>this is a ChatList page</Text>
-    </View>
+    </ScreenContainer>
   );
 }
 export default ChatList;

@@ -1,0 +1,15 @@
+{
+  "auth": {
+    "signIn": "Sign In",
+    "signUp": "Sign Up",
+    "resetPassword": "Reset Password"
+  },
+  "tabs": {
+    "chats": "Chats",
+    "me": "Me"
+  },
+  "common": {
+    "confirm": "Confirm",
+    "cancel": "Cancel"
+  }
+}

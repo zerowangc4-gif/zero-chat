@@ -1,0 +1,15 @@
+{
+  "auth": {
+    "signIn": "登录",
+    "signUp": "注册",
+    "resetPassword": "重置密码"
+  },
+  "tabs": {
+    "chats": "聊天",
+    "me": "我"
+  },
+  "common": {
+    "confirm": "确定",
+    "cancel": "取消"
+  }
+}

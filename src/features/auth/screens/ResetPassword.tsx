@@ -1,10 +1,10 @@
 import { Text } from "react-native";
 import { ScreenContainer } from "@/components";
-function Me() {
+function ResetPassword() {
   return (
     <ScreenContainer>
-      <Text>this is a Me page</Text>
+      <Text>this is a ResetPassword page</Text>
     </ScreenContainer>
   );
 }
-export default Me;
+export default ResetPassword;

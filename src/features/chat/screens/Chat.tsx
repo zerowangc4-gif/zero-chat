@@ -1,10 +1,10 @@
 import { Text } from "react-native";
 import { ScreenContainer } from "@/components";
-function Me() {
+function Chat() {
   return (
     <ScreenContainer>
-      <Text>this is a Me page</Text>
+      <Text>this is a Chat page</Text>
     </ScreenContainer>
   );
 }
-export default Me;
+export default Chat;
