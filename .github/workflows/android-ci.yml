@@ -1,10 +1,7 @@
 name: Android CI (Release APK with Signing)
 
 on:
-  push:
-    branches: [main]
-    
-  pull_request:      
+  pull_request:
     branches: [main]
 
 jobs:
@@ -63,7 +60,7 @@ jobs:
             -PreleaseKeyAlias="${{ secrets.ANDROID_KEY_ALIAS }}" \
             -PreleaseKeyPassword="${{ secrets.ANDROID_KEY_PASSWORD }}"
         working-directory: android
-        
+
       - name: Upload Release APK
         uses: actions/upload-artifact@v4
         with:
