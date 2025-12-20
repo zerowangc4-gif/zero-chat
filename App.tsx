@@ -12,6 +12,7 @@ import { SafeAreaProvider, useSafeAreaInsets } from "react-native-safe-area-cont
 function App() {
   const isDarkMode = useColorScheme() === "dark"
   const myBadVariable: string = "hello"
+
   console.error(myBadVariable)
   return (
     <SafeAreaProvider>
