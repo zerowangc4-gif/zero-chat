@@ -15,6 +15,7 @@ function MainTab() {
       tabBarPosition="bottom"
       screenOptions={{
         swipeEnabled: true,
+        lazy: true,
         tabBarActiveTintColor: theme.colors.primary,
         tabBarInactiveTintColor: theme.colors.text.sub,
         tabBarIndicatorStyle: { height: 0 },
@@ -24,10 +25,7 @@ function MainTab() {
           borderTopColor: theme.colors.border,
           height: 60,
         },
-        tabBarLabelStyle: {
-          fontSize: theme.typography.size.xs,
-          fontWeight: "bold",
-        },
+        tabBarLabelStyle: { fontSize: theme.typography.size.xs, fontWeight: "bold" },
       }}>
       <Tab.Screen
         name={ROUTES.ChatList}
