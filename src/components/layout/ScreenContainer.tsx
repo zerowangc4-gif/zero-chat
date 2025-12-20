@@ -67,6 +67,7 @@ interface Props extends ViewProps {
   headerLeft?: React.ReactNode;
   headerRight?: React.ReactNode;
   translucentHeader?: boolean;
+  translucent: boolean;
 }
 
 export const ScreenContainer: React.FC<Props> = ({
@@ -78,6 +79,7 @@ export const ScreenContainer: React.FC<Props> = ({
   title,
   headerLeft,
   headerRight,
+  translucent = false,
   translucentHeader = false,
   ...props
 }) => {
@@ -104,7 +106,12 @@ export const ScreenContainer: React.FC<Props> = ({
 
   return (
     <Root top={insets.top} bgColor={finalBgColor} enableSafeArea={enableSafeArea} {...props}>
-      <StatusBar backgroundColor={finalStatusBarColor} translucent barStyle={barStyle} animated />
+      <StatusBar
+        backgroundColor={finalStatusBarColor}
+        translucent={translucent}
+        barStyle={barStyle}
+        animated
+      />
 
       {title !== undefined && (
         <MemoizedNavBar title={title} left={headerLeft} right={headerRight} style={navBarStyle} />
