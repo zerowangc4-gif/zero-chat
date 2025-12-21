@@ -1,5 +1,5 @@
 import React, { memo } from "react";
-import { StatusBar, ViewProps, ViewStyle, Platform } from "react-native";
+import { StatusBar, ViewProps, ViewStyle } from "react-native";
 import styled, { useTheme } from "styled-components/native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -8,19 +8,17 @@ interface NavBarProps {
   left?: React.ReactNode;
   right?: React.ReactNode;
   style?: ViewStyle;
+  bgColor?: string;
 }
 
-const Root = styled.View<{ top: number; bgColor?: string; enableSafeArea: boolean }>`
+const Root = styled.View<{ bgColor?: string }>`
   flex: 1;
   background-color: ${props => props.bgColor || props.theme.colors.background};
-  padding-top: ${props => {
-    if (!props.enableSafeArea) return 0;
-    return Platform.OS === "ios" ? props.top : 0;
-  }}px;
 `;
 
-const NavBarContainer = styled.View`
+const NavBarContainer = styled.View<{ bgColor?: string }>`
   height: 56px;
+  background-color: ${props => props.bgColor};
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
@@ -49,8 +47,8 @@ const SideBar = styled.View<{ align?: "flex-start" | "flex-end" }>`
   z-index: 1;
 `;
 
-const MemoizedNavBar = memo(({ title, left, right, style }: NavBarProps) => (
-  <NavBarContainer style={style}>
+const MemoizedNavBar = memo(({ title, left, right, style, bgColor }: NavBarProps) => (
+  <NavBarContainer style={style} bgColor={bgColor}>
     <SideBar align="flex-start">{left}</SideBar>
     <NavTitle numberOfLines={1}>{title}</NavTitle>
     <SideBar align="flex-end">{right}</SideBar>
@@ -60,7 +58,7 @@ const MemoizedNavBar = memo(({ title, left, right, style }: NavBarProps) => (
 interface Props extends ViewProps {
   children: React.ReactNode;
   backgroundColor?: string;
-  statusBarColor?: string;
+  headerBackgroundColor?: string;
   darkIcons?: boolean;
   enableSafeArea?: boolean;
   title?: string;
@@ -73,9 +71,8 @@ interface Props extends ViewProps {
 export const ScreenContainer: React.FC<Props> = ({
   children,
   backgroundColor,
-  statusBarColor,
+  headerBackgroundColor,
   darkIcons,
-  enableSafeArea = true,
   title,
   headerLeft,
   headerRight,
@@ -83,7 +80,6 @@ export const ScreenContainer: React.FC<Props> = ({
   translucentHeader = false,
   ...props
 }) => {
-  const insets = useSafeAreaInsets();
   const theme = useTheme();
 
   const isDarkTheme = theme.mode === "dark";
@@ -101,14 +97,19 @@ export const ScreenContainer: React.FC<Props> = ({
     : {};
 
   const finalBgColor = backgroundColor ?? theme.colors.background;
-  const finalStatusBarColor = statusBarColor || (Platform.OS === "android" ? finalBgColor : "transparent");
-
+  const navBarBgColor = headerBackgroundColor ?? finalBgColor;
   return (
-    <Root top={insets.top} bgColor={finalBgColor} enableSafeArea={enableSafeArea} {...props}>
-      <StatusBar backgroundColor={finalStatusBarColor} translucent={translucent} barStyle={barStyle} animated />
+    <Root bgColor={finalBgColor} {...props}>
+      <StatusBar backgroundColor={navBarBgColor} translucent={translucent} barStyle={barStyle} animated />
 
       {title !== undefined && (
-        <MemoizedNavBar title={title} left={headerLeft} right={headerRight} style={navBarStyle} />
+        <MemoizedNavBar
+          title={title}
+          left={headerLeft}
+          right={headerRight}
+          bgColor={navBarBgColor}
+          style={navBarStyle}
+        />
       )}
 
       {children}
