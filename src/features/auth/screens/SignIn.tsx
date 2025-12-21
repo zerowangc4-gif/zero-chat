@@ -7,7 +7,7 @@ function SignIn() {
   const { email } = useAppSelector(state => state.auth);
   return (
     <ScreenContainer title="消息">
-      <Text>y邮箱是:{email}</Text>
+      <Text>邮箱是:{email}</Text>
       <Button
         title="点击"
         onPress={() => {

@@ -18,11 +18,11 @@ const Root = styled.View<{ bgColor?: string }>`
 
 const NavBarContainer = styled.View<{ bgColor?: string }>`
   height: 56px;
-  background-color: ${props => props.bgColor};
+  background-color: ${props => props.bgColor || props.theme.colors.background};
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  padding-horizontal: 16px;
+  padding-horizontal: ${props => props.theme.typography.size.md};
   position: relative;
   z-index: 10;
 `;
@@ -31,11 +31,10 @@ const NavTitle = styled.Text`
   font-size: 18px;
   font-weight: 700;
   color: ${props => props.theme.colors.text.main};
-  position: absolute;
-  left: 70px;
-  right: 70px;
+  flex: 1;
   text-align: center;
   z-index: 0;
+  margin-horizontal: ${props => props.theme.typography.size.md};
 `;
 
 const SideBar = styled.View<{ align?: "flex-start" | "flex-end" }>`
@@ -60,12 +59,11 @@ interface Props extends ViewProps {
   backgroundColor?: string;
   headerBackgroundColor?: string;
   darkIcons?: boolean;
-  enableSafeArea?: boolean;
   title?: string;
   headerLeft?: React.ReactNode;
   headerRight?: React.ReactNode;
-  translucentHeader?: boolean;
-  translucent?: boolean;
+  headerTranslucent?: boolean;
+  statusBarTranslucent?: boolean;
 }
 
 export const ScreenContainer: React.FC<Props> = ({
@@ -76,12 +74,12 @@ export const ScreenContainer: React.FC<Props> = ({
   title,
   headerLeft,
   headerRight,
-  translucent = false,
-  translucentHeader = false,
+  statusBarTranslucent = false,
+  headerTranslucent = false,
   ...props
 }) => {
   const theme = useTheme();
-
+  const insets = useSafeAreaInsets();
   const isDarkTheme = theme.mode === "dark";
   const barStyle =
     darkIcons !== undefined
@@ -92,15 +90,15 @@ export const ScreenContainer: React.FC<Props> = ({
         ? "light-content"
         : "dark-content";
 
-  const navBarStyle: ViewStyle = translucentHeader
-    ? { position: "absolute", top: 0, left: 0, right: 0, backgroundColor: "transparent" }
+  const navBarStyle: ViewStyle = headerTranslucent
+    ? { position: "absolute", top: insets.top, left: 0, right: 0, backgroundColor: "transparent" }
     : {};
 
   const finalBgColor = backgroundColor ?? theme.colors.background;
   const navBarBgColor = headerBackgroundColor ?? finalBgColor;
   return (
     <Root bgColor={finalBgColor} {...props}>
-      <StatusBar backgroundColor={navBarBgColor} translucent={translucent} barStyle={barStyle} animated />
+      <StatusBar backgroundColor={navBarBgColor} translucent={statusBarTranslucent} barStyle={barStyle} animated />
 
       {title !== undefined && (
         <MemoizedNavBar
