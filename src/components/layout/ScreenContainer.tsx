@@ -18,7 +18,7 @@ const Root = styled.View<{ bgColor?: string }>`
 `;
 
 const NavBarContainer = styled.View<{ bgColor?: string; top?: number }>`
-  height: 56px;
+  height: ${props => (props.top ? 56 + props.top : 56)};
   background-color: ${props => props.bgColor || props.theme.colors.background};
   flex-direction: row;
   align-items: center;
@@ -42,8 +42,8 @@ const NavTitle = styled.Text`
 const SideBar = styled.View<{ align?: "flex-start" | "flex-end" }>`
   flex-direction: row;
   align-items: center;
-  min-width: 44px;
-  min-height: 44px;
+  min-width: 44;
+  min-height: 44;
   justify-content: ${props => props.align || "flex-start"};
   z-index: 1;
 `;
@@ -95,7 +95,7 @@ export const ScreenContainer: React.FC<Props> = ({
   const navBarStyle: ViewStyle = headerTranslucent
     ? { position: "absolute", top: insets.top, left: 0, right: 0, backgroundColor: "transparent" }
     : {};
-
+  console.log("navBarStyle", navBarStyle);
   const finalBgColor = backgroundColor ?? theme.colors.background;
   const navBarBgColor = headerBackgroundColor ?? finalBgColor;
   return (
