@@ -67,7 +67,7 @@ interface Props extends ViewProps {
   headerLeft?: React.ReactNode;
   headerRight?: React.ReactNode;
   translucentHeader?: boolean;
-  translucent: boolean;
+  translucent?: boolean;
 }
 
 export const ScreenContainer: React.FC<Props> = ({
@@ -101,17 +101,11 @@ export const ScreenContainer: React.FC<Props> = ({
     : {};
 
   const finalBgColor = backgroundColor ?? theme.colors.background;
-  const finalStatusBarColor =
-    statusBarColor || (Platform.OS === "android" ? finalBgColor : "transparent");
+  const finalStatusBarColor = statusBarColor || (Platform.OS === "android" ? finalBgColor : "transparent");
 
   return (
     <Root top={insets.top} bgColor={finalBgColor} enableSafeArea={enableSafeArea} {...props}>
-      <StatusBar
-        backgroundColor={finalStatusBarColor}
-        translucent={translucent}
-        barStyle={barStyle}
-        animated
-      />
+      <StatusBar backgroundColor={finalStatusBarColor} translucent={translucent} barStyle={barStyle} animated />
 
       {title !== undefined && (
         <MemoizedNavBar title={title} left={headerLeft} right={headerRight} style={navBarStyle} />
