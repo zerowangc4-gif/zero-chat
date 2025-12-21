@@ -9,6 +9,7 @@ interface NavBarProps {
   right?: React.ReactNode;
   style?: ViewStyle;
   bgColor?: string;
+  top?: number;
 }
 
 const Root = styled.View<{ bgColor?: string }>`
@@ -16,19 +17,20 @@ const Root = styled.View<{ bgColor?: string }>`
   background-color: ${props => props.bgColor || props.theme.colors.background};
 `;
 
-const NavBarContainer = styled.View<{ bgColor?: string }>`
+const NavBarContainer = styled.View<{ bgColor?: string; top?: number }>`
   height: 56px;
   background-color: ${props => props.bgColor || props.theme.colors.background};
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
   padding-horizontal: ${props => props.theme.typography.size.md};
+  padding-top: ${props => props.top ?? 0};
   position: relative;
   z-index: 10;
 `;
 
 const NavTitle = styled.Text`
-  font-size: 18px;
+  font-size: ${props => props.theme.typography.size.md};
   font-weight: 700;
   color: ${props => props.theme.colors.text.main};
   flex: 1;
@@ -46,8 +48,8 @@ const SideBar = styled.View<{ align?: "flex-start" | "flex-end" }>`
   z-index: 1;
 `;
 
-const MemoizedNavBar = memo(({ title, left, right, style, bgColor }: NavBarProps) => (
-  <NavBarContainer style={style} bgColor={bgColor}>
+const MemoizedNavBar = memo(({ title, left, right, style, bgColor, top }: NavBarProps) => (
+  <NavBarContainer style={style} bgColor={bgColor} top={top}>
     <SideBar align="flex-start">{left}</SideBar>
     <NavTitle numberOfLines={1}>{title}</NavTitle>
     <SideBar align="flex-end">{right}</SideBar>
@@ -106,6 +108,7 @@ export const ScreenContainer: React.FC<Props> = ({
           left={headerLeft}
           right={headerRight}
           bgColor={navBarBgColor}
+          top={insets.top}
           style={navBarStyle}
         />
       )}
