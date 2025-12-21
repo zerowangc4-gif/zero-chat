@@ -18,7 +18,7 @@ const Root = styled.View<{ bgColor?: string }>`
 `;
 
 const NavBarContainer = styled.View<{ bgColor?: string; top?: number }>`
-  height: ${props => (props.top ? 56 + props.top : 56)};
+  height: 56;
   background-color: ${props => props.bgColor || props.theme.colors.background};
   flex-direction: row;
   align-items: center;
@@ -42,8 +42,6 @@ const NavTitle = styled.Text`
 const SideBar = styled.View<{ align?: "flex-start" | "flex-end" }>`
   flex-direction: row;
   align-items: center;
-  min-width: 44;
-  min-height: 44;
   justify-content: ${props => props.align || "flex-start"};
   z-index: 1;
 `;
@@ -112,7 +110,6 @@ export const ScreenContainer: React.FC<Props> = ({
           style={navBarStyle}
         />
       )}
-
       {children}
     </Root>
   );
