@@ -1,5 +1,5 @@
 import React, { memo } from "react";
-import { StatusBar, ViewProps, ViewStyle, Platform } from "react-native";
+import { StatusBar, ViewProps, ViewStyle } from "react-native";
 import styled, { useTheme } from "styled-components/native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -8,49 +8,46 @@ interface NavBarProps {
   left?: React.ReactNode;
   right?: React.ReactNode;
   style?: ViewStyle;
+  bgColor?: string;
+  top?: number;
 }
 
-const Root = styled.View<{ top: number; bgColor?: string; enableSafeArea: boolean }>`
+const Root = styled.View<{ bgColor?: string }>`
   flex: 1;
   background-color: ${props => props.bgColor || props.theme.colors.background};
-  padding-top: ${props => {
-    if (!props.enableSafeArea) return 0;
-    return Platform.OS === "ios" ? props.top : 0;
-  }}px;
 `;
 
-const NavBarContainer = styled.View`
-  height: 56px;
+const NavBarContainer = styled.View<{ bgColor?: string; top?: number }>`
+  height: 56;
+  background-color: ${props => props.bgColor || props.theme.colors.background};
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  padding-horizontal: 16px;
+  padding-horizontal: ${props => props.theme.typography.size.md};
+  padding-top: ${props => props.top ?? 0};
   position: relative;
   z-index: 10;
 `;
 
 const NavTitle = styled.Text`
-  font-size: 18px;
+  font-size: ${props => props.theme.typography.size.md};
   font-weight: 700;
   color: ${props => props.theme.colors.text.main};
-  position: absolute;
-  left: 70px;
-  right: 70px;
+  flex: 1;
   text-align: center;
   z-index: 0;
+  margin-horizontal: ${props => props.theme.typography.size.md};
 `;
 
 const SideBar = styled.View<{ align?: "flex-start" | "flex-end" }>`
   flex-direction: row;
   align-items: center;
-  min-width: 44px;
-  min-height: 44px;
   justify-content: ${props => props.align || "flex-start"};
   z-index: 1;
 `;
 
-const MemoizedNavBar = memo(({ title, left, right, style }: NavBarProps) => (
-  <NavBarContainer style={style}>
+const MemoizedNavBar = memo(({ title, left, right, style, bgColor, top }: NavBarProps) => (
+  <NavBarContainer style={style} bgColor={bgColor} top={top}>
     <SideBar align="flex-start">{left}</SideBar>
     <NavTitle numberOfLines={1}>{title}</NavTitle>
     <SideBar align="flex-end">{right}</SideBar>
@@ -60,30 +57,29 @@ const MemoizedNavBar = memo(({ title, left, right, style }: NavBarProps) => (
 interface Props extends ViewProps {
   children: React.ReactNode;
   backgroundColor?: string;
-  statusBarColor?: string;
+  headerBackgroundColor?: string;
   darkIcons?: boolean;
-  enableSafeArea?: boolean;
   title?: string;
   headerLeft?: React.ReactNode;
   headerRight?: React.ReactNode;
-  translucentHeader?: boolean;
+  headerTranslucent?: boolean;
+  statusBarTranslucent?: boolean;
 }
 
 export const ScreenContainer: React.FC<Props> = ({
   children,
   backgroundColor,
-  statusBarColor,
+  headerBackgroundColor,
   darkIcons,
-  enableSafeArea = true,
   title,
   headerLeft,
   headerRight,
-  translucentHeader = false,
+  statusBarTranslucent = false,
+  headerTranslucent = false,
   ...props
 }) => {
-  const insets = useSafeAreaInsets();
   const theme = useTheme();
-
+  const insets = useSafeAreaInsets();
   const isDarkTheme = theme.mode === "dark";
   const barStyle =
     darkIcons !== undefined
@@ -94,22 +90,26 @@ export const ScreenContainer: React.FC<Props> = ({
         ? "light-content"
         : "dark-content";
 
-  const navBarStyle: ViewStyle = translucentHeader
-    ? { position: "absolute", top: 0, left: 0, right: 0, backgroundColor: "transparent" }
+  const navBarStyle: ViewStyle = headerTranslucent
+    ? { position: "absolute", top: insets.top, left: 0, right: 0, backgroundColor: "transparent" }
     : {};
-
+  console.log("navBarStyle", navBarStyle);
   const finalBgColor = backgroundColor ?? theme.colors.background;
-  const finalStatusBarColor =
-    statusBarColor || (Platform.OS === "android" ? finalBgColor : "transparent");
-
+  const navBarBgColor = headerBackgroundColor ?? finalBgColor;
   return (
-    <Root top={insets.top} bgColor={finalBgColor} enableSafeArea={enableSafeArea} {...props}>
-      <StatusBar backgroundColor={finalStatusBarColor} translucent barStyle={barStyle} animated />
+    <Root bgColor={finalBgColor} {...props}>
+      <StatusBar backgroundColor={navBarBgColor} translucent={statusBarTranslucent} barStyle={barStyle} animated />
 
       {title !== undefined && (
-        <MemoizedNavBar title={title} left={headerLeft} right={headerRight} style={navBarStyle} />
+        <MemoizedNavBar
+          title={title}
+          left={headerLeft}
+          right={headerRight}
+          bgColor={navBarBgColor}
+          top={insets.top}
+          style={navBarStyle}
+        />
       )}
-
       {children}
     </Root>
   );
