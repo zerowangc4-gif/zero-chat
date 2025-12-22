@@ -1,3 +1,4 @@
+import { Platform } from "react-native";
 export const palette = {
   primary: { 50: "#E6F0FF", 500: "#007AFF", 600: "#0062CC", 900: "#003366" },
   gray: {
@@ -24,6 +25,13 @@ export const typography = {
     bold: "700" as const,
   },
 };
-
 export const spacing = { 0: 0, 4: 4, 8: 8, 12: 12, 16: 16, 24: 24, 32: 32 };
+
 export const borderRadius = { none: 0, sm: 8, md: 12, lg: 16, full: 9999 };
+
+export const layout = {
+  navBarHeight: Platform.OS === "ios" ? 44 : 56,
+  screenPadding: spacing[16],
+  headerLeftAndRightWidth: 80,
+  bottomBarHeight: 64,
+};
