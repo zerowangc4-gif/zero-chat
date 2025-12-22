@@ -1,9 +1,10 @@
-import { palette, spacing, typography, borderRadius } from "./tokens";
+import { palette, spacing, typography, borderRadius, layout } from "./tokens";
 
 const getTheme = (isDark: boolean) => ({
   mode: isDark ? ("dark" as const) : ("light" as const),
   spacing,
   radius: borderRadius,
+  layout: layout,
   typography: {
     ...typography,
     presets: {

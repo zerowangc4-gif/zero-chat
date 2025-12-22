@@ -6,7 +6,7 @@ function SignIn() {
   const dispath = useAppDispatch();
   const { email } = useAppSelector(state => state.auth);
   return (
-    <BaseScreen>
+    <BaseScreen title="欢迎来到我的世界">
       <Text>邮箱是:{email}</Text>
       <Button
         title="点击"
