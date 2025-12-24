@@ -5,9 +5,8 @@ import { CompositeNavigationProp } from "@react-navigation/native";
 import { ROUTES } from "./routes";
 
 export type AuthStackParamList = {
-  [ROUTES.SignIn]: undefined;
-  [ROUTES.SignUp]: undefined;
-  [ROUTES.ResetPassword]: undefined;
+  [ROUTES.Login]: undefined;
+  [ROUTES.OTPVerify]: undefined;
 };
 
 export type MainTabParamList = {
