@@ -1,39 +1,21 @@
-import { palette, spacing, typography, borderRadius, layout } from "./tokens";
+import { lightColors, darkColors } from "./colors";
+import { typography } from "./typography";
+import { spacing } from "./spacing";
+import { radii } from "./radii";
+import { getShadows } from "./shadows";
+import { interactive } from "./interactive";
 
-const getTheme = (isDark: boolean) => ({
-  mode: isDark ? ("dark" as const) : ("light" as const),
-  spacing,
-  radius: borderRadius,
-  layout: layout,
-  typography: {
-    ...typography,
-    presets: {
-      navTitle: { size: typography.size.xl, weight: typography.weight.semibold },
-      chatMessage: { size: typography.size.md, lineHeight: 22 },
-      chatTime: { size: typography.size.xs, color: palette.gray[500] },
-      balance: {
-        size: typography.size.huge,
-        weight: typography.weight.bold,
-        family: typography.family.mono,
-      },
-    },
-  },
-  colors: {
-    background: isDark ? palette.black : palette.gray[100],
-    surface: isDark ? palette.gray[900] : palette.white,
-    primary: palette.primary[500],
-    text: {
-      main: isDark ? palette.white : palette.black,
-      sub: palette.gray[500],
-      inverse: isDark ? palette.black : palette.white,
-    },
-    border: isDark ? palette.gray[700] : palette.gray[200],
-    bubble: {
-      me: palette.primary[500],
-      other: isDark ? palette.gray[900] : palette.white,
-    },
-  },
-});
+const getTheme = (isDark: boolean) => {
+  return {
+    isDark,
+    colors: isDark ? darkColors : lightColors,
+    typography,
+    spacing,
+    radii,
+    shadows: getShadows(isDark),
+    interactive,
+  } as const;
+};
 
 export const lightTheme = getTheme(false);
 export const darkTheme = getTheme(true);

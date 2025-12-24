@@ -2,6 +2,8 @@ import React from "react";
 import { StatusBar, ViewProps } from "react-native";
 import styled, { useTheme } from "styled-components/native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { Typography } from "../common/Typography"; // 确保引入了之前封装的组件
+import { ThemeType } from "@/theme/schemas";
 
 const RootContainer = styled.View<{ bgColor: string }>`
   flex: 1;
@@ -13,61 +15,94 @@ const Header = styled.View<{ height: number; paddingTop: number; bgColor: string
   top: 0;
   left: 0;
   right: 0;
+  z-index: 10;
   height: ${props => props.height}px;
   padding-top: ${props => props.paddingTop}px;
   background-color: ${props => props.bgColor};
+  border-bottom-width: ${props => props.theme.spacing.layout.separatorHeight}px;
+  border-bottom-color: ${props => props.theme.colors.borderBase};
 `;
 
 const HeaderContent = styled.View`
   flex: 1;
   flex-direction: row;
   align-items: center;
-  justify-content: space-between;
+  padding-left: ${props => props.theme.spacing.layout.screenPadding}px;
+  padding-right: ${props => props.theme.spacing.layout.screenPadding}px;
 `;
+
 const HeaderContentLeft = styled.View`
-  width: ${props => props.theme.layout.headerLeftAndRightWidth}px;
-  padding-left: ${props => props.theme.layout.screenPadding}px;
+  width: ${props => props.theme.spacing.layout.headerLeftAndRightWidth}px;
+  flex-direction: row;
+  align-items: center;
 `;
-const HeaderContentCenter = styled.Text`
+const NavTitle = styled(Typography)`
   flex: 1;
-  font-size: ${props => props.theme.typography.presets.navTitle.size}px;
-  font-weight: ${props => props.theme.typography.presets.navTitle.weight}px;
   text-align: center;
 `;
 const HeaderContentRight = styled.View`
-  width: ${props => props.theme.layout.headerLeftAndRightWidth}px;
-  padding-right: ${props => props.theme.layout.screenPadding}px;
+  width: ${props => props.theme.spacing.layout.headerLeftAndRightWidth}px;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
 `;
+
 const MainContent = styled.View<{ paddingTop: number }>`
   flex: 1;
   padding-top: ${props => props.paddingTop}px;
 `;
-interface Props extends ViewProps {
+
+interface BaseScreenProps extends ViewProps {
   children: React.ReactNode;
   backgroundColor?: string;
   title?: string;
+  leftComponent?: React.ReactNode;
+  rightComponent?: React.ReactNode;
+  headerColor?: string;
+  extendToTop?: boolean;
 }
 
-export const BaseScreen: React.FC<Props> = ({ children, backgroundColor, title }) => {
-  const theme = useTheme();
+export const BaseScreen: React.FC<BaseScreenProps> = ({
+  children,
+  backgroundColor,
+  title,
+  leftComponent,
+  rightComponent,
+  headerColor,
+  extendToTop = false,
+  ...rest
+}) => {
+  const theme = useTheme() as ThemeType;
   const insets = useSafeAreaInsets();
-  const isDarkTheme = theme.mode === "dark";
-  const barStyle = isDarkTheme ? "light-content" : "dark-content";
-  const finalBgColor = backgroundColor ?? theme.colors.background;
-  const navBarHeight = theme.layout.navBarHeight + insets.top;
+
+  const finalBgColor = backgroundColor ?? theme.colors.bgPage;
+  const headerBgColor = headerColor ?? finalBgColor;
+
+  const barStyle = theme.isDark ? "light-content" : "dark-content";
+
+  const navBarHeight = theme.spacing.layout.navBarHeight;
+  const totalHeaderHeight = title || leftComponent || rightComponent ? navBarHeight + insets.top : insets.top;
+  //如果是穿透模式，paddingTop 设为 0 内容穿过导航栏
+  const mainPaddingTop = extendToTop ? 0 : totalHeaderHeight;
+
   return (
-    <RootContainer bgColor={finalBgColor}>
-      <StatusBar translucent barStyle={barStyle} animated />
-      <Header height={title ? navBarHeight : insets.top} paddingTop={title ? insets.top : 0} bgColor={finalBgColor}>
-        {title && (
+    <RootContainer bgColor={finalBgColor} {...rest}>
+      <StatusBar translucent barStyle={barStyle} backgroundColor="transparent" animated />
+
+      <Header height={totalHeaderHeight} paddingTop={insets.top} bgColor={headerBgColor}>
+        {(title || leftComponent || rightComponent) && (
           <HeaderContent>
-            <HeaderContentLeft />
-            <HeaderContentCenter>{title}</HeaderContentCenter>
-            <HeaderContentRight />
+            <HeaderContentLeft>{leftComponent}</HeaderContentLeft>
+
+            <NavTitle type="title" numberOfLines={1}>
+              {title}
+            </NavTitle>
+            <HeaderContentRight>{rightComponent}</HeaderContentRight>
           </HeaderContent>
         )}
       </Header>
-      <MainContent paddingTop={title ? navBarHeight : insets.top}>{children}</MainContent>
+
+      <MainContent paddingTop={mainPaddingTop}>{children}</MainContent>
     </RootContainer>
   );
 };

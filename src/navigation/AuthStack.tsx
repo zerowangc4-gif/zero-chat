@@ -1,15 +1,14 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { AuthStackParamList } from "./types";
 import { ROUTES } from "./routes";
-import { SignInScreen, SignUpScreen, ResetPasswordScreen } from "@/features/auth";
+import { LoginScreen, OTPVerifyScreen } from "@/features/auth";
 const Stack = createNativeStackNavigator<AuthStackParamList>();
 
 function AuthStack() {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name={ROUTES.SignIn} component={SignInScreen} />
-      <Stack.Screen name={ROUTES.SignUp} component={SignUpScreen} />
-      <Stack.Screen name={ROUTES.ResetPassword} component={ResetPasswordScreen} />
+      <Stack.Screen name={ROUTES.Login} component={LoginScreen} />
+      <Stack.Screen name={ROUTES.OTPVerify} component={OTPVerifyScreen} />
     </Stack.Navigator>
   );
 }

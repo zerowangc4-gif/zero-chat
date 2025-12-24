@@ -1,9 +1,8 @@
 export const ROUTES = {
   // 认证流
   AuthStack: "AuthStack",
-  SignIn: "SignIn",
-  SignUp: "SignUp",
-  ResetPassword: "ResetPassword",
+  Login: "Login",
+  OTPVerify: "OTPVerify",
 
   // 主页滑动 Tab
   MainTab: "MainTab",
