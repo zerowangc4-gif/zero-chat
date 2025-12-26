@@ -1,4 +1,4 @@
-const palette = {
+export const palette = {
   // 基础色
   white: "#FFFFFF",
   black: "#000000",

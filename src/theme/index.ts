@@ -1,9 +1,6 @@
-import { lightColors, darkColors } from "./colors";
-import { typography } from "./typography";
-import { spacing } from "./spacing";
-import { radii } from "./radii";
-import { getShadows } from "./shadows";
-import { interactive } from "./interactive";
+import { lightColors, darkColors, typography, spacing, radii, interactive } from "./tokens";
+
+import { Text } from "./presets";
 
 const getTheme = (isDark: boolean) => {
   return {
@@ -12,8 +9,8 @@ const getTheme = (isDark: boolean) => {
     typography,
     spacing,
     radii,
-    shadows: getShadows(isDark),
     interactive,
+    presets: { Text: Text },
   } as const;
 };
 

@@ -4,13 +4,13 @@ import { ThemeProvider } from "styled-components/native";
 import { Provider } from "react-redux";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { PersistGate } from "redux-persist/integration/react";
-import { lightTheme, darkTheme } from "./src/theme/schemas";
+import { lightTheme, darkTheme } from "@/theme";
 import { RootNavigator } from "@/navigation";
 import { store, persistor } from "@/store";
 const App = () => {
   const isDark = useColorScheme() === "dark";
   const theme = isDark ? darkTheme : lightTheme;
-
+  console.log(theme);
   return (
     <SafeAreaProvider>
       <Provider store={store}>
