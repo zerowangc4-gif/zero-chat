@@ -10,7 +10,6 @@ import { store, persistor } from "@/store";
 const App = () => {
   const isDark = useColorScheme() === "dark";
   const theme = isDark ? darkTheme : lightTheme;
-  console.log(theme);
   return (
     <SafeAreaProvider>
       <Provider store={store}>

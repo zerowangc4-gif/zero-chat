@@ -1,6 +1,6 @@
 import { lightColors, darkColors, typography, spacing, radii, interactive } from "./tokens";
 
-import { Text } from "./presets";
+import { Text, Button, Input } from "./presets";
 
 const getTheme = (isDark: boolean) => {
   return {
@@ -10,7 +10,7 @@ const getTheme = (isDark: boolean) => {
     spacing,
     radii,
     interactive,
-    presets: { Text: Text },
+    presets: { Text: Text, Button: Button, Input: Input },
   } as const;
 };
 

@@ -1,9 +1,9 @@
 import React from "react";
-import { StatusBar, ViewProps } from "react-native";
+import { StatusBar, StyleSheet, ViewProps } from "react-native";
 import styled, { useTheme } from "styled-components/native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { Typography } from "../common/Typography"; // 确保引入了之前封装的组件
-import { ThemeType } from "@/theme/schemas";
+import { Typography } from "../common/Typography";
+import { ThemeType } from "@/theme";
 
 const RootContainer = styled.View<{ bgColor: string }>`
   flex: 1;
@@ -19,7 +19,7 @@ const Header = styled.View<{ height: number; paddingTop: number; bgColor: string
   height: ${props => props.height}px;
   padding-top: ${props => props.paddingTop}px;
   background-color: ${props => props.bgColor};
-  border-bottom-width: ${props => props.theme.spacing.layout.separatorHeight}px;
+  border-bottom-width: ${StyleSheet.hairlineWidth}px;
   border-bottom-color: ${props => props.theme.colors.borderBase};
 `;
 
@@ -27,8 +27,8 @@ const HeaderContent = styled.View`
   flex: 1;
   flex-direction: row;
   align-items: center;
-  padding-left: ${props => props.theme.spacing.layout.screenPadding}px;
-  padding-right: ${props => props.theme.spacing.layout.screenPadding}px;
+  padding-left: ${props => props.theme.spacing.layout.headerPaddingLeft}px;
+  padding-right: ${props => props.theme.spacing.layout.headerPaddingLeft}px;
 `;
 
 const HeaderContentLeft = styled.View`
@@ -50,6 +50,8 @@ const HeaderContentRight = styled.View`
 const MainContent = styled.View<{ paddingTop: number }>`
   flex: 1;
   padding-top: ${props => props.paddingTop}px;
+  padding-left: 24px;
+  padding-right: 24px;
 `;
 
 interface BaseScreenProps extends ViewProps {
@@ -83,7 +85,7 @@ export const BaseScreen: React.FC<BaseScreenProps> = ({
   const navBarHeight = theme.spacing.layout.navBarHeight;
   const totalHeaderHeight = title || leftComponent || rightComponent ? navBarHeight + insets.top : insets.top;
   //如果是穿透模式，paddingTop 设为 0 内容穿过导航栏
-  const mainPaddingTop = extendToTop ? 0 : totalHeaderHeight;
+  const mainPaddingTop = extendToTop ? insets.top : totalHeaderHeight;
 
   return (
     <RootContainer bgColor={finalBgColor} {...rest}>

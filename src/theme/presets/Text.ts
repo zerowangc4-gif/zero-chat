@@ -1,5 +1,6 @@
 import { family, size, lineHeight, weight, letterSpacing, variant } from "../tokens";
 export const Text = {
+  /** 登录页品牌名 */
   heading: {
     fontFamily: family.base,
     fontSize: size.xxxl,
@@ -14,7 +15,7 @@ export const Text = {
     lineHeight: lineHeight.xxl,
     fontWeight: weight.bold,
   },
-  /** 模块级标题：卡片标题、弹窗标题 */
+  /** 模块级标题：卡片标题、弹窗标题,登录页副标题 */
   subheading: {
     fontFamily: family.base,
     fontSize: size.xl,
@@ -66,3 +67,11 @@ export const Text = {
     fontVariant: variant.numeric,
   },
 };
+export interface TextStyle {
+  fontFamily: string;
+  fontSize: number;
+  lineHeight: number;
+  fontWeight: string | number;
+  letterSpacing?: number;
+  fontVariant?: string[];
+}

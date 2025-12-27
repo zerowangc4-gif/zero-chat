@@ -1,8 +1,8 @@
 {
   "auth": {
-    "signIn": "登录",
-    "signUp": "注册",
-    "resetPassword": "重置密码"
+    "login": "登录",
+    "welcome_title": "ZeroChat",
+    "welcome_slogan": "零知识证明，绝对隐私"
   },
   "tabs": {
     "chats": "聊天",

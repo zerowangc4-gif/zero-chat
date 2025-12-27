@@ -1,8 +1,8 @@
 {
   "auth": {
-    "signIn": "Sign In",
-    "signUp": "Sign Up",
-    "resetPassword": "Reset Password"
+    "login": "Log In",
+    "welcome_title": "ZeroChat",
+    "welcome_slogan": "Zero Knowledge, Total Privacy"
   },
   "tabs": {
     "chats": "Chats",

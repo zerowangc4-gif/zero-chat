@@ -35,59 +35,35 @@ export const lightColors = {
   white: palette.white,
   /** 纯黑：用于极端投影、遮罩层 */
   black: palette.black,
-
-  // --- 文本色彩 (Text) ---
-  /** 主要文字：标题、正文。高对比度，确保易读性 */
-  textPrimary: palette.gray["900"],
-  /** 次要文字：用于辅助说明、副标题、时间戳。中对比度 */
-  textSecondary: palette.gray["500"],
-  /** 占位文字：输入框提示语、禁用状态文字。低对比度 */
-  textPlaceholder: palette.gray["400"],
-  /** 反色文字：当背景为深色（如品牌色按钮）时使用 */
-  textInverse: palette.white,
-
-  // --- 背景色彩 (Background) ---
-  /** 页面底色：全屏背景色。略暗于容器色，以产生视觉深度 */
-  bgPage: palette.gray["100"],
-  /** 容器底色：白色卡片、列表条目、输入框内部底色 */
-  bgContainer: palette.white,
-  /** 按下态底色：用户点击列表、单元格时的反馈灰色 */
-  bgPressed: palette.gray["150"],
-
-  // --- 线条色彩 (Border) ---
-  /** 基础分割线：如微信聊天列表条目间的极细线 */
-  borderBase: palette.gray["200"],
-  /** 组件边框线：用于输入框(Input)外框、描边按钮外框 */
-  borderElement: palette.gray["300"],
-
-  /** 品牌主色：App 的视觉核心，代表操作重心 */
+  /** 品牌色:用于登录按钮 */
   primary: palette.brand.green,
-  /** 品牌色按下态：主色点击后的反馈，通常通过加深色值实现 */
-  primaryPressed: palette.brand.greenPressed,
-  /** 错误色：表单校验失败、删除警示、报错提示 */
-  error: palette.red,
-  /** 成功色：操作完成、校验通过、支付成功 */
-  success: palette.greenSuccess,
+  /** 反色文本：当背景是品牌色按钮（如绿色）时使用*/
+  textInverse: palette.white,
+  /** 页面底色：浅灰色，产生层次感 */
+  bgPage: palette.gray["100"],
+  /** 按钮禁用背景色 */
+  buttonDisabled: palette.gray["300"],
+  /** 按钮禁用文字 */
+  buttonTextDisabled: palette.gray["400"],
+  /** * 基础边框色：用于低对比度场景 ,输入框边框，header 边框*/
+  borderBase: palette.gray["200"],
 } as const;
 
 export const darkColors: typeof lightColors = {
-  white: palette.black,
-  black: palette.white,
-
-  textPrimary: palette.gray["50"],
-  textSecondary: palette.gray["400"],
-  textPlaceholder: palette.gray["600"],
-  textInverse: palette.white,
-
-  bgPage: palette.black,
-  bgContainer: palette.gray["950"],
-  bgPressed: palette.gray["800"],
-
-  borderBase: palette.gray["800"],
-  borderElement: palette.gray["700"],
-
+  /** 纯白：用于容器底色、反色文字 */
+  white: palette.white,
+  /** 纯黑：用于极端投影、遮罩层 */
+  black: palette.black,
+  /** 品牌色:用于登录按钮 */
   primary: palette.brand.green,
-  primaryPressed: palette.brand.greenDark,
-  error: palette.red,
-  success: palette.greenSuccess,
+  /** 反色文本：当背景是品牌色按钮（如绿色）时使用*/
+  textInverse: palette.white,
+  /** 页面底色：深灰色，产生层次感 */
+  bgPage: palette.gray["950"],
+  /** 按钮禁用背景色 */
+  buttonDisabled: palette.gray["800"],
+  /** 按钮禁用文字 */
+  buttonTextDisabled: palette.gray["600"],
+  /** * 基础边框色：用于低对比度场景 ,输入框边框，header 边框*/
+  borderBase: palette.gray["800"],
 };
