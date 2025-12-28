@@ -5,8 +5,8 @@ import styled, { useTheme } from "styled-components/native";
 
 const ContentContainer = styled.View`
   flex: 1;
-  padding: 0 32px;
-  padding-top: 80px; /* 让内容从状态栏优雅地沉下来 */
+  padding: 0 24px;
+  padding-top: 100px;
   gap: 40px;
 `;
 
@@ -17,7 +17,6 @@ const BrandHeading = styled.View`
 // 3. 协议组：处理对齐和换行
 const ConsentGroup = styled.View`
   flex-direction: row;
-  gap: ${props => props.theme.spacing.step.xxs}px;
 `;
 
 // 4. 输入组：设置板块间距
