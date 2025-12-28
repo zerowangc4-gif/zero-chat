@@ -26,7 +26,7 @@ const InputContainer = styled.View<{
     return css`
       flex: 1;
       height: ${config.height}px;
-      padding-horizontal: ${config.paddingHorizontal}px;
+      padding-horizontal: ${$borderType === "all" ? config.paddingHorizontal : 0}px;
       flex-direction: row;
       align-items: center;
       ${$borderType === "all" &&
