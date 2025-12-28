@@ -1,8 +1,8 @@
 import React from "react";
 import { Platform, TextInputProps, Pressable } from "react-native";
-import styled, { css } from "styled-components/native";
+import styled, { css, useTheme } from "styled-components/native";
 import { Size } from "@/theme/presets";
-import IconFont from "@/iconfont";
+import IconFont, { IconNames } from "@/iconfont";
 const androidInputFix: TextInputProps = Platform.select({
   android: {
     includeFontPadding: false,
@@ -94,8 +94,8 @@ interface InputProps extends TextInputProps {
   size?: Size;
   borderType?: "all" | "bottom" | "none";
   label?: string;
-  leftIcon?: React.ReactNode;
-  rightIcon?: React.ReactNode;
+  leftIcon?: IconNames;
+  rightIcon?: IconNames;
 }
 
 export const Input = ({
@@ -108,6 +108,9 @@ export const Input = ({
   onChangeText,
   ...props
 }: InputProps) => {
+  const theme = useTheme();
+  const iconSize = theme.presets.Input[size].iconSize;
+  const clearIconSize = theme.presets.Input[size].clearIconSize;
   return (
     <InputRoot>
       {label && <LabelText $size={size}>{label}</LabelText>}
@@ -116,30 +119,26 @@ export const Input = ({
         {/* 1. 左图标 */}
         {leftIcon && (
           <IconSlot $pos="left" $size={size}>
-            {leftIcon}
+            <IconFont name={leftIcon} size={iconSize} color="#666" />
           </IconSlot>
         )}
 
         {/* 2. 输入框 (它会撑开中间剩下的空间) */}
         <InnerInput $size={size} value={value} onChangeText={onChangeText} {...androidInputFix} {...props} />
 
-        {/* 3. 清除按钮：只有当 showClear 为 true 且有输入内容时显示 */}
+        {/* 3. 清除按钮 */}
         {!!value && (
-          <Pressable
-            onPress={() => onChangeText?.("")}
-            hitSlop={10} // 扩大点击热区，提升体验
-          >
+          <Pressable onPress={() => onChangeText?.("")} hitSlop={10}>
             <IconSlot $pos="right" $size={size}>
-              {/* 这里 name 填你阿里图标库里“关闭”或“清除”的名字，比如 "close-circle" */}
-              <IconFont name="close_circle" size={16} color="#999" />
+              <IconFont name="close_circle" size={clearIconSize} color="#999" />
             </IconSlot>
           </Pressable>
         )}
 
-        {/* 4. 右图标 (如果有的话，直接显示在最右边) */}
+        {/* 4. 右图标  */}
         {rightIcon && (
           <IconSlot $pos="right" $size={size}>
-            {rightIcon}
+            <IconFont name={rightIcon} size={iconSize} color="#666" />
           </IconSlot>
         )}
       </InputContainer>

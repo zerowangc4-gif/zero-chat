@@ -1,8 +1,8 @@
 {
   "auth": {
     "login": "登录",
-    "welcome_title": "ZeroChat",
-    "welcome_slogan": "零知识证明，绝对隐私"
+    "welcome_title": "零迹",
+    "welcome_slogan": "安全通信 无痕交流"
   },
   "tabs": {
     "chats": "聊天",
