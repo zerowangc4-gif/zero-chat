@@ -47,6 +47,8 @@ export const lightColors = {
   buttonTextDisabled: palette.gray["400"],
   /** * 基础边框色：用于低对比度场景 ,输入框边框，header 边框*/
   borderBase: palette.gray["200"],
+  /** 用处：输入框占位符、下方小字提示、不可点击的失效文字 */
+  textTertiary: palette.gray["400"],
 } as const;
 
 export const darkColors: typeof lightColors = {
@@ -66,4 +68,6 @@ export const darkColors: typeof lightColors = {
   buttonTextDisabled: palette.gray["600"],
   /** * 基础边框色：用于低对比度场景 ,输入框边框，header 边框*/
   borderBase: palette.gray["800"],
+  /** 用处：输入框占位符、下方小字提示、不可点击的失效文字 */
+  textTertiary: palette.gray["600"],
 };
