@@ -1,3 +1,3 @@
-export * from "./Typography";
+export * from "./Text";
 export * from "./Button";
 export * from "./Input";

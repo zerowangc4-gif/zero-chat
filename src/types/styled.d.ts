@@ -1,5 +1,5 @@
 import "styled-components/native";
-import { ThemeType } from "../theme/schemas";
+import { ThemeType } from "@/theme";
 
 declare module "styled-components/native" {
   // eslint-disable-next-line @typescript-eslint/no-empty-object-type

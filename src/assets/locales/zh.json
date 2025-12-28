@@ -1,8 +1,8 @@
 {
   "auth": {
-    "signIn": "登录",
-    "signUp": "注册",
-    "resetPassword": "重置密码"
+    "login": "登录",
+    "welcome_title": "零迹",
+    "welcome_slogan": "安全通信 无痕交流"
   },
   "tabs": {
     "chats": "聊天",
