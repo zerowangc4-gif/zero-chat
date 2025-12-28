@@ -42,7 +42,7 @@ interface ButtonProps extends PressableProps {
   title: string;
 }
 
-export const Button = function ({ size = "md", title, block = false, disabled = false, ...props }: ButtonProps) {
+export function Button({ size = "md", title, block = false, disabled = false, ...props }: ButtonProps) {
   const theme = useTheme();
   return (
     <ButtonContainer
@@ -59,4 +59,4 @@ export const Button = function ({ size = "md", title, block = false, disabled = 
       </ButtonContent>
     </ButtonContainer>
   );
-};
+}

@@ -2,7 +2,7 @@ import React from "react";
 import { Platform, TextInputProps, Pressable } from "react-native";
 import styled, { css, useTheme } from "styled-components/native";
 import { Size } from "@/theme/presets";
-import IconFont, { IconNames } from "@/iconfont";
+import IconFont, { IconNames } from "@/assets/font/iconfont";
 const androidInputFix: TextInputProps = Platform.select({
   android: {
     includeFontPadding: false,
