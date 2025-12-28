@@ -9,8 +9,6 @@ export const Input = {
     iconSize: 24, // 大框配大图标
     clearIconSize: 20, //清除图标的大小
     iconSpacing: 12, // 图标与文字之间的间距
-    labelFontSize: 16, // 标签字号
-    labelMarginBottom: 8, // 标签与输入框的间距
   },
 
   md: {
@@ -23,8 +21,6 @@ export const Input = {
     iconSize: 20,
     clearIconSize: 16,
     iconSpacing: 10,
-    labelFontSize: 14,
-    labelMarginBottom: 6,
   },
 
   sm: {
@@ -37,7 +33,5 @@ export const Input = {
     iconSize: 18,
     clearIconSize: 14,
     iconSpacing: 8,
-    labelFontSize: 12,
-    labelMarginBottom: 4,
   },
 };

@@ -44,16 +44,6 @@ const InputContainer = styled.View<{
     `;
   }}
 `;
-const LabelText = styled.Text<{ $size: Size }>`
-  ${({ theme, $size }) => {
-    const config = theme.presets.Input[$size];
-    return css`
-      font-size: ${config.labelFontSize}px;
-      margin-bottom: ${config.labelMarginBottom}px;
-      font-weight: 500;
-    `;
-  }}
-`;
 
 const IconSlot = styled.View<{ $pos: "left" | "right"; $size: Size }>`
   justify-content: center;
@@ -65,10 +55,10 @@ const IconSlot = styled.View<{ $pos: "left" | "right"; $size: Size }>`
       height: ${config.iconSize}px;
       ${$pos === "left"
         ? css`
-            margin-right: ${config.iconSpacing}px;
+            padding-right: ${config.iconSpacing}px;
           `
         : css`
-            margin-left: ${config.iconSpacing}px;
+            padding-left: ${config.iconSpacing}px;
           `}
     `;
   }}
@@ -101,7 +91,6 @@ interface InputProps extends TextInputProps {
 export const Input = ({
   size = "md",
   borderType = "all",
-  label,
   leftIcon,
   rightIcon,
   value,
@@ -113,8 +102,6 @@ export const Input = ({
   const clearIconSize = theme.presets.Input[size].clearIconSize;
   return (
     <InputRoot>
-      {label && <LabelText $size={size}>{label}</LabelText>}
-
       <InputContainer $size={size} $borderType={borderType}>
         {/* 1. 左图标 */}
         {leftIcon && (
