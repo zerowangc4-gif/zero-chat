@@ -3,6 +3,7 @@ import { Platform, TextInputProps, Pressable } from "react-native";
 import styled, { css, useTheme } from "styled-components/native";
 import { Size } from "@/theme/presets";
 import IconFont, { IconNames } from "@/assets/font/iconfont";
+
 const androidInputFix: TextInputProps = Platform.select({
   android: {
     includeFontPadding: false,
@@ -11,11 +12,13 @@ const androidInputFix: TextInputProps = Platform.select({
   },
   default: {},
 });
+
 const InputRoot = styled.View`
-  width: 100%;
+  align-self: stretch;
   flex-direction: row;
   align-items: center;
 `;
+
 const InputContainer = styled.View<{
   $size: Size;
   $borderType: "all" | "bottom" | "none";
@@ -29,6 +32,7 @@ const InputContainer = styled.View<{
       padding-horizontal: ${$borderType === "all" ? config.paddingHorizontal : 0}px;
       flex-direction: row;
       align-items: center;
+
       ${$borderType === "all" &&
       css`
         border-width: ${config.borderWidth}px;
@@ -45,35 +49,33 @@ const InputContainer = styled.View<{
   }}
 `;
 
-const IconSlot = styled.View<{ $pos: "left" | "right"; $size: Size }>`
+const IconSlot = styled.View<{ $size: Size }>`
   justify-content: center;
   align-items: center;
-  ${({ $pos, $size, theme }) => {
+  ${({ $size, theme }) => {
     const config = theme.presets.Input[$size];
     return css`
-      width: ${config.iconSize}px;
-      height: ${config.iconSize}px;
-      ${$pos === "left"
-        ? css`
-            padding-right: ${config.iconSpacing}px;
-          `
-        : css`
-            padding-left: ${config.iconSpacing}px;
-          `}
+      width: ${config.height * 0.6}px;
+      height: 100%;
     `;
   }}
 `;
+
 const InnerInput = styled.TextInput<{ $size: Size }>`
   ${({ theme, $size }) => {
     const config = theme.presets.Input[$size];
     return css`
       flex: 1;
+      height: 100%;
       align-self: stretch;
+      color: ${theme.colors.textPrimary};
       font-family: ${theme.typography.family.base};
       font-size: ${config.fontSize}px;
+      line-height: ${config.lineHeight}px;
       ${Platform.select({
         android: css`
           padding-vertical: 0;
+          padding-bottom: 2px;
         `,
       })}
     `;
@@ -98,34 +100,39 @@ export const Input = ({
   ...props
 }: InputProps) => {
   const theme = useTheme();
-  const iconSize = theme.presets.Input[size].iconSize;
-  const clearIconSize = theme.presets.Input[size].clearIconSize;
+  const config = theme.presets.Input[size];
+
+  // 这里的间距可以根据精美感微调
+  const spacing = config.iconSpacing || 8;
+
   return (
     <InputRoot>
       <InputContainer $size={size} $borderType={borderType}>
-        {/* 1. 左图标 */}
         {leftIcon && (
-          <IconSlot $pos="left" $size={size}>
-            <IconFont name={leftIcon} size={iconSize} color="#666" />
+          <IconSlot $size={size} style={{ marginRight: spacing }}>
+            <IconFont name={leftIcon} size={config.iconSize} color={theme.colors.textSecondary} />
           </IconSlot>
         )}
 
-        {/* 2. 输入框 (它会撑开中间剩下的空间) */}
-        <InnerInput $size={size} value={value} onChangeText={onChangeText} {...androidInputFix} {...props} />
+        <InnerInput
+          $size={size}
+          value={value}
+          onChangeText={onChangeText}
+          placeholderTextColor={theme.colors.textTertiary}
+          selectionColor={theme.colors.primary}
+          {...androidInputFix}
+          {...props}
+        />
 
-        {/* 3. 清除按钮 */}
         {!!value && (
-          <Pressable onPress={() => onChangeText?.("")} hitSlop={10}>
-            <IconSlot $pos="right" $size={size}>
-              <IconFont name="close_circle" size={clearIconSize} color="#999" />
-            </IconSlot>
+          <Pressable onPress={() => onChangeText?.("")} hitSlop={12}>
+            <IconFont name="close_circle" size={config.clearIconSize} color={theme.colors.textTertiary} />
           </Pressable>
         )}
 
-        {/* 4. 右图标  */}
         {rightIcon && (
-          <IconSlot $pos="right" $size={size}>
-            <IconFont name={rightIcon} size={iconSize} color="#666" />
+          <IconSlot $size={size} style={{ marginLeft: spacing }}>
+            <IconFont name={rightIcon} size={config.iconSize} color={theme.colors.textSecondary} />
           </IconSlot>
         )}
       </InputContainer>

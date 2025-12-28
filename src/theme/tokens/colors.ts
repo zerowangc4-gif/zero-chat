@@ -51,6 +51,8 @@ export const lightColors = {
   borderBase: palette.gray["200"],
   /** 用处：输入框占位符、下方小字提示、不可点击的失效文字 */
   textTertiary: palette.gray["400"],
+  /** 用于副标题，比标题略淡，建立视觉平衡，不抢主标题风头 */
+  textSecondary: palette.gray["500"],
 } as const;
 
 export const darkColors: typeof lightColors = {
@@ -74,4 +76,6 @@ export const darkColors: typeof lightColors = {
   borderBase: palette.gray["800"],
   /** 用处：输入框占位符、下方小字提示、不可点击的失效文字 */
   textTertiary: palette.gray["600"],
+  /** 用于副标题，比标题略淡，建立视觉平衡，不抢主标题风头 */
+  textSecondary: palette.gray["300"],
 };
