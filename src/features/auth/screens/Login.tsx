@@ -6,16 +6,16 @@ import styled, { useTheme } from "styled-components/native";
 const ContentContainer = styled.View`
   flex: 1;
   padding: 0 ${props => props.theme.spacing.step.xl}px;
-  padding-top: ${props => props.theme.spacing.step.xxxl};
+  padding-top: ${props => props.theme.spacing.layout.massive};
 `;
 
 const BrandHeading = styled.View`
-  margin-bottom: 56px;
+  margin-bottom: ${props => props.theme.spacing.step.xxxl};
   gap: ${props => props.theme.spacing.step.sm};
 `;
 
 const InputGroup = styled.View`
-  margin-bottom: 40px;
+  margin-bottom: ${props => props.theme.spacing.layout.loose};
   gap: ${props => props.theme.spacing.step.sm};
 `;
 
