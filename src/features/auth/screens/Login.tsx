@@ -17,14 +17,15 @@ const BrandHeading = styled.View`
 // 3. 协议组：处理对齐和换行
 const ConsentGroup = styled.View`
   flex-direction: row;
+  gap: ${props => props.theme.spacing.step.xxs}px;
 `;
 
 // 4. 输入组：设置板块间距
 const InputGroup = styled.View`
-  gap: ${props => props.theme.spacing.layout.tight}px;
+  gap: ${props => props.theme.spacing.step.xs}px;
 `;
 const ActionSection = styled.View`
-  gap: ${props => props.theme.spacing.layout.tight}px;
+  gap: ${props => props.theme.spacing.step.xs}px;
 `;
 
 function Login() {
@@ -60,10 +61,10 @@ function Login() {
             <Typography type="caption" color={theme.colors.textTertiary}>
               已阅读并同意
             </Typography>
-            <Typography type="caption" color="#1A1A1A">
+            <Typography type="caption" color={theme.colors.textPrimary}>
               《用户服务协议》
             </Typography>
-            <Typography type="caption" color="#1A1A1A">
+            <Typography type="caption" color={theme.colors.textPrimary}>
               《隐私权政策》
             </Typography>
           </ConsentGroup>

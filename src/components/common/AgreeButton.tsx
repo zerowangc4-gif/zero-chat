@@ -26,7 +26,7 @@ export function AgreeButton({ checked, onPress, ...rest }: AgreeButtonProps) {
       <IconFont
         name={checked ? "duihao1" : "weixuanzhongyuanquan"}
         size={16}
-        color={checked ? theme.colors.primary : theme.colors.black}
+        color={checked ? theme.colors.primary : theme.colors.textPrimary}
       />
     </IconContainer>
   );
