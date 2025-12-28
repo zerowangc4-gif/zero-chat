@@ -6,7 +6,9 @@
     "consent_prefix": "I have read and agree to ",
     "consent_connector": "and",
     "consent_user_agreement": "User Agreement",
-    "consent_privacy_policy": "Privacy Policy"
+    "consent_privacy_policy": "Privacy Policy",
+    "placeholder": "Enter your email",
+    "hint": "Unregistered emails will be registered automatically"
   },
   "tabs": {
     "chats": "Chats",

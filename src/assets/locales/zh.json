@@ -6,7 +6,9 @@
     "consent_prefix": "已阅读并同意 ",
     "consent_connector": "和",
     "consent_user_agreement": "用户服务协议",
-    "consent_privacy_policy": "隐私权政策"
+    "consent_privacy_policy": "隐私权政策",
+    "placeholder": "输入邮箱",
+    "hint": "未注册的邮箱通过验证将自动注册"
   },
   "tabs": {
     "chats": "聊天",

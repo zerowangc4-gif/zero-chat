@@ -5,18 +5,18 @@ import styled, { useTheme } from "styled-components/native";
 
 const ContentContainer = styled.View`
   flex: 1;
-  padding: 0 32px;
-  padding-top: 60px;
+  padding: 0 ${props => props.theme.spacing.step.xl}px;
+  padding-top: ${props => props.theme.spacing.step.xxxl};
 `;
 
 const BrandHeading = styled.View`
   margin-bottom: 56px;
-  gap: 10px;
+  gap: ${props => props.theme.spacing.step.sm};
 `;
 
 const InputGroup = styled.View`
   margin-bottom: 40px;
-  gap: 10px;
+  gap: ${props => props.theme.spacing.step.sm};
 `;
 
 const ConsentGroup = styled.View`
@@ -26,7 +26,7 @@ const ConsentGroup = styled.View`
 `;
 
 const ActionSection = styled.View`
-  gap: 24;
+  gap: ${props => props.theme.spacing.step.lg};
 `;
 
 function Login() {
@@ -55,7 +55,7 @@ function Login() {
         {/* 输入功能：简洁清爽 */}
         <InputGroup>
           <Input
-            placeholder="请输入邮箱"
+            placeholder={t("auth.placeholder")}
             value={email}
             onChangeText={handleEmail}
             autoCapitalize="none"
@@ -63,7 +63,7 @@ function Login() {
             borderType="bottom"
           />
           <Typography type="caption" color={theme.colors.textTertiary}>
-            未注册的邮箱通过验证将自动注册
+            {t("auth.hint")}
           </Typography>
         </InputGroup>
 
