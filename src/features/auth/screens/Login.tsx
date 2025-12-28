@@ -58,13 +58,16 @@ function Login() {
           <ConsentGroup>
             <AgreeButton checked={isAgreed} onPress={() => setIsAgreed(!isAgreed)} />
             <Typography type="caption" color={theme.colors.textTertiary}>
-              已阅读并同意
+              {t("auth.consent_prefix")}
             </Typography>
             <Typography type="caption" color={theme.colors.textPrimary}>
-              《用户服务协议》
+              {t("auth.consent_user_agreement")}
+            </Typography>
+            <Typography type="caption" color={theme.colors.textTertiary}>
+              {t("consent_connector")}
             </Typography>
             <Typography type="caption" color={theme.colors.textPrimary}>
-              《隐私权政策》
+              {t("consent_privacy_policy")}
             </Typography>
           </ConsentGroup>
           <Button size="lg" title={t("auth.login")} block={true} onPress={() => console.log("Login press")} />

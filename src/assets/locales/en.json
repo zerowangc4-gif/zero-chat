@@ -2,7 +2,11 @@
   "auth": {
     "login": "Log In",
     "welcome_title": "ZeroChat",
-    "welcome_slogan": "Secure Messaging Zero Trace"
+    "welcome_slogan": "Secure Messaging Zero Trace",
+    "consent_prefix": "I have read and agree to ",
+    "consent_connector": "and",
+    "consent_user_agreement": "User Agreement",
+    "consent_privacy_policy": "Privacy Policy"
   },
   "tabs": {
     "chats": "Chats",

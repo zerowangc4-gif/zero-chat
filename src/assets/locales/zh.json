@@ -2,7 +2,11 @@
   "auth": {
     "login": "登录",
     "welcome_title": "零迹",
-    "welcome_slogan": "安全通信 无痕交流"
+    "welcome_slogan": "安全通信 无痕交流",
+    "consent_prefix": "已阅读并同意 ",
+    "consent_connector": "和",
+    "consent_user_agreement": "用户服务协议",
+    "consent_privacy_policy": "隐私权政策"
   },
   "tabs": {
     "chats": "聊天",
