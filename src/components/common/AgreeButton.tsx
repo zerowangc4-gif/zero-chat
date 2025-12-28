@@ -1,5 +1,5 @@
 import React from "react";
-import styled from "styled-components/native";
+import styled, { useTheme } from "styled-components/native";
 import IconFont from "@/assets/font/iconfont";
 import { PressableProps } from "react-native";
 
@@ -14,6 +14,7 @@ interface AgreeButtonProps extends PressableProps {
 }
 
 export function AgreeButton({ checked, onPress, ...rest }: AgreeButtonProps) {
+  const theme = useTheme();
   return (
     <IconContainer
       {...rest}
@@ -22,7 +23,11 @@ export function AgreeButton({ checked, onPress, ...rest }: AgreeButtonProps) {
       style={({ pressed }) => ({
         transform: [{ scale: pressed ? 0.95 : 1 }],
       })}>
-      <IconFont name={checked ? "duihao1" : "weixuanzhongyuanquan"} size={16} color={checked ? "#1A1A1A" : "#DEDEDE"} />
+      <IconFont
+        name={checked ? "duihao1" : "weixuanzhongyuanquan"}
+        size={16}
+        color={checked ? theme.colors.primary : theme.colors.black}
+      />
     </IconContainer>
   );
 }

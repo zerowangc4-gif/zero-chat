@@ -35,6 +35,8 @@ export const lightColors = {
   white: palette.white,
   /** 纯黑：用于极端投影、遮罩层 */
   black: palette.black,
+  /** 主文字颜色,用于大标题，副标题，正文文字 */
+  textPrimary: palette.black,
   /** 品牌色:用于登录按钮 */
   primary: palette.brand.green,
   /** 反色文本：当背景是品牌色按钮（如绿色）时使用*/
@@ -56,6 +58,8 @@ export const darkColors: typeof lightColors = {
   white: palette.white,
   /** 纯黑：用于极端投影、遮罩层 */
   black: palette.black,
+  /** 主文字颜色,用于大标题，副标题，正文文字 */
+  textPrimary: palette.white,
   /** 品牌色:用于登录按钮 */
   primary: palette.brand.green,
   /** 反色文本：当背景是品牌色按钮（如绿色）时使用*/

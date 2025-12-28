@@ -40,8 +40,12 @@ function Login() {
     <BaseScreen>
       <ContentContainer>
         <BrandHeading>
-          <Typography type="heading">{t("auth.welcome_title")}</Typography>
-          <Typography type="subheading">{t("auth.welcome_slogan")}</Typography>
+          <Typography type="heading" color={theme.colors.textPrimary}>
+            {t("auth.welcome_title")}
+          </Typography>
+          <Typography type="subheading" color={theme.colors.textPrimary}>
+            {t("auth.welcome_slogan")}
+          </Typography>
         </BrandHeading>
 
         <InputGroup>
