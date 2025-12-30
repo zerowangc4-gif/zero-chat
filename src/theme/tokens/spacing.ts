@@ -18,6 +18,8 @@ const layout = {
   paddingTopHeader: 120,
   /** 登录页水平内边距 */
   screenHorizontalPadding: 24,
+  /** header内容边距 */
+  headerPaddingLeft: 16,
   /** 导航栏左右操作区最小宽度：确保标题绝对居中 (建议 40-56 之间) */
   headerLeftAndRightWidth: 56,
   /** 不同系统直接header的标准高度*/
