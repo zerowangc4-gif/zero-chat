@@ -12,11 +12,11 @@ export const BaseInput = styled.TextInput.attrs(
       underlineColorAndroid: "transparent",
     }) as TextProps,
 )`
+  align-self: stretch;
   margin: 0;
   padding: 0;
   background-color: transparent;
   border-width: 0;
-  flex: 1;
 `;
 
 const InputContainer = styled.View<{
@@ -51,7 +51,6 @@ const InnerInput = styled(BaseInput)<{ $size: Size }>`
   ${({ theme, $size }) => {
     const config = theme.presets.Input[$size];
     return css`
-      flex: 1;
       color: ${theme.colors.textPrimary};
       font-family: ${theme.typography.family.base};
       font-size: ${config.fontSize}px;

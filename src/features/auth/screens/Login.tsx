@@ -7,7 +7,7 @@ const ContentContainer = styled.View`
   flex: 1;
   padding-left: 24px;
   padding-right: 24px;
-  padding-top: 95px;
+  padding-top: 120px;
 `;
 
 const BrandHeading = styled.View`
