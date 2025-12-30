@@ -13,9 +13,9 @@ export const Button = {
     },
   },
   md: {
-    fontSize: 14,
+    fontSize: 16,
     borderRadius: 4,
-    height: 40,
+    height: 44,
     fontweight: {
       regular: "400",
       semibold: "600",
@@ -25,7 +25,7 @@ export const Button = {
   lg: {
     fontSize: 16,
     borderRadius: 4,
-    height: 40,
+    height: 44,
     fontweight: {
       regular: "400",
       semibold: "600",

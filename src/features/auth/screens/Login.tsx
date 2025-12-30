@@ -5,29 +5,29 @@ import styled, { useTheme } from "styled-components/native";
 
 const ContentContainer = styled.View`
   flex: 1;
-  padding-left: 24px;
-  padding-right: 24px;
-  padding-top: 120px;
+  padding-left: ${props => props.theme.spacing.layout.screenHorizontalPadding}px;
+  padding-right: ${props => props.theme.spacing.layout.screenHorizontalPadding}px;
+  padding-top: ${props => props.theme.spacing.layout.paddingTopHeader}px;
 `;
 
 const BrandHeading = styled.View`
-  gap: 4px;
-  margin-bottom: 30px;
+  gap: ${props => props.theme.spacing.step.xxs}px;
+  margin-bottom: ${props => props.theme.spacing.step.xl}px;
 `;
 
 const InputGroup = styled.View`
-  margin-bottom: 50px;
-  gap: 10px;
+  margin-bottom: ${props => props.theme.spacing.step.xxl}px;
+  gap: ${props => props.theme.spacing.step.xs}px;
 `;
 
 const ConsentGroup = styled.View`
   flex-direction: row;
   align-items: center;
-  gap: 4px;
+  gap: ${props => props.theme.spacing.step.xxs}px;
 `;
 
 const ActionSection = styled.View`
-  gap: 12px;
+  gap: ${props => props.theme.spacing.step.sm}px;
 `;
 
 function Login() {
@@ -84,7 +84,6 @@ function Login() {
           </ConsentGroup>
 
           <Button
-            size="lg"
             title={t("auth.login")}
             block={true}
             disabled={!isAgreed}
