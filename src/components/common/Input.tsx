@@ -1,34 +1,37 @@
 import React from "react";
-import { Platform, TextInputProps, Pressable } from "react-native";
+import { Platform, TextInputProps, Pressable, TextProps } from "react-native";
 import styled, { css, useTheme } from "styled-components/native";
 import { Size } from "@/theme/presets";
-import IconFont, { IconNames } from "@/iconfont";
-const androidInputFix: TextInputProps = Platform.select({
-  android: {
-    includeFontPadding: false,
-    textAlignVertical: "center",
-    paddingVertical: 0,
-  },
-  default: {},
-});
-const InputRoot = styled.View`
-  width: 100%;
-  flex-direction: row;
-  align-items: center;
+import IconFont, { IconNames } from "@/assets/font/iconfont";
+
+export const BaseInput = styled.TextInput.attrs(
+  () =>
+    ({
+      includeFontPadding: Platform.OS === "android" ? false : undefined,
+      textAlignVertical: Platform.OS === "android" ? "center" : undefined,
+      underlineColorAndroid: "transparent",
+    }) as TextProps,
+)`
+  flex: 1;
+  align-self: stretch;
+  margin: 0;
+  padding: 0;
+  background-color: transparent;
+  border-width: 0;
 `;
+
 const InputContainer = styled.View<{
   $size: Size;
   $borderType: "all" | "bottom" | "none";
 }>`
   ${({ theme, $size, $borderType }) => {
     const config = theme.presets.Input[$size];
-
     return css`
-      flex: 1;
       height: ${config.height}px;
-      padding-horizontal: ${config.paddingHorizontal}px;
+      padding-horizontal: ${$borderType === "all" ? config.paddingHorizontal : 0}px;
       flex-direction: row;
       align-items: center;
+
       ${$borderType === "all" &&
       css`
         border-width: ${config.borderWidth}px;
@@ -44,48 +47,14 @@ const InputContainer = styled.View<{
     `;
   }}
 `;
-const LabelText = styled.Text<{ $size: Size }>`
-  ${({ theme, $size }) => {
-    const config = theme.presets.Input[$size];
-    return css`
-      font-size: ${config.labelFontSize}px;
-      margin-bottom: ${config.labelMarginBottom}px;
-      font-weight: 500;
-    `;
-  }}
-`;
 
-const IconSlot = styled.View<{ $pos: "left" | "right"; $size: Size }>`
-  justify-content: center;
-  align-items: center;
-  ${({ $pos, $size, theme }) => {
-    const config = theme.presets.Input[$size];
-    return css`
-      width: ${config.iconSize}px;
-      height: ${config.iconSize}px;
-      ${$pos === "left"
-        ? css`
-            margin-right: ${config.iconSpacing}px;
-          `
-        : css`
-            margin-left: ${config.iconSpacing}px;
-          `}
-    `;
-  }}
-`;
-const InnerInput = styled.TextInput<{ $size: Size }>`
+const InnerInput = styled(BaseInput)<{ $size: Size }>`
   ${({ theme, $size }) => {
     const config = theme.presets.Input[$size];
     return css`
-      flex: 1;
-      align-self: stretch;
+      color: ${theme.colors.textPrimary};
       font-family: ${theme.typography.family.base};
       font-size: ${config.fontSize}px;
-      ${Platform.select({
-        android: css`
-          padding-vertical: 0;
-        `,
-      })}
     `;
   }}
 `;
@@ -98,50 +67,24 @@ interface InputProps extends TextInputProps {
   rightIcon?: IconNames;
 }
 
-export const Input = ({
-  size = "md",
-  borderType = "all",
-  label,
-  leftIcon,
-  rightIcon,
-  value,
-  onChangeText,
-  ...props
-}: InputProps) => {
+export const Input = ({ size = "md", borderType = "all", value, onChangeText, ...props }: InputProps) => {
   const theme = useTheme();
-  const iconSize = theme.presets.Input[size].iconSize;
-  const clearIconSize = theme.presets.Input[size].clearIconSize;
   return (
-    <InputRoot>
-      {label && <LabelText $size={size}>{label}</LabelText>}
+    <InputContainer $size={size} $borderType={borderType}>
+      <InnerInput
+        $size={size}
+        value={value}
+        onChangeText={onChangeText}
+        placeholderTextColor={theme.colors.textTertiary}
+        selectionColor={theme.colors.primary}
+        {...props}
+      />
 
-      <InputContainer $size={size} $borderType={borderType}>
-        {/* 1. 左图标 */}
-        {leftIcon && (
-          <IconSlot $pos="left" $size={size}>
-            <IconFont name={leftIcon} size={iconSize} color="#666" />
-          </IconSlot>
-        )}
-
-        {/* 2. 输入框 (它会撑开中间剩下的空间) */}
-        <InnerInput $size={size} value={value} onChangeText={onChangeText} {...androidInputFix} {...props} />
-
-        {/* 3. 清除按钮 */}
-        {!!value && (
-          <Pressable onPress={() => onChangeText?.("")} hitSlop={10}>
-            <IconSlot $pos="right" $size={size}>
-              <IconFont name="close_circle" size={clearIconSize} color="#999" />
-            </IconSlot>
-          </Pressable>
-        )}
-
-        {/* 4. 右图标  */}
-        {rightIcon && (
-          <IconSlot $pos="right" $size={size}>
-            <IconFont name={rightIcon} size={iconSize} color="#666" />
-          </IconSlot>
-        )}
-      </InputContainer>
-    </InputRoot>
+      {!!value && (
+        <Pressable onPress={() => onChangeText?.("")} hitSlop={12}>
+          <IconFont name="close_circle" size={12} color={theme.colors.textTertiary} />
+        </Pressable>
+      )}
+    </InputContainer>
   );
 };

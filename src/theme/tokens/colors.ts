@@ -35,6 +35,8 @@ export const lightColors = {
   white: palette.white,
   /** 纯黑：用于极端投影、遮罩层 */
   black: palette.black,
+  /** 与背景色相反的颜色 */
+  textPrimary: palette.black,
   /** 品牌色:用于登录按钮 */
   primary: palette.brand.green,
   /** 反色文本：当背景是品牌色按钮（如绿色）时使用*/
@@ -47,6 +49,10 @@ export const lightColors = {
   buttonTextDisabled: palette.gray["400"],
   /** * 基础边框色：用于低对比度场景 ,输入框边框，header 边框*/
   borderBase: palette.gray["200"],
+  /** 用处：输入框占位符、下方小字提示、不可点击的失效文字 */
+  textTertiary: palette.gray["400"],
+  /** 用于副标题，比标题略淡，建立视觉平衡，不抢主标题风头 */
+  textSecondary: palette.gray["500"],
 } as const;
 
 export const darkColors: typeof lightColors = {
@@ -54,6 +60,8 @@ export const darkColors: typeof lightColors = {
   white: palette.white,
   /** 纯黑：用于极端投影、遮罩层 */
   black: palette.black,
+  /** 主文字颜色,用于大标题，副标题，正文文字 */
+  textPrimary: palette.white,
   /** 品牌色:用于登录按钮 */
   primary: palette.brand.green,
   /** 反色文本：当背景是品牌色按钮（如绿色）时使用*/
@@ -66,4 +74,8 @@ export const darkColors: typeof lightColors = {
   buttonTextDisabled: palette.gray["600"],
   /** * 基础边框色：用于低对比度场景 ,输入框边框，header 边框*/
   borderBase: palette.gray["800"],
+  /** 用处：输入框占位符、下方小字提示、不可点击的失效文字 */
+  textTertiary: palette.gray["600"],
+  /** 用于副标题，比标题略淡，建立视觉平衡，不抢主标题风头 */
+  textSecondary: palette.gray["300"],
 };
