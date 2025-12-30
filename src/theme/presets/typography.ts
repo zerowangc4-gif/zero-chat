@@ -3,7 +3,7 @@ export const Text = {
   /** 登录页品牌名 */
   heading: {
     fontFamily: family.base,
-    fontSize: size.lg,
+    fontSize: size.xxl,
     fontWeight: weight.bold,
     letterSpacing: letterSpacing.xxxl,
   },
@@ -15,7 +15,7 @@ export const Text = {
   },
   caption: {
     fontFamily: family.base,
-    fontSize: size.xxs,
+    fontSize: size.xs,
     fontWeight: weight.regular,
   },
   /** 等宽数字：专门用于余额、倒计时、金融账单 */

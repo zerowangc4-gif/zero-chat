@@ -2,15 +2,13 @@ import React from "react";
 import { PressableProps } from "react-native";
 import styled, { css, useTheme } from "styled-components/native";
 import { Size } from "@/theme/presets";
-
+import { Typography } from "./Typography";
 const ButtonContainer = styled.Pressable<{ $size: Size; $disabled: boolean; $block: boolean }>`
   ${({ theme, $size, $disabled, $block }) => {
     const config = theme.presets.Button[$size];
     return css`
-      padding-vertical: ${config.paddingVertical}px;
-      padding-horizontal: ${config.paddingHorizontal}px;
+      height: ${config.height}px;
       border-radius: ${config.borderRadius}px;
-      min-width: ${config.minWidth}px;
       background-color: ${$disabled ? theme.colors.buttonDisabled : theme.colors.primary};
       flex-direction: row;
       align-items: center;
@@ -21,13 +19,12 @@ const ButtonContainer = styled.Pressable<{ $size: Size; $disabled: boolean; $blo
   }}
 `;
 
-const ButtonContent = styled.Text<{ $size: Size; $disabled: boolean }>`
+const ButtonContent = styled(Typography)<{ $size: Size; $disabled: boolean }>`
   ${({ theme, $size, $disabled }) => {
     const config = theme.presets.Button[$size];
     return css`
       font-family: ${theme.typography.family.base};
       font-size: ${config.fontSize}px;
-      line-height: ${config.lineHeight}px;
       color: ${$disabled ? theme.colors.buttonTextDisabled : theme.colors.textInverse};
       font-weight: ${config.fontweight.semibold};
       include-font-padding: false;

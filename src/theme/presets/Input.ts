@@ -1,7 +1,7 @@
 export const Input = {
   lg: {
     height: 32,
-    fontSize: 8,
+    fontSize: 12,
     borderWidth: 2,
     borderRadius: 6,
     paddingHorizontal: 0,
@@ -9,7 +9,7 @@ export const Input = {
 
   md: {
     height: 32,
-    fontSize: 8,
+    fontSize: 12,
     borderWidth: 2,
     borderRadius: 6,
     paddingHorizontal: 0,
@@ -17,7 +17,7 @@ export const Input = {
 
   sm: {
     height: 32,
-    fontSize: 8,
+    fontSize: 12,
     borderWidth: 2,
     borderRadius: 6,
     paddingHorizontal: 0,

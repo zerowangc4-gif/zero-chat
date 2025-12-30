@@ -7,7 +7,7 @@ const ContentContainer = styled.View`
   flex: 1;
   padding-left: 24px;
   padding-right: 24px;
-  padding-top: 70px;
+  padding-top: 95px;
 `;
 
 const BrandHeading = styled.View`
@@ -16,7 +16,7 @@ const BrandHeading = styled.View`
 `;
 
 const InputGroup = styled.View`
-  margin-bottom: 40px;
+  margin-bottom: 50px;
   gap: 10px;
 `;
 
@@ -27,7 +27,7 @@ const ConsentGroup = styled.View`
 `;
 
 const ActionSection = styled.View`
-  gap: 10px;
+  gap: 12px;
 `;
 
 function Login() {

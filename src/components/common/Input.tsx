@@ -8,7 +8,7 @@ export const BaseInput = styled.TextInput.attrs(
   () =>
     ({
       includeFontPadding: Platform.OS === "android" ? false : undefined,
-      textAlignVertical: Platform.OS === "android" ? "top" : undefined,
+      textAlignVertical: Platform.OS === "android" ? "center" : undefined,
       underlineColorAndroid: "transparent",
     }) as TextProps,
 )`
@@ -82,7 +82,7 @@ export const Input = ({ size = "md", borderType = "all", value, onChangeText, ..
 
       {!!value && (
         <Pressable onPress={() => onChangeText?.("")} hitSlop={12}>
-          <IconFont name="close_circle" size={8} color={theme.colors.textTertiary} />
+          <IconFont name="close_circle" size={12} color={theme.colors.textTertiary} />
         </Pressable>
       )}
     </InputContainer>
