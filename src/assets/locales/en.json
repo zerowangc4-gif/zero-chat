@@ -1,6 +1,6 @@
 {
   "auth": {
-    "login": "Log In",
+    "login": "Send Email verification code",
     "welcome_title": "ZeroChat",
     "welcome_slogan": "Secure Messaging Zero Trace",
     "consent_prefix": "I have read and agree to ",

@@ -9,13 +9,13 @@ export const family = Platform.select({
 });
 
 /** 物理字号阶梯：基于 2px 步进 */
-export const size = { xs: 12, sm: 14, md: 16, lg: 18, xl: 20, xxl: 24, xxxl: 32 };
+export const size = { xxs: 8, xs: 12, sm: 14, md: 16, lg: 18, xl: 20, xxl: 24, xxxl: 32 };
 
 /** 字重：400(常规), 600(中粗), 700(粗体) */
 export const weight = { regular: "400", medium: "600", bold: "700" };
 
 /** 行高阶梯：确保多行文本阅读时不挤压、不松散 */
-export const lineHeight = { xs: 16, sm: 20, md: 24, lg: 26, xl: 28, xxl: 32, xxxl: 40 };
+export const lineHeight = { xxs: 12, xs: 16, sm: 20, md: 24, lg: 26, xl: 28, xxl: 32, xxxl: 40 };
 
 /** 字间距：优化大标题在 iOS 上的视觉紧凑感 */
 export const letterSpacing = {

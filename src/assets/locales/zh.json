@@ -1,6 +1,6 @@
 {
   "auth": {
-    "login": "登录",
+    "login": "发送邮箱验证码",
     "welcome_title": "零迹",
     "welcome_slogan": "安全通信 无痕交流",
     "consent_prefix": "已阅读并同意 ",

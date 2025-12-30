@@ -1,22 +1,22 @@
 import React from "react";
-import { Platform, TextInputProps, Pressable } from "react-native";
+import { Platform, TextInputProps, Pressable, TextProps } from "react-native";
 import styled, { css, useTheme } from "styled-components/native";
 import { Size } from "@/theme/presets";
 import IconFont, { IconNames } from "@/assets/font/iconfont";
 
-const androidInputFix: TextInputProps = Platform.select({
-  android: {
-    includeFontPadding: false,
-    textAlignVertical: "center",
-    paddingVertical: 0,
-  },
-  default: {},
-});
-
-const InputRoot = styled.View`
-  align-self: stretch;
-  flex-direction: row;
-  align-items: center;
+export const BaseInput = styled.TextInput.attrs(
+  () =>
+    ({
+      includeFontPadding: Platform.OS === "android" ? false : undefined,
+      textAlignVertical: Platform.OS === "android" ? "top" : undefined,
+      underlineColorAndroid: "transparent",
+    }) as TextProps,
+)`
+  margin: 0;
+  padding: 0;
+  background-color: transparent;
+  border-width: 0;
+  flex: 1;
 `;
 
 const InputContainer = styled.View<{
@@ -25,9 +25,7 @@ const InputContainer = styled.View<{
 }>`
   ${({ theme, $size, $borderType }) => {
     const config = theme.presets.Input[$size];
-
     return css`
-      flex: 1;
       height: ${config.height}px;
       padding-horizontal: ${$borderType === "all" ? config.paddingHorizontal : 0}px;
       flex-direction: row;
@@ -49,35 +47,14 @@ const InputContainer = styled.View<{
   }}
 `;
 
-const IconSlot = styled.View<{ $size: Size }>`
-  justify-content: center;
-  align-items: center;
-  ${({ $size, theme }) => {
-    const config = theme.presets.Input[$size];
-    return css`
-      width: ${config.height * 0.6}px;
-      height: 100%;
-    `;
-  }}
-`;
-
-const InnerInput = styled.TextInput<{ $size: Size }>`
+const InnerInput = styled(BaseInput)<{ $size: Size }>`
   ${({ theme, $size }) => {
     const config = theme.presets.Input[$size];
     return css`
       flex: 1;
-      height: 100%;
-      align-self: stretch;
       color: ${theme.colors.textPrimary};
       font-family: ${theme.typography.family.base};
       font-size: ${config.fontSize}px;
-      line-height: ${config.lineHeight}px;
-      ${Platform.select({
-        android: css`
-          padding-vertical: 0;
-          padding-bottom: 2px;
-        `,
-      })}
     `;
   }}
 `;
@@ -90,52 +67,24 @@ interface InputProps extends TextInputProps {
   rightIcon?: IconNames;
 }
 
-export const Input = ({
-  size = "md",
-  borderType = "all",
-  leftIcon,
-  rightIcon,
-  value,
-  onChangeText,
-  ...props
-}: InputProps) => {
+export const Input = ({ size = "md", borderType = "all", value, onChangeText, ...props }: InputProps) => {
   const theme = useTheme();
-  const config = theme.presets.Input[size];
-
-  // 这里的间距可以根据精美感微调
-  const spacing = config.iconSpacing || 8;
-
   return (
-    <InputRoot>
-      <InputContainer $size={size} $borderType={borderType}>
-        {leftIcon && (
-          <IconSlot $size={size} style={{ marginRight: spacing }}>
-            <IconFont name={leftIcon} size={config.iconSize} color={theme.colors.textSecondary} />
-          </IconSlot>
-        )}
+    <InputContainer $size={size} $borderType={borderType}>
+      <InnerInput
+        $size={size}
+        value={value}
+        onChangeText={onChangeText}
+        placeholderTextColor={theme.colors.textTertiary}
+        selectionColor={theme.colors.primary}
+        {...props}
+      />
 
-        <InnerInput
-          $size={size}
-          value={value}
-          onChangeText={onChangeText}
-          placeholderTextColor={theme.colors.textTertiary}
-          selectionColor={theme.colors.primary}
-          {...androidInputFix}
-          {...props}
-        />
-
-        {!!value && (
-          <Pressable onPress={() => onChangeText?.("")} hitSlop={12}>
-            <IconFont name="close_circle" size={config.clearIconSize} color={theme.colors.textTertiary} />
-          </Pressable>
-        )}
-
-        {rightIcon && (
-          <IconSlot $size={size} style={{ marginLeft: spacing }}>
-            <IconFont name={rightIcon} size={config.iconSize} color={theme.colors.textSecondary} />
-          </IconSlot>
-        )}
-      </InputContainer>
-    </InputRoot>
+      {!!value && (
+        <Pressable onPress={() => onChangeText?.("")} hitSlop={12}>
+          <IconFont name="close_circle" size={8} color={theme.colors.textTertiary} />
+        </Pressable>
+      )}
+    </InputContainer>
   );
 };

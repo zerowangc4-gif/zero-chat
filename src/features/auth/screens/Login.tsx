@@ -5,28 +5,29 @@ import styled, { useTheme } from "styled-components/native";
 
 const ContentContainer = styled.View`
   flex: 1;
-  padding: 0 ${props => props.theme.spacing.step.xl}px;
-  padding-top: ${props => props.theme.spacing.layout.massive};
+  padding-left: 24px;
+  padding-right: 24px;
+  padding-top: 70px;
 `;
 
 const BrandHeading = styled.View`
-  margin-bottom: ${props => props.theme.spacing.step.xxxl};
-  gap: ${props => props.theme.spacing.step.sm};
+  gap: 4px;
+  margin-bottom: 30px;
 `;
 
 const InputGroup = styled.View`
-  margin-bottom: ${props => props.theme.spacing.layout.loose};
-  gap: ${props => props.theme.spacing.step.sm};
+  margin-bottom: 40px;
+  gap: 10px;
 `;
 
 const ConsentGroup = styled.View`
   flex-direction: row;
-  flex-wrap: wrap;
   align-items: center;
+  gap: 4px;
 `;
 
 const ActionSection = styled.View`
-  gap: ${props => props.theme.spacing.step.lg};
+  gap: 10px;
 `;
 
 function Login() {
@@ -47,12 +48,11 @@ function Login() {
           <Typography type="heading" color={theme.colors.textPrimary}>
             {t("auth.welcome_title")}
           </Typography>
-          <Typography type="subheading" color={theme.colors.textPrimary}>
+          <Typography type="heading" color={theme.colors.textPrimary}>
             {t("auth.welcome_slogan")}
           </Typography>
         </BrandHeading>
 
-        {/* 输入功能：简洁清爽 */}
         <InputGroup>
           <Input
             placeholder={t("auth.placeholder")}
@@ -66,8 +66,6 @@ function Login() {
             {t("auth.hint")}
           </Typography>
         </InputGroup>
-
-        {/* 提交区域：利用视觉层级引导点击 */}
         <ActionSection>
           <ConsentGroup>
             <AgreeButton checked={isAgreed} onPress={() => setIsAgreed(!isAgreed)} />
@@ -86,7 +84,7 @@ function Login() {
           </ConsentGroup>
 
           <Button
-            size="lg"
+            size="sm"
             title={t("auth.login")}
             block={true}
             disabled={!isAgreed}

@@ -50,8 +50,6 @@ const HeaderContentRight = styled.View`
 const MainContent = styled.View<{ paddingTop: number }>`
   flex: 1;
   padding-top: ${props => props.paddingTop}px;
-  padding-left: 24px;
-  padding-right: 24px;
 `;
 
 interface BaseScreenProps extends ViewProps {
@@ -84,7 +82,6 @@ export const BaseScreen: React.FC<BaseScreenProps> = ({
 
   const navBarHeight = theme.spacing.layout.navBarHeight;
   const totalHeaderHeight = title || leftComponent || rightComponent ? navBarHeight + insets.top : insets.top;
-  //如果是穿透模式，paddingTop 设为 0 内容穿过导航栏
   const mainPaddingTop = extendToTop ? insets.top : totalHeaderHeight;
 
   return (
@@ -96,9 +93,7 @@ export const BaseScreen: React.FC<BaseScreenProps> = ({
           <HeaderContent>
             <HeaderContentLeft>{leftComponent}</HeaderContentLeft>
 
-            <NavTitle type="title" numberOfLines={1}>
-              {title}
-            </NavTitle>
+            <NavTitle numberOfLines={1}>{title}</NavTitle>
             <HeaderContentRight>{rightComponent}</HeaderContentRight>
           </HeaderContent>
         )}
