@@ -12,6 +12,7 @@ export const BaseInput = styled.TextInput.attrs(
       underlineColorAndroid: "transparent",
     }) as TextProps,
 )`
+  flex: 1;
   align-self: stretch;
   margin: 0;
   padding: 0;

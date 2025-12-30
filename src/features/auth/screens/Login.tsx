@@ -84,7 +84,7 @@ function Login() {
           </ConsentGroup>
 
           <Button
-            size="sm"
+            size="lg"
             title={t("auth.login")}
             block={true}
             disabled={!isAgreed}
