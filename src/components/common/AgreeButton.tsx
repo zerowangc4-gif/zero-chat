@@ -19,7 +19,7 @@ export function AgreeButton({ checked, onPress, ...rest }: AgreeButtonProps) {
     <IconContainer
       {...rest}
       onPress={onPress}
-      hitSlop={15}
+      hitSlop={20}
       style={({ pressed }) => ({
         transform: [{ scale: pressed ? 0.95 : 1 }],
       })}>
