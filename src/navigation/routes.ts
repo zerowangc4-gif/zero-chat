@@ -1,9 +1,10 @@
 export const ROUTES = {
   // 认证流
   AuthStack: "AuthStack",
-  Login: "Login",
-  OTPVerify: "OTPVerify",
-
+  Onboarding: "Onboarding",
+  CreateAccount: "CreateAccount",
+  SeedPhraseDisplay: "SeedPhraseDisplay",
+  SeedPhraseConfirm: "SeedPhraseConfirm",
   // 主页滑动 Tab
   MainTab: "MainTab",
   ChatList: "ChatList",

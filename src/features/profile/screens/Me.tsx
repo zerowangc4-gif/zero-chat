@@ -1,10 +1,8 @@
-import { Text } from "react-native";
-import { ScreenContainer } from "@/components";
-function Me() {
+import { Typography, BaseScreen } from "@/components";
+export function MeScreen() {
   return (
-    <ScreenContainer>
-      <Text>this is a Me page</Text>
-    </ScreenContainer>
+    <BaseScreen>
+      <Typography type="body">你好啊世界</Typography>
+    </BaseScreen>
   );
 }
-export default Me;

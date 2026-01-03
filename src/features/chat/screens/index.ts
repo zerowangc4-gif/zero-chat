@@ -1,2 +1,2 @@
-export { default as ChatListScreen } from "./ChatList";
-export { default as ChatScreen } from "./Chat";
+export * from "./Chat";
+export * from "./ChatList";

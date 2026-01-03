@@ -1,4 +1,6 @@
 import "@/i18n";
+import ToastAPI from "react-native-toast-message";
+import { Toast } from "@/components";
 import { useColorScheme } from "react-native";
 import { ThemeProvider } from "styled-components/native";
 import { Provider } from "react-redux";
@@ -16,6 +18,7 @@ const App = () => {
         <PersistGate loading={null} persistor={persistor}>
           <ThemeProvider theme={theme}>
             <RootNavigator />
+            <ToastAPI config={Toast.config} />
           </ThemeProvider>
         </PersistGate>
       </Provider>

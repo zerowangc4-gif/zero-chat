@@ -1,7 +1,7 @@
 import { TextProps } from "react-native";
 import styled, { css } from "styled-components/native";
 import { TextStyle } from "@/theme/presets";
-export type TypographyPreset = "heading" | "body" | "caption" | "numeric";
+export type TypographyPreset = "heading" | "body" | "caption" | "numeric" | "label";
 
 interface AppTextProps extends TextProps {
   type?: TypographyPreset;

@@ -1,2 +1,4 @@
-export { default as LoginScreen } from "./Login";
-export { default as OTPVerifyScreen } from "./OTPVerify";
+export * from "./CreateAccount";
+export * from "./Onboarding";
+export * from "./SeedPhraseConfirm";
+export * from "./SeedPhraseDisplay";

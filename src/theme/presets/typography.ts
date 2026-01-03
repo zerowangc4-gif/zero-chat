@@ -7,10 +7,14 @@ export const Text = {
     fontWeight: weight.bold,
     letterSpacing: letterSpacing.xxxl,
   },
-  /** 标准正文：聊天消息内容、文章段落。App 中使用率最高 */
   body: {
     fontFamily: family.base,
     fontSize: size.md,
+    fontWeight: weight.regular,
+  },
+  label: {
+    fontFamily: family.base,
+    fontSize: size.sm,
     fontWeight: weight.regular,
   },
   caption: {

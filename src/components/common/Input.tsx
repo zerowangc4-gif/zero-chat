@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Platform, TextInputProps, Pressable, TextProps } from "react-native";
 import styled, { css, useTheme } from "styled-components/native";
 import { Size } from "@/theme/presets";
@@ -22,28 +22,19 @@ export const BaseInput = styled.TextInput.attrs(
 
 const InputContainer = styled.View<{
   $size: Size;
-  $borderType: "all" | "bottom" | "none";
+  $isFocused: boolean;
 }>`
-  ${({ theme, $size, $borderType }) => {
+  ${({ theme, $size, $isFocused }) => {
     const config = theme.presets.Input[$size];
+    const borderColor = $isFocused ? theme.colors.primary : theme.colors.borderBase;
     return css`
-      height: ${config.height}px;
-      padding-horizontal: ${$borderType === "all" ? config.paddingHorizontal : 0}px;
       flex-direction: row;
       align-items: center;
-
-      ${$borderType === "all" &&
-      css`
-        border-width: ${config.borderWidth}px;
-        border-color: ${theme.colors.borderBase};
-        border-radius: ${config.borderRadius}px;
-      `}
-
-      ${$borderType === "bottom" &&
-      css`
-        border-bottom-width: ${config.borderWidth}px;
-        border-bottom-color: ${theme.colors.borderBase};
-      `}
+      height: ${config.height}px;
+      padding-left: ${config.fontSize}px;
+      border-width: ${config.borderWidth}px;
+      border-color: ${borderColor};
+      border-radius: ${config.borderRadius}px;
     `;
   }}
 `;
@@ -58,6 +49,17 @@ const InnerInput = styled(BaseInput)<{ $size: Size }>`
     `;
   }}
 `;
+const RightActions = styled.View<{
+  $size: Size;
+}>`
+  ${({ theme, $size }) => {
+    const config = theme.presets.Input[$size];
+    return css`
+      padding-left: ${config.fontSize}px;
+      padding-right: ${config.fontSize}px;
+    `;
+  }}
+`;
 
 interface InputProps extends TextInputProps {
   size?: Size;
@@ -67,24 +69,45 @@ interface InputProps extends TextInputProps {
   rightIcon?: IconNames;
 }
 
-export const Input = ({ size = "md", borderType = "all", value, onChangeText, ...props }: InputProps) => {
+export const Input = ({ size = "md", value, ...props }: InputProps) => {
   const theme = useTheme();
+  const [isFocused, setIsFocused] = useState(false);
+  const [passwordVisible, setPasswordVisible] = useState(false);
   return (
-    <InputContainer $size={size} $borderType={borderType}>
+    <InputContainer $size={size} $isFocused={isFocused}>
       <InnerInput
+        {...props}
         $size={size}
         value={value}
-        onChangeText={onChangeText}
+        onChangeText={props.onChangeText}
+        secureTextEntry={props.secureTextEntry && !passwordVisible}
+        autoCapitalize="none"
+        autoCorrect={false}
         placeholderTextColor={theme.colors.textTertiary}
         selectionColor={theme.colors.primary}
-        {...props}
+        onFocus={e => {
+          setIsFocused(true);
+          props.onFocus?.(e);
+        }}
+        onBlur={e => {
+          setIsFocused(false);
+          props.onBlur?.(e);
+        }}
       />
 
-      {!!value && (
-        <Pressable onPress={() => onChangeText?.("")} hitSlop={12}>
-          <IconFont name="close_circle" size={12} color={theme.colors.textTertiary} />
-        </Pressable>
-      )}
+      <RightActions $size={size}>
+        {!!value && !props.secureTextEntry && (
+          <Pressable onPress={() => props.onChangeText?.("")} hitSlop={20}>
+            <IconFont name="close_circle" size={16} color={theme.colors.textTertiary} />
+          </Pressable>
+        )}
+
+        {props.secureTextEntry && (
+          <Pressable onPress={() => setPasswordVisible(!passwordVisible)} hitSlop={20}>
+            <IconFont name={passwordVisible ? "open_eyes" : "icon-close-eyes"} size={20} />
+          </Pressable>
+        )}
+      </RightActions>
     </InputContainer>
   );
 };

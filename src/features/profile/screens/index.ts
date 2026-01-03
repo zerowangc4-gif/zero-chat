@@ -1,1 +1,1 @@
-export { default as MeScreen } from "./Me";
+export * from "./Me";
