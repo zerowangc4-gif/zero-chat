@@ -35,7 +35,7 @@ let IconLaba: FunctionComponent<Props> = ({ size, color, ...rest }) => {
 };
 
 IconLaba.defaultProps = {
-  size: 18,
+  size: 20,
 };
 
 IconLaba = React.memo ? React.memo(IconLaba) : IconLaba;

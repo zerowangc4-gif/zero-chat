@@ -11,7 +11,7 @@ const ButtonContainer = styled.Pressable<{ $size: Size; $disabled: boolean; $blo
     const config = theme.presets.Button[$size];
     const getBgColor = () => {
       if ($disabled) return theme.colors.buttonDisabled;
-      return $type === "primary" ? theme.colors.primary : theme.colors.secondaryButtonBg;
+      return $type === "primary" ? theme.colors.primary : theme.colors.secondaryBg;
     };
     return css`
       height: ${config.height}px;
@@ -67,12 +67,12 @@ export function Button({
   const theme = useTheme();
   return (
     <ButtonContainer
+      {...props}
       $size={size}
       $disabled={!!disabled}
       $block={block}
       disabled={disabled}
       $type={type}
-      {...props}
       style={({ pressed }) => ({
         opacity: pressed ? theme.interactive.activeOpacity : 1,
       })}>

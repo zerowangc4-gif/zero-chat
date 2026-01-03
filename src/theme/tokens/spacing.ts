@@ -15,7 +15,9 @@ const step = {
 /** 2. 语义化布局预设：定义组装逻辑 */
 const layout = {
   /** 登录页顶部内边距 */
-  paddingTopHeader: 150,
+  paddingTopHeader: 160,
+  /** 标题距离登录页按钮的距离 */
+  ActionToHeader: 174,
   /** 登录页水平内边距 */
   screenHorizontalPadding: 24,
   /** header内容边距 */

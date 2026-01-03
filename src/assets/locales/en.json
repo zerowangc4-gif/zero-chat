@@ -3,14 +3,29 @@
     "welcome_title": "ZeroChat",
     "welcome_slogan": "Secure Messaging Zero Trace",
     "button_create_account": "Get Started",
-    "button_login_account": "Log In"
+    "button_login_account": "Log In",
+    "create_account": {
+      "title": "Create Account",
+      "label_username": "Username",
+      "label_password": "Password",
+      "label_confirm_password": "Confirm Password",
+      "placeholder_username": "Enter username",
+      "placeholder_password": "Enter password",
+      "placeholder_confirm_password": "Re-enter password",
+      "hint_username": "Must be between 2 and 8 characters",
+      "hint_password": "Must be at least 8 characters",
+      "error_password_mismatch": "Passwords do not match",
+      "security_notice": "This password is only valid on this device for payments and unlocking. As it is encrypted locally, it cannot be reset if lost. Please keep it secure.",
+      "button_continue": "Continue",
+      "errors_wallet_gen_failed": "Failed to create wallet. Please try again later.",
+      "errors_mnemonic_empty": "We couldn't create your security phrase. Please check your device space and try again"
+    }
   },
   "tabs": {
     "chats": "Chats",
     "me": "Me"
   },
   "common": {
-    "confirm": "Confirm",
-    "cancel": "Cancel"
+    "error": "An unknown error occurred"
   }
 }
