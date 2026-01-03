@@ -1,3 +1,6 @@
+import "react-native-get-random-values";
+import { Buffer } from "buffer";
+global.Buffer = Buffer;
 import "@/i18n";
 import { useColorScheme } from "react-native";
 import { ThemeProvider } from "styled-components/native";

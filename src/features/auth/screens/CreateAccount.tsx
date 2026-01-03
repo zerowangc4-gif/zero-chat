@@ -1,7 +1,8 @@
 import { Typography, BaseScreen } from "@/components";
-export function ChatListScreen() {
+
+export function CreateAccountScreen() {
   return (
-    <BaseScreen>
+    <BaseScreen title="你好世家">
       <Typography type="body">你好啊世界</Typography>
     </BaseScreen>
   );

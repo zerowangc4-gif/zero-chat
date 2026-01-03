@@ -43,6 +43,10 @@ export const lightColors = {
   textInverse: palette.white,
   /** 页面底色：浅灰色，产生层次感 */
   bgPage: palette.gray["100"],
+  /** 新增：次要按钮背景 (用于“我有账号”) */
+  secondaryButtonBg: palette.gray["200"],
+  /** 新增：次要按钮文字颜色 */
+  secondaryButtonText: palette.brand.green,
   /** 按钮禁用背景色 */
   buttonDisabled: palette.gray["300"],
   /** 按钮禁用文字 */
@@ -68,6 +72,10 @@ export const darkColors: typeof lightColors = {
   textInverse: palette.white,
   /** 页面底色：深灰色，产生层次感 */
   bgPage: palette.gray["950"],
+  /** 新增：次要按钮背景 (用于“我有账号”) */
+  secondaryButtonBg: palette.gray["800"],
+  /** 新增：次要按钮文字颜色 */
+  secondaryButtonText: palette.white,
   /** 按钮禁用背景色 */
   buttonDisabled: palette.gray["800"],
   /** 按钮禁用文字 */

@@ -1,14 +1,9 @@
 {
   "auth": {
-    "login": "Send Email verification code",
     "welcome_title": "ZeroChat",
     "welcome_slogan": "Secure Messaging Zero Trace",
-    "consent_prefix": "I have read and agree to ",
-    "consent_connector": "and",
-    "consent_user_agreement": "User Agreement",
-    "consent_privacy_policy": "Privacy Policy",
-    "placeholder": "Enter your email",
-    "hint": "Unregistered emails will be registered automatically"
+    "button_create_account": "Get Started",
+    "button_login_account": "Log In"
   },
   "tabs": {
     "chats": "Chats",

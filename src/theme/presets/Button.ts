@@ -15,7 +15,7 @@ export const Button = {
   md: {
     fontSize: 16,
     borderRadius: 4,
-    height: 48,
+    height: 44,
     fontweight: {
       regular: "400",
       semibold: "600",

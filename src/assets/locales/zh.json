@@ -1,14 +1,9 @@
 {
   "auth": {
-    "login": "发送邮箱验证码",
     "welcome_title": "零迹",
     "welcome_slogan": "安全通信 无痕交流",
-    "consent_prefix": "已阅读并同意 ",
-    "consent_connector": "和",
-    "consent_user_agreement": "用户服务协议",
-    "consent_privacy_policy": "隐私权政策",
-    "placeholder": "输入邮箱",
-    "hint": "未注册的邮箱通过验证将自动注册"
+    "button_create_account": "创建新账号",
+    "button_login_account": "我已经有一个账号"
   },
   "tabs": {
     "chats": "聊天",

@@ -1,10 +1,8 @@
-import { Text } from "react-native";
-import { ScreenContainer } from "@/components";
-function Chat() {
+import { Typography, BaseScreen } from "@/components";
+export function ChatScreen() {
   return (
-    <ScreenContainer>
-      <Text>this is a Chat page</Text>
-    </ScreenContainer>
+    <BaseScreen>
+      <Typography type="body">你好啊世界</Typography>
+    </BaseScreen>
   );
 }
-export default Chat;
