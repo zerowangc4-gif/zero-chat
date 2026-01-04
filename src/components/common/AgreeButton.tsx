@@ -13,13 +13,13 @@ interface AgreeButtonProps extends PressableProps {
   checked: boolean;
 }
 
-export function AgreeButton({ checked, onPress, ...rest }: AgreeButtonProps) {
+export function AgreeButton({ checked, onPress, ...props }: AgreeButtonProps) {
   const theme = useTheme();
   return (
     <IconContainer
-      {...rest}
+      {...props}
       onPress={onPress}
-      hitSlop={15}
+      hitSlop={20}
       style={({ pressed }) => ({
         transform: [{ scale: pressed ? 0.95 : 1 }],
       })}>

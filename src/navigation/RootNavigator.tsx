@@ -7,7 +7,7 @@ import MainTab from "./MainTab";
 import renderPublicRoutes from "./PublicRoutes";
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
-function RootNavigator() {
+export function RootNavigator() {
   const isLoggedIn = false;
   return (
     <NavigationContainer>
@@ -24,5 +24,3 @@ function RootNavigator() {
     </NavigationContainer>
   );
 }
-
-export default RootNavigator;

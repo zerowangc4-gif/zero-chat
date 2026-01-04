@@ -43,6 +43,12 @@ export const lightColors = {
   textInverse: palette.white,
   /** 页面底色：浅灰色，产生层次感 */
   bgPage: palette.gray["100"],
+  /** 新增：次要按钮背景或者提示背景色 (用于“我有账号”) */
+  secondaryBg: palette.gray["200"],
+  /** 新增：次要按钮文字颜色 */
+  secondaryButtonText: palette.brand.green,
+  /** 图标的颜色 */
+  iconColor: palette.gray["950"],
   /** 按钮禁用背景色 */
   buttonDisabled: palette.gray["300"],
   /** 按钮禁用文字 */
@@ -51,6 +57,8 @@ export const lightColors = {
   borderBase: palette.gray["200"],
   /** 用处：输入框占位符、下方小字提示、不可点击的失效文字 */
   textTertiary: palette.gray["400"],
+  /** 输入框占位符 下方错误的提示 */
+  textErrorTertiary: palette.red,
   /** 用于副标题，比标题略淡，建立视觉平衡，不抢主标题风头 */
   textSecondary: palette.gray["500"],
 } as const;
@@ -68,6 +76,12 @@ export const darkColors: typeof lightColors = {
   textInverse: palette.white,
   /** 页面底色：深灰色，产生层次感 */
   bgPage: palette.gray["950"],
+  /** 新增：次要按钮背景 (用于“我有账号”) */
+  secondaryBg: palette.gray["800"],
+  /** 图标的颜色 */
+  iconColor: palette.gray["50"],
+  /** 新增：次要按钮文字颜色 */
+  secondaryButtonText: palette.white,
   /** 按钮禁用背景色 */
   buttonDisabled: palette.gray["800"],
   /** 按钮禁用文字 */
@@ -76,6 +90,8 @@ export const darkColors: typeof lightColors = {
   borderBase: palette.gray["800"],
   /** 用处：输入框占位符、下方小字提示、不可点击的失效文字 */
   textTertiary: palette.gray["600"],
+  /** 输入框占位符 下方错误的提示 */
+  textErrorTertiary: palette.red,
   /** 用于副标题，比标题略淡，建立视觉平衡，不抢主标题风头 */
   textSecondary: palette.gray["300"],
 };

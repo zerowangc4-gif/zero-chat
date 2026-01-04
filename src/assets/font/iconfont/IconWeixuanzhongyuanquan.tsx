@@ -23,7 +23,7 @@ let IconWeixuanzhongyuanquan: FunctionComponent<Props> = ({ size, color, ...rest
 };
 
 IconWeixuanzhongyuanquan.defaultProps = {
-  size: 18,
+  size: 20,
 };
 
 IconWeixuanzhongyuanquan = React.memo ? React.memo(IconWeixuanzhongyuanquan) : IconWeixuanzhongyuanquan;
