@@ -1,21 +1,29 @@
-import { Wallet } from "ethers";
+import { Wallet, HDNodeWallet, Mnemonic, TransactionRequest } from "ethers";
 
 export const walletService = {
-  /**
-   * 生成全新的随机助记词
-   * 使用 ethers 内部集成的安全随机数生成器
-   */
-  createRandomMnemonic: (): string | undefined => {
-    try {
-      const wallet = Wallet.createRandom();
-      return wallet.mnemonic?.phrase;
-    } catch (error) {
-      console.error("Critical: Failed to generate mnemonic", error);
-      throw error;
-    }
+  /** 生成随机助记词 */
+  createRandomMnemonic: (): string => {
+    const wallet = Wallet.createRandom();
+    return wallet.mnemonic!.phrase;
   },
 
-  /**
-   * 预留：未来这里会写导出私钥、地址等逻辑
-   */
+  /** 派生钱包账户 */
+  deriveWalletFromMnemonic: (mnemonic: string) => {
+    const hdNode = HDNodeWallet.fromPhrase(mnemonic);
+    return {
+      address: hdNode.address,
+      privateKey: hdNode.privateKey,
+    };
+  },
+
+  /** 校验助记词合法性 */
+  validateMnemonic: (mnemonic: string): boolean => {
+    return Mnemonic.isValidMnemonic(mnemonic);
+  },
+
+  /** 离线签名交易 */
+  signTransaction: async (privateKey: string, txRequest: TransactionRequest): Promise<string> => {
+    const wallet = new Wallet(privateKey);
+    return await wallet.signTransaction(txRequest);
+  },
 };

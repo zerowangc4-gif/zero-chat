@@ -55,7 +55,6 @@ export function CreateAccountScreen() {
       const mnemonic = await generate();
 
       if (mnemonic) {
-        Toast.error(t("auth.create_account.errors_mnemonic_empty"));
         navigation.replace("SeedPhraseDisplay", { mnemonic });
       } else {
         Toast.error(error || t("auth.create_account.errors_mnemonic_empty"));

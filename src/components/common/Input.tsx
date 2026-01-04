@@ -20,6 +20,17 @@ export const BaseInput = styled.TextInput.attrs(
   border-width: 0;
 `;
 
+const InnerInput = styled(BaseInput)<{ $size: Size }>`
+  ${({ theme, $size }) => {
+    const config = theme.presets.Input[$size];
+    return css`
+      color: ${theme.colors.textPrimary};
+      font-family: ${theme.typography.family.base};
+      font-size: ${config.fontSize}px;
+    `;
+  }}
+`;
+
 const InputContainer = styled.View<{
   $size: Size;
   $isFocused: boolean;
@@ -39,16 +50,6 @@ const InputContainer = styled.View<{
   }}
 `;
 
-const InnerInput = styled(BaseInput)<{ $size: Size }>`
-  ${({ theme, $size }) => {
-    const config = theme.presets.Input[$size];
-    return css`
-      color: ${theme.colors.textPrimary};
-      font-family: ${theme.typography.family.base};
-      font-size: ${config.fontSize}px;
-    `;
-  }}
-`;
 const RightActions = styled.View<{
   $size: Size;
 }>`

@@ -52,7 +52,7 @@ export const Header: React.FC<HeaderProps> = ({ title, rightComponent }) => {
     <HeaderContainer height={height} paddingTop={insets.top}>
       <HeaderContent>
         <HeaderContentLeft>
-          <IconFont name="arrow-left-s-line" size={20} color={theme.colors.iconColor} />
+          <IconFont name="xiangzuojiantou" size={20} color={theme.colors.iconColor} />
         </HeaderContentLeft>
         <NavTitle numberOfLines={1}>{title}</NavTitle>
         <HeaderContentRight>{rightComponent}</HeaderContentRight>
