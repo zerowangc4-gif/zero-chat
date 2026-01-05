@@ -18,7 +18,16 @@
       "security_notice": "This password is only valid on this device for payments and unlocking. As it is encrypted locally, it cannot be reset if lost. Please keep it secure.",
       "button_continue": "Continue",
       "errors_wallet_gen_failed": "Failed to create wallet. Please try again later.",
-      "errors_mnemonic_empty": "We couldn't create your security phrase. Please check your device space and try again"
+      "errors_mnemonic_empty": "We couldn't create your security phrase. Please check your device space and try again",
+      "seed": {
+        "intro_title": "Write Down Your Seed Phrase",
+        "intro_desc": "This is the only way to recover your account. Please write them down in order and store them safely. You can also export a secure recovery card below",
+        "warning_title": "⚠️ Security Warning",
+        "warning_share": "• Anyone with this phrase can access and steal your assets.",
+        "warning_offline": "• Keep it offline. Never share it via social media or messaging apps.",
+        "warning_loss": "• If you lose this phrase, your account and assets cannot be recovered.",
+        "button_save": "Save Mnemonic"
+      }
     }
   },
   "tabs": {

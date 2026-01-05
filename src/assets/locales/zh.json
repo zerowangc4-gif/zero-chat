@@ -14,7 +14,16 @@
       "security_notice": "此密码，仅在当前设备有效，用于支付，及解锁软件，丢失此密码无法重置",
       "button_continue": "继续",
       "errors_wallet_gen_failed": "钱包创建失败，请稍后重试",
-      "errors_mnemonic_empty": "无法生成安全密匙，请确保设备存储空间充足"
+      "errors_mnemonic_empty": "无法生成安全密匙，请确保设备存储空间充足",
+      "seed": {
+        "intro_title": "记下您的助记词",
+        "intro_desc": "身份恢复凭证：请妥善备份以下 12 个单词。建议手抄存放，或点击下方按钮安全导出",
+        "warning_title": "⚠️安全警告",
+        "warning_share": "• 任何获得此助记词的人都可以随时转走您的资产",
+        "warning_offline": "• 建议离线保存，不要在社交软件中传输",
+        "warning_loss": "• 一旦助记词丢失，账户资产将无法找回",
+        "button_save": "保存助记词"
+      }
     }
   },
   "tabs": {

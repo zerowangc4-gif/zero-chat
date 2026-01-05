@@ -29,7 +29,12 @@ const SecurityNotice = styled.View`
   background-color: ${props => props.theme.colors.secondaryBg};
   margin-bottom: ${props => props.theme.spacing.step.xxl}px;
 `;
-
+const Footer = styled.View`
+  position: absolute;
+  bottom: ${props => props.theme.spacing.step.xl}px;
+  left: ${props => props.theme.spacing.step.md}px;
+  right: ${props => props.theme.spacing.step.md}px;
+`;
 export function CreateAccountScreen() {
   const { t } = useTranslation();
   const theme = useTheme();
@@ -67,7 +72,7 @@ export function CreateAccountScreen() {
 
   return (
     <BaseScreen>
-      <Header />
+      <Header showLeft={true} />
       <MainContent hasHeader={true}>
         <FormGroup>
           <FormItem>
@@ -91,7 +96,7 @@ export function CreateAccountScreen() {
           <FormItem>
             <FormField>
               <Typography type="label">{t("auth.create_account.label_confirm_password")}</Typography>
-              <Input onChangeText={setConfirmPassword} secureTextEntry value={confirmPassword} />
+              <Input onChangeText={setConfirmPassword} secureTextEntry editable={!!password} value={confirmPassword} />
             </FormField>
             {confirmPassword.length > 0 && !isPasswordMatch && (
               <Typography type="caption" color={theme.colors.textErrorTertiary}>
@@ -106,7 +111,8 @@ export function CreateAccountScreen() {
             {t("auth.create_account.security_notice")}
           </Typography>
         </SecurityNotice>
-
+      </MainContent>
+      <Footer>
         <Button
           type="primary"
           block={true}
@@ -114,7 +120,7 @@ export function CreateAccountScreen() {
           onPress={handleContinue}
           disabled={!isFormValid || isGenerating}
         />
-      </MainContent>
+      </Footer>
     </BaseScreen>
   );
 }
