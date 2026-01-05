@@ -3,7 +3,7 @@ import { StyleSheet } from "react-native";
 import styled, { useTheme } from "styled-components/native";
 import { Typography } from "../common/Typography";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import IconFont, { IconNames } from "@/assets/font/iconfont";
+import IconFont from "@/assets/font/iconfont";
 const HeaderContainer = styled.View<{ height: number; paddingTop: number }>`
   position: absolute;
   top: 0;
@@ -40,11 +40,11 @@ const HeaderContentRight = styled.View`
 `;
 interface HeaderProps {
   title?: string;
-  leftIcon?: IconNames;
+  showLeft?: boolean;
   rightComponent?: React.ReactNode;
 }
 
-export const Header: React.FC<HeaderProps> = ({ title, rightComponent }) => {
+export const Header: React.FC<HeaderProps> = ({ title, showLeft, rightComponent }) => {
   const theme = useTheme();
   const insets = useSafeAreaInsets();
   const height = theme.spacing.layout.navBarHeight + insets.top;
@@ -52,7 +52,7 @@ export const Header: React.FC<HeaderProps> = ({ title, rightComponent }) => {
     <HeaderContainer height={height} paddingTop={insets.top}>
       <HeaderContent>
         <HeaderContentLeft>
-          <IconFont name="xiangzuojiantou" size={20} color={theme.colors.iconColor} />
+          {showLeft && <IconFont name="xiangzuojiantou" size={20} color={theme.colors.iconColor} />}
         </HeaderContentLeft>
         <NavTitle numberOfLines={1}>{title}</NavTitle>
         <HeaderContentRight>{rightComponent}</HeaderContentRight>

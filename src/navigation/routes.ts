@@ -4,7 +4,6 @@ export const ROUTES = {
   Onboarding: "Onboarding",
   CreateAccount: "CreateAccount",
   SeedPhraseDisplay: "SeedPhraseDisplay",
-  SeedPhraseConfirm: "SeedPhraseConfirm",
   // 主页滑动 Tab
   MainTab: "MainTab",
   ChatList: "ChatList",
