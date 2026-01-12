@@ -9,7 +9,6 @@ export const useGenerateWallet = () => {
   const [error, setError] = useState<string | null>(null);
 
   const generate = useCallback(async () => {
-    // 如果已经在生成中，直接返回，防止重复点击触发多个 Promise
     if (isGenerating) return null;
 
     setIsGenerating(true);
@@ -24,7 +23,6 @@ export const useGenerateWallet = () => {
 
       return mnemonic;
     } catch (e) {
-      // 精细化错误拦截
       let errorMessage = t("auth.create_account.errors_wallet_gen_failed");
 
       if (e instanceof Error && e.message === "EMPTY_MNEMONIC") {

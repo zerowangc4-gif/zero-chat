@@ -58,7 +58,7 @@ export const lightColors = {
   /** 按钮禁用文字 */
   buttonTextDisabled: palette.gray["400"],
   /** * 基础边框色：用于低对比度场景 ,输入框边框，header 边框*/
-  borderBase: palette.gray["200"],
+  borderBase: palette.gray["300"],
   /** 用处：输入框占位符、下方小字提示、不可点击的失效文字 */
   textTertiary: palette.gray["400"],
   /** 输入框占位符 下方错误的提示 */

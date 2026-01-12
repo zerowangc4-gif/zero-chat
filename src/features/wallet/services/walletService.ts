@@ -15,15 +15,4 @@ export const walletService = {
       privateKey: hdNode.privateKey,
     };
   },
-
-  /** 校验助记词合法性 */
-  validateMnemonic: (mnemonic: string): boolean => {
-    return Mnemonic.isValidMnemonic(mnemonic);
-  },
-
-  /** 离线签名交易 */
-  signTransaction: async (privateKey: string, txRequest: TransactionRequest): Promise<string> => {
-    const wallet = new Wallet(privateKey);
-    return await wallet.signTransaction(txRequest);
-  },
 };

@@ -1,11 +1,8 @@
-import ViewShot from "react-native-view-shot";
-import React, { useMemo } from "react";
-import styled, { useTheme } from "styled-components/native";
-import { useTranslation } from "react-i18next";
-import { BaseScreen, Button, Header, Main, Typography } from "@/components";
-import { useAppRoute } from "@/navigation";
-import { useSeedPhraseBackup } from "../hooks/useSeedPhraseBackup";
+import styled from "styled-components/native";
 
+import { BaseScreen, Button, Header, Main, Typography } from "@/components";
+import { useSeedPhraseBackup } from "../hooks/useSeedPhraseBackup";
+import QRCode from "react-native-qrcode-svg";
 const WORD_ITEM_HEIGHT = 42;
 
 const MainContent = styled(Main)`
@@ -13,8 +10,13 @@ const MainContent = styled(Main)`
   padding-right: ${props => props.theme.spacing.layout.headerPaddingLeft}px;
 `;
 const ShotWrapper = styled.View`
+  align-self: center;
+`;
+const QrContanier = styled.View`
   background-color: ${props => props.theme.colors.white};
-  padding: ${props => props.theme.spacing.step.lg}px;
+  padding: ${props => props.theme.spacing.step.md}px;
+  align-items: center;
+  gap: ${props => props.theme.spacing.step.xs}px;
 `;
 const SeedCard = styled.View`
   flex-direction: row;
@@ -30,6 +32,7 @@ const SeedCard = styled.View`
 const WordItem = styled.View`
   width: 30%;
   height: ${WORD_ITEM_HEIGHT}px;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
   background-color: ${props => props.theme.colors.white};
@@ -43,13 +46,6 @@ const IntroSection = styled.View`
   margin-bottom: ${props => props.theme.spacing.step.lg}px;
 `;
 
-const SecurityWarning = styled.View`
-  padding: ${props => props.theme.spacing.step.md}px;
-  border-radius: ${props => props.theme.radii.scale.lg}px;
-  background-color: ${props => props.theme.colors.secondaryBg};
-  gap: ${props => props.theme.spacing.step.xxs}px;
-`;
-
 const Footer = styled.View`
   position: absolute;
   bottom: ${props => props.theme.spacing.step.xl}px;
@@ -58,14 +54,7 @@ const Footer = styled.View`
 `;
 
 export function SeedPhraseDisplayScreen() {
-  const { t } = useTranslation();
-  const theme = useTheme();
-  const route = useAppRoute();
-
-  const mnemonic = route.params?.mnemonic || "";
-  const words = useMemo(() => mnemonic.split(" ").filter(Boolean), [mnemonic]);
-
-  const { viewShotRef, handleBackup } = useSeedPhraseBackup();
+  const { t, theme, words, encryptedMnemonic, viewShotRef, handleBackup, ViewShot } = useSeedPhraseBackup();
 
   return (
     <BaseScreen>
@@ -73,27 +62,25 @@ export function SeedPhraseDisplayScreen() {
       <MainContent hasHeader={true}>
         <IntroSection>
           <Typography type="heading">{t("auth.create_account.seed.intro_title")}</Typography>
-          <Typography type="caption">{t("auth.create_account.seed.intro_desc")}</Typography>
+          <Typography type="caption" color={theme.colors.textTertiary}>
+            {t("auth.create_account.seed.intro_desc")}
+          </Typography>
         </IntroSection>
-
-        <ViewShot ref={viewShotRef} options={{ format: "jpg", quality: 1 }}>
-          <ShotWrapper>
-            <SeedCard>
-              {words.map((word: string, index: number) => (
-                <WordItem key={`${word}-${index}`}>
-                  <Typography type="body">{word}</Typography>
-                </WordItem>
-              ))}
-            </SeedCard>
-          </ShotWrapper>
-        </ViewShot>
-
-        <SecurityWarning>
-          <Typography color={theme.colors.textSecondary}>{t("auth.create_account.seed.warning_title")}</Typography>
-          <Typography type="caption">{t("auth.create_account.seed.warning_share")}</Typography>
-          <Typography type="caption">{t("auth.create_account.seed.warning_offline")}</Typography>
-          <Typography type="caption">{t("auth.create_account.seed.warning_loss")}</Typography>
-        </SecurityWarning>
+        <SeedCard>
+          {words.map((word: string, index: number) => (
+            <WordItem key={`${word}-${index}`}>
+              <Typography type="body">{word}</Typography>
+            </WordItem>
+          ))}
+        </SeedCard>
+        <ShotWrapper>
+          <ViewShot ref={viewShotRef} options={{ format: "jpg", quality: 1 }}>
+            <QrContanier>
+              <Typography type="caption">{t("auth.create_account.seed.qr_label")}</Typography>
+              <QRCode value={encryptedMnemonic} />
+            </QrContanier>
+          </ViewShot>
+        </ShotWrapper>
       </MainContent>
 
       <Footer>

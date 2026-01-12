@@ -1,18 +1,19 @@
-import React, { useState, useMemo } from "react";
-import styled, { useTheme } from "styled-components/native";
-import { useTranslation } from "react-i18next";
-import { BaseScreen, Header, Main, Typography, Input, Button, Toast } from "@/components";
-import { useGenerateWallet } from "@/features/wallet";
-import { useAppNavigation } from "@/navigation";
+import { BaseScreen, Header, Main, Typography, Input, Button } from "@/components";
+import { useCreateAccount } from "../hooks";
+import styled from "styled-components/native";
 
 const MainContent = styled(Main)`
   padding-left: ${props => props.theme.spacing.layout.headerPaddingLeft}px;
   padding-right: ${props => props.theme.spacing.layout.headerPaddingLeft}px;
 `;
+const IntroSection = styled.View`
+  gap: ${props => props.theme.spacing.step.xs}px;
+  margin-bottom: ${props => props.theme.spacing.step.md}px;
+`;
 
 const FormGroup = styled.View`
   gap: ${props => props.theme.spacing.step.lg}px;
-  margin-bottom: ${props => props.theme.spacing.step.lg}px;
+  margin-bottom: ${props => props.theme.spacing.step.xl}px;
 `;
 
 const FormItem = styled.View`
@@ -22,13 +23,6 @@ const FormItem = styled.View`
 const FormField = styled.View`
   gap: ${props => props.theme.spacing.step.sm}px;
 `;
-
-const SecurityNotice = styled.View`
-  padding: ${props => props.theme.spacing.step.md}px;
-  border-radius: ${props => props.theme.radii.scale.sm}px;
-  background-color: ${props => props.theme.colors.secondaryBg};
-  margin-bottom: ${props => props.theme.spacing.step.xxl}px;
-`;
 const Footer = styled.View`
   position: absolute;
   bottom: ${props => props.theme.spacing.step.xl}px;
@@ -36,58 +30,24 @@ const Footer = styled.View`
   right: ${props => props.theme.spacing.step.md}px;
 `;
 export function CreateAccountScreen() {
-  const { t } = useTranslation();
-  const theme = useTheme();
-  const navigation = useAppNavigation();
-
-  const { generate, isGenerating, error } = useGenerateWallet();
-
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-
-  const isPasswordValid = password.length >= 8;
-  const isPasswordMatch = password.length > 0 && password === confirmPassword;
-
-  const isFormValid = useMemo(() => {
-    return username.trim().length > 0 && isPasswordValid && isPasswordMatch;
-  }, [username, isPasswordValid, isPasswordMatch]);
-
-  const handleContinue = async () => {
-    if (!isFormValid || isGenerating) return;
-
-    try {
-      const mnemonic = await generate();
-
-      if (mnemonic) {
-        navigation.replace("SeedPhraseDisplay", { mnemonic });
-      } else {
-        Toast.error(error || t("auth.create_account.errors_mnemonic_empty"));
-      }
-    } catch (e: unknown) {
-      const message = error || (e instanceof Error ? e.message : t("common.error"));
-      Toast.error(message);
-    }
-  };
+  const { t, theme, password, confirmPassword, showPasswordMismatchError, isFormValid, handleContinue } =
+    useCreateAccount();
 
   return (
     <BaseScreen>
-      <Header showLeft={true} />
+      <Header />
       <MainContent hasHeader={true}>
+        <IntroSection>
+          <Typography type="heading">{t("auth.create_account.encrypt_title")}</Typography>
+          <Typography type="caption" color={theme.colors.textTertiary}>
+            {t("auth.create_account.encrypt_desc")}
+          </Typography>
+        </IntroSection>
         <FormGroup>
           <FormItem>
             <FormField>
-              <Typography type="label">{t("auth.create_account.label_username")}</Typography>
-              <Input onChangeText={setUsername} value={username} />
-            </FormField>
-            <Typography type="caption" color={theme.colors.textTertiary}>
-              {t("auth.create_account.hint_username")}
-            </Typography>
-          </FormItem>
-          <FormItem>
-            <FormField>
               <Typography type="label">{t("auth.create_account.label_password")}</Typography>
-              <Input onChangeText={setPassword} secureTextEntry value={password} />
+              <Input size="lg" onChangeText={password.onChange} secureTextEntry value={password.value} />
             </FormField>
             <Typography type="caption" color={theme.colors.textTertiary}>
               {t("auth.create_account.hint_password")}
@@ -96,21 +56,21 @@ export function CreateAccountScreen() {
           <FormItem>
             <FormField>
               <Typography type="label">{t("auth.create_account.label_confirm_password")}</Typography>
-              <Input onChangeText={setConfirmPassword} secureTextEntry editable={!!password} value={confirmPassword} />
+              <Input
+                size="lg"
+                onChangeText={confirmPassword.onChange}
+                secureTextEntry
+                editable={!!password.value}
+                value={confirmPassword.value}
+              />
             </FormField>
-            {confirmPassword.length > 0 && !isPasswordMatch && (
+            {showPasswordMismatchError && (
               <Typography type="caption" color={theme.colors.textErrorTertiary}>
                 {t("auth.create_account.error_password_mismatch")}
               </Typography>
             )}
           </FormItem>
         </FormGroup>
-
-        <SecurityNotice>
-          <Typography type="caption" color={theme.colors.textTertiary}>
-            {t("auth.create_account.security_notice")}
-          </Typography>
-        </SecurityNotice>
       </MainContent>
       <Footer>
         <Button
@@ -118,7 +78,7 @@ export function CreateAccountScreen() {
           block={true}
           title={t("auth.create_account.button_continue")}
           onPress={handleContinue}
-          disabled={!isFormValid || isGenerating}
+          disabled={!isFormValid}
         />
       </Footer>
     </BaseScreen>

@@ -7,7 +7,7 @@ import { ROUTES } from "./routes";
 export type AuthStackParamList = {
   [ROUTES.Onboarding]: undefined;
   [ROUTES.CreateAccount]: undefined;
-  [ROUTES.SeedPhraseDisplay]: { mnemonic: string };
+  [ROUTES.SeedPhraseDisplay]: { mnemonic: string; password: string };
 };
 
 export type MainTabParamList = {

@@ -1,6 +1,5 @@
+import { useOnboarding } from "../hooks";
 import { BaseScreen, Button, Typography, Main } from "@/components";
-import { useTranslation } from "react-i18next";
-import { ROUTES, useAppNavigation } from "@/navigation";
 import styled from "styled-components/native";
 
 const ContentContainer = styled(Main)`
@@ -16,12 +15,7 @@ const ButtonAction = styled.View`
   gap: ${props => props.theme.spacing.step.sm}px;
 `;
 export function OnboardingScreen() {
-  const navigation = useAppNavigation();
-  const { t } = useTranslation();
-  // 创建新账号
-  const handleCreateAccount = () => {
-    navigation.navigate(ROUTES.CreateAccount);
-  };
+  const { handleCreateAccount, t } = useOnboarding();
   return (
     <BaseScreen>
       <ContentContainer>

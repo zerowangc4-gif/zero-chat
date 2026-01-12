@@ -1,6 +1,6 @@
 export const Input = {
   lg: {
-    height: 32,
+    height: 56,
     fontSize: 16,
     borderWidth: 2,
     borderRadius: 6,

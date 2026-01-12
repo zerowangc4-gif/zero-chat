@@ -1,42 +1,53 @@
-import { useRef, useCallback } from "react";
+import { useMemo, useRef } from "react";
+import { CameraRoll } from "@react-native-camera-roll/camera-roll";
+import CryptoJS from "react-native-crypto-js";
+import { Toast } from "@/components";
 import ViewShot from "react-native-view-shot";
-import Share from "react-native-share";
-import { useTranslation } from "react-i18next";
-
+import { useApp, useAndroidPermission } from "@/hooks";
 export function useSeedPhraseBackup() {
-  const { t } = useTranslation();
+  const { t, theme, route } = useApp();
+  const mnemonic = route.params?.mnemonic || "";
+  const { requestPermission } = useAndroidPermission();
+
+  const words = useMemo(() => mnemonic.split(" ").filter(Boolean), [mnemonic]);
+
   const viewShotRef = useRef<ViewShot>(null);
 
-  const handleBackup = useCallback(async () => {
+  const encryptedMnemonic = useMemo(() => {
+    const password = route.params?.password || "";
+
+    if (!password) return mnemonic;
+
+    const ciphertext = CryptoJS.AES.encrypt(mnemonic, password).toString();
+
+    return `ZT_V1:${ciphertext}`;
+  }, [mnemonic, route.params?.password]);
+
+  const handleBackup = async () => {
+    const isAllowed = await requestPermission();
+    if (!isAllowed) return false;
+
     try {
-      // 1. 获取截图
       const uri = await viewShotRef.current?.capture?.();
-      if (!uri) return;
 
-      // 2. 呼起分享面板
-      const result = await Share.open({
-        title: t("auth.create_account.seed.intro_title"),
-        url: uri,
-        type: "image/jpeg",
-        failOnCancel: true,
-      });
-
-      // 3. 成功逻辑
-      if (result.success) {
-        console.log("Backup confirmed by user");
-        //    跳转到下一步路由
+      if (uri) {
+        await CameraRoll.saveAsset(uri, { type: "photo", album: "ZeroTrace" });
+        return true;
       }
-    } catch (error: any) {
-      // 4. 捕获取消动作
-      if (error?.message?.includes("User cancelled")) {
-        // 取消动作之后的操作
-      } else {
-        console.error("Backup Error:", error);
-      }
+    } catch (e: unknown) {
+      const message = e instanceof Error ? e.message : t("auth.create_account.seed.backup_failed");
+      Toast.error(message);
     }
-  }, [t]);
+
+    return false;
+  };
 
   return {
+    t,
+    theme,
+    words,
+    encryptedMnemonic,
+    ViewShot,
     viewShotRef,
     handleBackup,
   };
