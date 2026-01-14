@@ -1,3 +1,3 @@
-export * from "./useOnboarding";
-export * from "./useCreateAccount";
-export * from "./useSeedPhraseBackup";
+export * from "./useWelcome";
+export * from "./useSetupPassword";
+export * from "./useBackupSecretQR";

@@ -1,15 +1,15 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { AuthStackParamList } from "./types";
 import { ROUTES } from "./routes";
-import { OnboardingScreen, CreateAccountScreen, SeedPhraseDisplayScreen } from "@/features/auth";
+import { Welcome, SetupPassword, BackupSecretQR } from "@/features/auth";
 const Stack = createNativeStackNavigator<AuthStackParamList>();
 
 function AuthStack() {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name={ROUTES.Onboarding} component={OnboardingScreen} />
-      <Stack.Screen name={ROUTES.CreateAccount} component={CreateAccountScreen} />
-      <Stack.Screen name={ROUTES.SeedPhraseDisplay} component={SeedPhraseDisplayScreen} />
+      <Stack.Screen name={ROUTES.Welcome} component={Welcome} />
+      <Stack.Screen name={ROUTES.SetupPassword} component={SetupPassword} />
+      <Stack.Screen name={ROUTES.BackupSecretQR} component={BackupSecretQR} />
     </Stack.Navigator>
   );
 }

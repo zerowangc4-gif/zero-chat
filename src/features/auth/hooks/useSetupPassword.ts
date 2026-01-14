@@ -2,8 +2,9 @@ import { useCallback } from "react"; // 必须导入
 import { Toast } from "@/components";
 import { useGenerateWallet } from "@/features/wallet";
 import { useApp, useInput } from "@/hooks";
+import { ROUTES } from "@/navigation";
 
-export function useCreateAccount() {
+export function useSetupPassword() {
   const { theme, t, navigation } = useApp();
   const { generate, isGenerating, error: walletError } = useGenerateWallet();
 
@@ -23,7 +24,7 @@ export function useCreateAccount() {
       const mnemonic = await generate();
 
       if (mnemonic) {
-        navigation.replace("SeedPhraseDisplay", { mnemonic, password: password.value });
+        navigation.replace(ROUTES.BackupSecretQR, { mnemonic, password: password.value });
       } else {
         Toast.error(walletError || t("auth.create_account.errors_wallet_gen_failed"));
       }

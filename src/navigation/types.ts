@@ -5,9 +5,9 @@ import { ROUTES } from "./routes";
 
 // 各个 Stack 的参数列表
 export type AuthStackParamList = {
-  [ROUTES.Onboarding]: undefined;
-  [ROUTES.CreateAccount]: undefined;
-  [ROUTES.SeedPhraseDisplay]: { mnemonic: string; password: string };
+  [ROUTES.Welcome]: undefined;
+  [ROUTES.SetupPassword]: undefined;
+  [ROUTES.BackupSecretQR]: { mnemonic: string; password: string };
 };
 
 export type MainTabParamList = {

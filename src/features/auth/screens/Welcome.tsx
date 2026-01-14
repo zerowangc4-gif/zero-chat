@@ -1,4 +1,4 @@
-import { useOnboarding } from "../hooks";
+import { useWelcome } from "../hooks";
 import { BaseScreen, Button, Typography, Main } from "@/components";
 import styled from "styled-components/native";
 
@@ -14,8 +14,8 @@ const WelcomeMessage = styled.View`
 const ButtonAction = styled.View`
   gap: ${props => props.theme.spacing.step.sm}px;
 `;
-export function OnboardingScreen() {
-  const { handleCreateAccount, t } = useOnboarding();
+export function Welcome() {
+  const { handleSetupPassword, t } = useWelcome();
   return (
     <BaseScreen>
       <ContentContainer>
@@ -24,7 +24,7 @@ export function OnboardingScreen() {
           <Typography type="heading">{t("auth.welcome_slogan")}</Typography>
         </WelcomeMessage>
         <ButtonAction>
-          <Button title={t("auth.button_create_account")} block={true} type="primary" onPress={handleCreateAccount} />
+          <Button title={t("auth.button_create_account")} block={true} type="primary" onPress={handleSetupPassword} />
           <Button title={t("auth.button_login_account")} block={true} type="secondary" />
         </ButtonAction>
       </ContentContainer>

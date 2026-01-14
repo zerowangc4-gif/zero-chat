@@ -13,9 +13,9 @@ export const useGenerateWallet = () => {
 
     setIsGenerating(true);
     setError(null);
-
+    await new Promise(resolve => setTimeout(resolve, 0));
     try {
-      const mnemonic = await Promise.resolve().then(() => walletService.createRandomMnemonic());
+      const mnemonic = walletService.createRandomMnemonic();
 
       if (!mnemonic) {
         throw new Error("EMPTY_MNEMONIC");

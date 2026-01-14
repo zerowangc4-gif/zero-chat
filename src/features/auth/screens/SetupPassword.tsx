@@ -1,5 +1,5 @@
 import { BaseScreen, Header, Main, Typography, Input, Button } from "@/components";
-import { useCreateAccount } from "../hooks";
+import { useSetupPassword } from "../hooks";
 import styled from "styled-components/native";
 
 const MainContent = styled(Main)`
@@ -29,44 +29,50 @@ const Footer = styled.View`
   left: ${props => props.theme.spacing.step.md}px;
   right: ${props => props.theme.spacing.step.md}px;
 `;
-export function CreateAccountScreen() {
-  const { t, theme, password, confirmPassword, showPasswordMismatchError, isFormValid, handleContinue } =
-    useCreateAccount();
+export function SetupPassword() {
+  const { t, theme, password, confirmPassword, showPasswordMismatchError, isFormValid, isGenerating, handleContinue } =
+    useSetupPassword();
 
   return (
     <BaseScreen>
       <Header />
       <MainContent hasHeader={true}>
         <IntroSection>
-          <Typography type="heading">{t("auth.create_account.encrypt_title")}</Typography>
+          <Typography type="heading">{t("auth.encrypt_title")}</Typography>
           <Typography type="caption" color={theme.colors.textTertiary}>
-            {t("auth.create_account.encrypt_desc")}
+            {t("auth.encrypt_desc")}
           </Typography>
         </IntroSection>
         <FormGroup>
           <FormItem>
             <FormField>
-              <Typography type="label">{t("auth.create_account.label_password")}</Typography>
-              <Input size="lg" onChangeText={password.onChange} secureTextEntry value={password.value} />
+              <Typography type="label">{t("auth.label_password")}</Typography>
+              <Input
+                size="lg"
+                onChangeText={password.onChange}
+                secureTextEntry
+                editable={!isGenerating}
+                value={password.value}
+              />
             </FormField>
             <Typography type="caption" color={theme.colors.textTertiary}>
-              {t("auth.create_account.hint_password")}
+              {t("auth.hint_password")}
             </Typography>
           </FormItem>
           <FormItem>
             <FormField>
-              <Typography type="label">{t("auth.create_account.label_confirm_password")}</Typography>
+              <Typography type="label">{t("auth.label_confirm_password")}</Typography>
               <Input
                 size="lg"
                 onChangeText={confirmPassword.onChange}
                 secureTextEntry
-                editable={!!password.value}
+                editable={!!password.value && !isGenerating}
                 value={confirmPassword.value}
               />
             </FormField>
             {showPasswordMismatchError && (
               <Typography type="caption" color={theme.colors.textErrorTertiary}>
-                {t("auth.create_account.error_password_mismatch")}
+                {t("auth.error_password_mismatch")}
               </Typography>
             )}
           </FormItem>
@@ -76,7 +82,8 @@ export function CreateAccountScreen() {
         <Button
           type="primary"
           block={true}
-          title={t("auth.create_account.button_continue")}
+          loading={isGenerating}
+          title={isGenerating ? t("auth.loading") : t("auth.button_continue")}
           onPress={handleContinue}
           disabled={!isFormValid}
         />

@@ -3,8 +3,10 @@ import { CameraRoll } from "@react-native-camera-roll/camera-roll";
 import CryptoJS from "react-native-crypto-js";
 import { Toast } from "@/components";
 import ViewShot from "react-native-view-shot";
+import QRCode from "react-native-qrcode-svg";
 import { useApp, useAndroidPermission } from "@/hooks";
-export function useSeedPhraseBackup() {
+
+export function useBackupSecretQR() {
   const { t, theme, route } = useApp();
   const mnemonic = route.params?.mnemonic || "";
   const { requestPermission } = useAndroidPermission();
@@ -48,6 +50,7 @@ export function useSeedPhraseBackup() {
     words,
     encryptedMnemonic,
     ViewShot,
+    QRCode,
     viewShotRef,
     handleBackup,
   };
