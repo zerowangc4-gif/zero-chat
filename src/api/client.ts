@@ -1,3 +1,4 @@
+import { store } from "@/store";
 import axios from "axios";
 
 export const apiClient = axios.create({
