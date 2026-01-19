@@ -3,11 +3,10 @@ import { NavigatorScreenParams, RouteProp, useNavigation, useRoute } from "@reac
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { ROUTES } from "./routes";
 
-// 各个 Stack 的参数列表
 export type AuthStackParamList = {
   [ROUTES.Welcome]: undefined;
   [ROUTES.SetupPassword]: undefined;
-  [ROUTES.BackupSecretQR]: { mnemonic: string; password: string };
+  [ROUTES.BackupSecretQR]: { mnemonic: string; address: string; publicKey: string; username: string; password: string };
 };
 
 export type MainTabParamList = {

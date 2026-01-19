@@ -20,8 +20,14 @@ export const useGenerateWallet = () => {
       if (!mnemonic) {
         throw new Error("EMPTY_MNEMONIC");
       }
+      const walletInfo = walletService.deriveWalletFromMnemonic(mnemonic);
 
-      return mnemonic;
+      return {
+        mnemonic,
+        address: walletInfo.address,
+        publicKey: walletInfo.publicKey,
+        privateKey: walletInfo.privateKey,
+      };
     } catch (e) {
       let errorMessage = t("auth.create_account.errors_wallet_gen_failed");
 

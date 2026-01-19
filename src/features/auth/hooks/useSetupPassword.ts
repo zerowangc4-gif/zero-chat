@@ -21,10 +21,16 @@ export function useSetupPassword() {
     if (!isFormValid || isGenerating) return;
 
     try {
-      const mnemonic = await generate();
+      const wallet = await generate();
 
-      if (mnemonic) {
-        navigation.replace(ROUTES.BackupSecretQR, { mnemonic, password: password.value });
+      if (wallet) {
+        navigation.replace(ROUTES.BackupSecretQR, {
+          mnemonic: wallet.mnemonic,
+          address: wallet.address,
+          publicKey: wallet.publicKey,
+          username: "wangc4",
+          password: password.value,
+        });
       } else {
         Toast.error(walletError || t("auth.create_account.errors_wallet_gen_failed"));
       }

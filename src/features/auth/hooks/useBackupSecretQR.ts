@@ -5,10 +5,11 @@ import { Toast } from "@/components";
 import ViewShot from "react-native-view-shot";
 import QRCode from "react-native-qrcode-svg";
 import { useApp, useAndroidPermission } from "@/hooks";
-
+import { registerAndLogin } from "../services";
 export function useBackupSecretQR() {
   const { t, theme, route } = useApp();
-  const mnemonic = route.params?.mnemonic || "";
+
+  const { mnemonic = "", address = "", publicKey = "", username = "", password = "" } = route.params || {};
   const { requestPermission } = useAndroidPermission();
 
   const words = useMemo(() => mnemonic.split(" ").filter(Boolean), [mnemonic]);
@@ -16,20 +17,24 @@ export function useBackupSecretQR() {
   const viewShotRef = useRef<ViewShot>(null);
 
   const encryptedMnemonic = useMemo(() => {
-    const password = route.params?.password || "";
-
     if (!password) return mnemonic;
 
     const ciphertext = CryptoJS.AES.encrypt(mnemonic, password).toString();
 
     return `ZT_V1:${ciphertext}`;
-  }, [mnemonic, route.params?.password]);
+  }, [mnemonic, password]);
 
   const handleBackup = async () => {
     const isAllowed = await requestPermission();
     if (!isAllowed) return false;
 
     try {
+      console.log("3. 准备调用后端注册接口:", { address, username });
+
+      // 添加超时保护的逻辑，或者确保 registerAndLogin 内部有超时
+      const res = await registerAndLogin(address, publicKey, username);
+
+      console.log("4. 后端响应结果:", res);
       const uri = await viewShotRef.current?.capture?.();
 
       if (uri) {
