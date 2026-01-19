@@ -1,10 +1,9 @@
 export const ROUTES = {
   // 认证流
   AuthStack: "AuthStack",
-  Onboarding: "Onboarding",
-  CreateAccount: "CreateAccount",
-  SeedPhraseDisplay: "SeedPhraseDisplay",
-  SeedPhraseConfirm: "SeedPhraseConfirm",
+  Welcome: "Welcome",
+  SetupPassword: "SetupPassword",
+  BackupSecretQR: "BackupSecretQR",
   // 主页滑动 Tab
   MainTab: "MainTab",
   ChatList: "ChatList",

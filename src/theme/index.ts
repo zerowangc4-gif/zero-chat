@@ -1,4 +1,4 @@
-import { lightColors, darkColors, typography, spacing, radii, interactive, getShadows } from "./tokens";
+import { lightColors, darkColors, typography, spacing, radii, interactive, getShadows, palette } from "./tokens";
 
 import { Text, Button, Input } from "./presets";
 
@@ -7,6 +7,7 @@ const getTheme = (isDark: boolean) => {
     isDark,
     colors: isDark ? darkColors : lightColors,
     typography,
+    palette,
     spacing,
     radii,
     interactive,

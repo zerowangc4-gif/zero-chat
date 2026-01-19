@@ -1,6 +1,5 @@
+import { useWelcome } from "../hooks";
 import { BaseScreen, Button, Typography, Main } from "@/components";
-import { useTranslation } from "react-i18next";
-import { ROUTES, useAppNavigation } from "@/navigation";
 import styled from "styled-components/native";
 
 const ContentContainer = styled(Main)`
@@ -15,13 +14,8 @@ const WelcomeMessage = styled.View`
 const ButtonAction = styled.View`
   gap: ${props => props.theme.spacing.step.sm}px;
 `;
-export function OnboardingScreen() {
-  const navigation = useAppNavigation();
-  const { t } = useTranslation();
-  // 创建新账号
-  const handleCreateAccount = () => {
-    navigation.navigate(ROUTES.CreateAccount);
-  };
+export function Welcome() {
+  const { handleSetupPassword, t } = useWelcome();
   return (
     <BaseScreen>
       <ContentContainer>
@@ -30,7 +24,7 @@ export function OnboardingScreen() {
           <Typography type="heading">{t("auth.welcome_slogan")}</Typography>
         </WelcomeMessage>
         <ButtonAction>
-          <Button title={t("auth.button_create_account")} block={true} type="primary" onPress={handleCreateAccount} />
+          <Button title={t("auth.button_create_account")} block={true} type="primary" onPress={handleSetupPassword} />
           <Button title={t("auth.button_login_account")} block={true} type="secondary" />
         </ButtonAction>
       </ContentContainer>

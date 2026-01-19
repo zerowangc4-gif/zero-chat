@@ -1,5 +1,5 @@
 import React from "react";
-import { PressableProps } from "react-native";
+import { PressableProps, ActivityIndicator } from "react-native";
 import styled, { css, useTheme } from "styled-components/native";
 import { Size } from "@/theme/presets";
 import { Typography } from "./Typography";
@@ -25,8 +25,17 @@ const ButtonContainer = styled.Pressable<{ $size: Size; $disabled: boolean; $blo
     `;
   }}
 `;
-
-const ButtonContent = styled(Typography)<{
+const ButtonContent = styled.View`
+  ${({ theme }) => {
+    return css`
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      gap: ${theme.spacing.step.xs}px;
+    `;
+  }}
+`;
+const ButtonText = styled(Typography)<{
   $size: Size;
   $disabled: boolean;
   $type: ButtonType;
@@ -54,6 +63,7 @@ interface ButtonProps extends PressableProps {
   block?: boolean;
   title: string;
   type?: ButtonType;
+  loading?: boolean;
 }
 
 export function Button({
@@ -62,9 +72,12 @@ export function Button({
   block = false,
   disabled = false,
   type = "primary",
+  loading = false,
   ...props
 }: ButtonProps) {
   const theme = useTheme();
+  const isDisabled = !!disabled || loading;
+  const loaderColor = type === "primary" ? theme.colors.textInverse : theme.colors.primary;
   return (
     <ButtonContainer
       {...props}
@@ -76,8 +89,12 @@ export function Button({
       style={({ pressed }) => ({
         opacity: pressed ? theme.interactive.activeOpacity : 1,
       })}>
-      <ButtonContent $size={size} $disabled={!!disabled} $type={type}>
-        {title}
+      <ButtonContent>
+        <ButtonText $size={size} $disabled={isDisabled} $type={type}>
+          {title}
+        </ButtonText>
+
+        {loading && <ActivityIndicator color={loaderColor} size="small" />}
       </ButtonContent>
     </ButtonContainer>
   );

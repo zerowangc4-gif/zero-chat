@@ -1,6 +1,3 @@
-/**
- * @format
- */
 import "react-native-get-random-values"; // 必须在第一行，为 ethers 提供随机数种子
 import { Buffer } from "buffer";
 import { AppRegistry } from "react-native";

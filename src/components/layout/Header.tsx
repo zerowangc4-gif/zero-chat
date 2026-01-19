@@ -3,8 +3,8 @@ import { StyleSheet } from "react-native";
 import styled, { useTheme } from "styled-components/native";
 import { Typography } from "../common/Typography";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import IconFont, { IconNames } from "@/assets/font/iconfont";
-const HeaderContainer = styled.View<{ height: number; paddingTop: number }>`
+import IconFont from "@/assets/font/iconfont";
+const HeaderContainer = styled.View<{ height: number; paddingTop: number; title?: string }>`
   position: absolute;
   top: 0;
   left: 0;
@@ -12,7 +12,7 @@ const HeaderContainer = styled.View<{ height: number; paddingTop: number }>`
   z-index: 10;
   height: ${props => props.height}px;
   padding-top: ${props => props.paddingTop}px;
-  border-bottom-width: ${StyleSheet.hairlineWidth}px;
+  border-bottom-width: ${props => (props.title ? StyleSheet.hairlineWidth : 0)}px;
   border-bottom-color: ${props => props.theme.colors.borderBase};
 `;
 const HeaderContent = styled.View`
@@ -40,19 +40,19 @@ const HeaderContentRight = styled.View`
 `;
 interface HeaderProps {
   title?: string;
-  leftIcon?: IconNames;
+  showLeft?: boolean;
   rightComponent?: React.ReactNode;
 }
 
-export const Header: React.FC<HeaderProps> = ({ title, rightComponent }) => {
+export const Header: React.FC<HeaderProps> = ({ title, showLeft, rightComponent }) => {
   const theme = useTheme();
   const insets = useSafeAreaInsets();
   const height = theme.spacing.layout.navBarHeight + insets.top;
   return (
-    <HeaderContainer height={height} paddingTop={insets.top}>
+    <HeaderContainer height={height} paddingTop={insets.top} title={title}>
       <HeaderContent>
         <HeaderContentLeft>
-          <IconFont name="xiangzuojiantou" size={20} color={theme.colors.iconColor} />
+          {showLeft && <IconFont name="xiangzuojiantou" size={20} color={theme.colors.iconColor} />}
         </HeaderContentLeft>
         <NavTitle numberOfLines={1}>{title}</NavTitle>
         <HeaderContentRight>{rightComponent}</HeaderContentRight>

@@ -27,7 +27,11 @@ export const palette = {
   },
 
   // 状态色
-  red: "#FF4D4F", // 你的 error
+  red: {
+    100: "#FFF1F0", // 极淡红：用于警示框背景
+    200: "#FFCCC7", // 淡红：用于警示框边框
+    500: "#FF4D4F", // 你的标准 error 色
+  },
   greenSuccess: "#52C41A", // 你的 success
 };
 export const lightColors = {
@@ -54,11 +58,11 @@ export const lightColors = {
   /** 按钮禁用文字 */
   buttonTextDisabled: palette.gray["400"],
   /** * 基础边框色：用于低对比度场景 ,输入框边框，header 边框*/
-  borderBase: palette.gray["200"],
+  borderBase: palette.gray["300"],
   /** 用处：输入框占位符、下方小字提示、不可点击的失效文字 */
   textTertiary: palette.gray["400"],
   /** 输入框占位符 下方错误的提示 */
-  textErrorTertiary: palette.red,
+  textErrorTertiary: palette.red["500"],
   /** 用于副标题，比标题略淡，建立视觉平衡，不抢主标题风头 */
   textSecondary: palette.gray["500"],
 } as const;
@@ -91,7 +95,7 @@ export const darkColors: typeof lightColors = {
   /** 用处：输入框占位符、下方小字提示、不可点击的失效文字 */
   textTertiary: palette.gray["600"],
   /** 输入框占位符 下方错误的提示 */
-  textErrorTertiary: palette.red,
+  textErrorTertiary: palette.red["500"],
   /** 用于副标题，比标题略淡，建立视觉平衡，不抢主标题风头 */
   textSecondary: palette.gray["300"],
 };

@@ -1,14 +1,12 @@
 // src/navigation/types.ts
-import { NavigatorScreenParams, useNavigation } from "@react-navigation/native";
+import { NavigatorScreenParams, RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { ROUTES } from "./routes";
 
-// 各个 Stack 的参数列表
 export type AuthStackParamList = {
-  [ROUTES.Onboarding]: undefined;
-  [ROUTES.CreateAccount]: undefined;
-  [ROUTES.SeedPhraseDisplay]: { mnemonic: string };
-  [ROUTES.SeedPhraseConfirm]: undefined;
+  [ROUTES.Welcome]: undefined;
+  [ROUTES.SetupPassword]: undefined;
+  [ROUTES.BackupSecretQR]: { mnemonic: string; address: string; publicKey: string; username: string; password: string };
 };
 
 export type MainTabParamList = {
@@ -30,3 +28,10 @@ export type AppNavigationProp = NativeStackNavigationProp<AllParamList>;
 
 // 导出自定义 Hook，页面内直接使用这个即可解决 never 报错
 export const useAppNavigation = () => useNavigation<AppNavigationProp>();
+
+export const useAppRoute = <T extends keyof AllParamList = keyof AllParamList>() =>
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  useRoute<RouteProp<AllParamList, T>>() as any as {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    params: Partial<AllParamList[T]> & Record<string, any>;
+  };

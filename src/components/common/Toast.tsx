@@ -11,6 +11,7 @@ const ErrorToastContainer = styled.View`
     background-color: ${theme.colors.textPrimary};
     align-self: center;
     ${theme.shadows.mid}
+    elevation:6;
   `}
 `;
 const Text = styled(Typography)`

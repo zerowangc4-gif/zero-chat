@@ -4,6 +4,7 @@ import styled, { useTheme } from "styled-components/native";
 
 const RootContainer = styled.View<{ bgColor: string }>`
   flex: 1;
+  position: relative;
   background-color: ${props => props.bgColor};
 `;
 
