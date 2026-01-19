@@ -5,10 +5,12 @@ import { RootStackParamList } from "./types";
 import AuthStack from "./AuthStack";
 import MainTab from "./MainTab";
 import renderPublicRoutes from "./PublicRoutes";
+import { useAppSelector } from "@/store";
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export function RootNavigator() {
-  const isLoggedIn = false;
+  const token = useAppSelector(state => state.auth.token);
+  const isLoggedIn = !!token;
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
