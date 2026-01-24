@@ -1,31 +1,50 @@
 import { createAction, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-export interface CurrentUser {
-  email: string;
+export interface User {
+  address: string;
+  publicKey: string;
+  username: string;
+}
+
+export interface AuthData {
+  user: User;
   token: string;
 }
-const currentUser: CurrentUser = {
-  email: "",
+
+const authData = {
+  user: {
+    address: "",
+    publicKey: "",
+    username: "",
+  },
   token: "",
 };
+
 const authSlice = createSlice({
   name: "auth",
-  initialState: currentUser,
+  initialState: authData,
   reducers: {
-    signIn: (_state, action: PayloadAction<CurrentUser>) => {
-      return action.payload;
+    setAuthData: (state, action: PayloadAction<AuthData>) => {
+      const { user, token } = action.payload;
+      state.user = { ...user };
+      state.token = token;
+    },
+    clearAuthData: state => {
+      state.user = { ...authData.user };
+      state.token = "";
     },
   },
 });
 
-export interface LoginCredentials {
-  email: string;
-  password: string;
-  authCode?: number;
+export interface RegistrationPayload {
+  address: string;
+  publicKey: string;
+  username: string;
+  uri: string;
 }
 
-export const loginApp = createAction<LoginCredentials>("auth/loginApp");
+export const loginApp = createAction<RegistrationPayload>("auth/loginApp");
 
-export const { signIn } = authSlice.actions;
+export const { setAuthData, clearAuthData } = authSlice.actions;
 
 export default authSlice.reducer;

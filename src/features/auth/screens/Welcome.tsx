@@ -1,5 +1,7 @@
 import { useWelcome } from "../hooks";
 import { BaseScreen, Button, Typography, Main } from "@/components";
+import { Text } from "react-native";
+
 import styled from "styled-components/native";
 
 const ContentContainer = styled(Main)`
@@ -15,11 +17,12 @@ const ButtonAction = styled.View`
   gap: ${props => props.theme.spacing.step.sm}px;
 `;
 export function Welcome() {
-  const { handleSetupPassword, t } = useWelcome();
+  const { handleSetupPassword, t, isConnected } = useWelcome();
   return (
     <BaseScreen>
       <ContentContainer>
         <WelcomeMessage>
+          <Text>Socket 状态: {isConnected ? "🟢 已连接" : "🔴 未连接"}</Text>
           <Typography type="heading">{t("auth.welcome_title")}</Typography>
           <Typography type="heading">{t("auth.welcome_slogan")}</Typography>
         </WelcomeMessage>

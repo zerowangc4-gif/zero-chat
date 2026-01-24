@@ -1,6 +1,8 @@
 import { useApp } from "@/hooks";
+import { useSocket } from "@/socket";
 export function useWelcome() {
   const { navigation, ROUTES, t } = useApp();
+  const { isConnected } = useSocket();
   const handleSetupPassword = () => {
     navigation.navigate(ROUTES.SetupPassword);
   };
@@ -8,5 +10,6 @@ export function useWelcome() {
   return {
     handleSetupPassword,
     t,
+    isConnected,
   };
 }
