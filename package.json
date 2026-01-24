@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
+    "sync": "rimraf node_modules package-lock.json && npm install",
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "lint": "eslint .",
@@ -43,6 +44,8 @@
     "react-redux": "^9.2.0",
     "redux-persist": "^6.0.0",
     "redux-saga": "^1.4.2",
+    "rimraf": "^6.1.2",
+    "socket.io-client": "^4.8.3",
     "styled-components": "^6.1.19"
   },
   "devDependencies": {
@@ -55,7 +58,7 @@
     "@react-native/babel-preset": "0.83.1",
     "@react-native/eslint-config": "0.83.1",
     "@react-native/metro-config": "0.83.1",
-    "@react-native/typescript-config": "0.83.1",
+    "@react-native/typescript-config": "^0.83.1",
     "@types/jest": "^29.5.13",
     "@types/react": "^19.2.0",
     "@types/react-native-crypto-js": "^1.0.3",

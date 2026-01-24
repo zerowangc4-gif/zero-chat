@@ -29,6 +29,10 @@ const authSlice = createSlice({
       state.user = { ...user };
       state.token = token;
     },
+    clearAuthData: state => {
+      state.user = { ...authData.user };
+      state.token = "";
+    },
   },
 });
 
@@ -41,6 +45,6 @@ export interface RegistrationPayload {
 
 export const loginApp = createAction<RegistrationPayload>("auth/loginApp");
 
-export const { setAuthData } = authSlice.actions;
+export const { setAuthData, clearAuthData } = authSlice.actions;
 
 export default authSlice.reducer;
