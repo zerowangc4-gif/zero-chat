@@ -5,6 +5,7 @@ import ViewShot from "react-native-view-shot";
 import QRCode from "react-native-qrcode-svg";
 import { useApp, useAndroidPermission } from "@/hooks";
 import { loginApp } from "../store";
+
 export function useBackupSecretQR() {
   const { t, theme, route, dispatch } = useApp();
 

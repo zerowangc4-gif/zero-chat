@@ -3,3 +3,4 @@ export * from "./Button";
 export * from "./Input";
 export * from "./AgreeButton";
 export * from "./Toast";
+export * from "./Avatar";
