@@ -15,9 +15,9 @@ const step = {
 /** 2. 语义化布局预设：定义组装逻辑 */
 const layout = {
   /** 同心圆距离顶部 */
-  homeTop: 120,
+  homeTop: 104,
   /** 操作按钮距底部*/
-  ActionButtonBottom: 96,
+  ActionButtonToBottom: 96,
   /** 不同系统直接header的标准高度*/
   navBarHeight: Platform.OS === "ios" ? 44 : 56,
 } as const;

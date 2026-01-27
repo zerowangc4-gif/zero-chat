@@ -8,15 +8,15 @@ const ContentContainer = styled(Main)`
 `;
 const WelcomeMessage = styled.View`
   align-items: center;
-  margin-top: ${props => props.theme.spacing.step.xxl}px;
-  gap: ${props => props.theme.spacing.step.lg}px;
+  margin-top: ${props => props.theme.spacing.step.lg}px;
+  gap: ${props => props.theme.spacing.step.sm}px;
 `;
 const ButtonAction = styled.View`
   gap: ${props => props.theme.spacing.step.md}px;
 `;
 const Footer = styled.View`
   position: absolute;
-  bottom: ${props => props.theme.spacing.layout.ActionButtonBottom}px;
+  bottom: ${props => props.theme.spacing.layout.ActionButtonToBottom}px;
   left: ${props => props.theme.spacing.step.xl}px;
   right: ${props => props.theme.spacing.step.xl}px;
 `;

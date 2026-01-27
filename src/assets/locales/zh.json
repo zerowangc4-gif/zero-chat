@@ -3,28 +3,6 @@
     "welcome_title": "零迹",
     "welcome_slogan": "安全通信 无痕交流",
     "button_create_account": "创建新账号",
-    "button_login_account": "我已经有一个账号",
-    "encrypt_title": "设置助记词加密",
-    "encrypt_desc": "此密码将用于对您的助记词进行高强度加密。加密后将生成一个离线二维码，只有通过此密码才能解密还原助记词",
-    "label_password": "设置密码",
-    "label_confirm_password": "确认密码",
-    "hint_password": "必须至少8个字符",
-    "error_password_mismatch": "两次输入的密码不匹配",
-    "button_continue": "继续",
-    "loading": "加载中",
-    "errors_wallet_gen_failed": "钱包创建失败，请稍后重试",
-    "errors_mnemonic_empty": "无法生成安全密匙，请确保设备存储空间充足",
-    "intro_title": "记下您的助记词",
-    "intro_desc": "身份恢复凭证：请妥善备份以下 12 个单词。建议手抄存放，或点击下方按钮安全导出",
-    "backup_failed": "无法保存图片，请检查相册权限或存储空间",
-    "button_save": "保存助记词",
-    "qr_label": "身份恢复凭证"
-  },
-  "tabs": {
-    "chats": "聊天",
-    "me": "我"
-  },
-  "common": {
-    "error": "发生未知错误"
+    "button_login_account": "我已经有一个账号"
   }
 }
