@@ -12,7 +12,7 @@ const ButtonContainer = styled.Pressable<{ $size: Size; $disabled: boolean; $blo
       height: ${config.height}px;
       border-radius: ${config.borderRadius}px;
       background-color: ${$type === "primary" ? theme.colors.primaryButtonBg : theme.colors.secondaryButtonBg};
-      border-width: 2px;
+      border-width: 1px;
       flex-direction: row;
       align-items: center;
       justify-content: center;
