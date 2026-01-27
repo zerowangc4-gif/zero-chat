@@ -5,66 +5,49 @@ export const palette = {
 
   // 灰度阶梯 (由浅入深)
   gray: {
-    50: "#FAFAFA", // 近似纯白
-    100: "#F5F5F5", // 你的 bgPage (Light)
+    50: "#FAFAFA",
+    100: "#F5F5F5",
     150: "#E8E8E8",
-    200: "#EEEEEE", // 你的 borderBase (Light)
-    300: "#DDDDDD", // 你的 borderElement (Light)
-    400: "#999999", // 你的 textPlaceholder (Light)
-    500: "#666666", // 你的 textSecondary (Light)
-    600: "#444444", // 中灰
-    700: "#333333", // 深灰
-    800: "#262626", // 接近纯黑的灰 (Dark Container)
-    900: "#1A1A1A", // 你的 textPrimary (Light)
-    950: "#121212", // 极深灰 (Dark Page)
+    200: "#EEEEEE",
+    300: "#DDDDDD",
+    400: "#999999",
+    500: "#666666",
+    600: "#444444",
+    700: "#333333",
+    800: "#262626",
+    900: "#1A1A1A",
+    950: "#121212",
   },
-
   // 品牌色
-  brand: {
-    green: "#07C160", // 你的 primary
-    greenPressed: "#06A954", // 你的 primaryPressed
-    greenDark: "#059048", // 深色模式下的点击态微调
-  },
-
-  // 状态色
-  red: {
-    100: "#FFF1F0", // 极淡红：用于警示框背景
-    200: "#FFCCC7", // 淡红：用于警示框边框
-    500: "#FF4D4F", // 你的标准 error 色
-  },
-  greenSuccess: "#52C41A", // 你的 success
+  brand: "#00e5ff",
 };
 export const lightColors = {
-  /** 纯白：用于容器底色、反色文字 */
+  /** 纯白 */
   white: palette.white,
-  /** 纯黑：用于极端投影、遮罩层 */
+  /** 纯黑 */
   black: palette.black,
-  /** 与背景色相反的颜色 */
-  textPrimary: palette.black,
-  /** 品牌色:用于登录按钮 */
-  primary: palette.brand.green,
-  /** 反色文本：当背景是品牌色按钮（如绿色）时使用*/
-  textInverse: palette.white,
-  /** 页面底色：浅灰色，产生层次感 */
-  bgPage: palette.gray["100"],
-  /** 新增：次要按钮背景或者提示背景色 (用于“我有账号”) */
-  secondaryBg: palette.gray["200"],
-  /** 新增：次要按钮文字颜色 */
-  secondaryButtonText: palette.brand.green,
-  /** 图标的颜色 */
-  iconColor: palette.gray["950"],
-  /** 按钮禁用背景色 */
-  buttonDisabled: palette.gray["300"],
-  /** 按钮禁用文字 */
-  buttonTextDisabled: palette.gray["400"],
-  /** * 基础边框色：用于低对比度场景 ,输入框边框，header 边框*/
-  borderBase: palette.gray["300"],
-  /** 用处：输入框占位符、下方小字提示、不可点击的失效文字 */
-  textTertiary: palette.gray["400"],
-  /** 输入框占位符 下方错误的提示 */
-  textErrorTertiary: palette.red["500"],
-  /** 用于副标题，比标题略淡，建立视觉平衡，不抢主标题风头 */
-  textSecondary: palette.gray["500"],
+  /** 背景色 */
+  bgPage: palette.gray["50"],
+  /** 同心圆第一层 */
+  ringDeep: palette.gray["300"],
+  /** 同心圆第二层 */
+  ringMedium: palette.gray["150"],
+  /** 同心圆第三层 */
+  ringLight: palette.gray["200"],
+  /** 同心圆第四层 */
+  ringFaint: palette.gray["100"],
+  /** 次要文字 */
+  secondaryWord: palette.gray["500"],
+  /** 主按钮背景色 */
+  primaryButtonBg: palette.black,
+  /** 次按钮背景色 */
+  secondaryButtonBg: palette.gray["50"],
+  /** 主按钮文字颜色 */
+  primaryButtonTextColor: palette.white,
+  /** 次按钮文字颜色 */
+  secondaryButtonTextColor: palette.black,
+  /** 按钮边框颜色 */
+  ButtonBorderColor: palette.black,
 } as const;
 
 export const darkColors: typeof lightColors = {
@@ -72,30 +55,26 @@ export const darkColors: typeof lightColors = {
   white: palette.white,
   /** 纯黑：用于极端投影、遮罩层 */
   black: palette.black,
-  /** 主文字颜色,用于大标题，副标题，正文文字 */
-  textPrimary: palette.white,
-  /** 品牌色:用于登录按钮 */
-  primary: palette.brand.green,
-  /** 反色文本：当背景是品牌色按钮（如绿色）时使用*/
-  textInverse: palette.white,
-  /** 页面底色：深灰色，产生层次感 */
+  /** 背景色 */
   bgPage: palette.gray["950"],
-  /** 新增：次要按钮背景 (用于“我有账号”) */
-  secondaryBg: palette.gray["800"],
-  /** 图标的颜色 */
-  iconColor: palette.gray["50"],
-  /** 新增：次要按钮文字颜色 */
-  secondaryButtonText: palette.white,
-  /** 按钮禁用背景色 */
-  buttonDisabled: palette.gray["800"],
-  /** 按钮禁用文字 */
-  buttonTextDisabled: palette.gray["600"],
-  /** * 基础边框色：用于低对比度场景 ,输入框边框，header 边框*/
-  borderBase: palette.gray["800"],
-  /** 用处：输入框占位符、下方小字提示、不可点击的失效文字 */
-  textTertiary: palette.gray["600"],
-  /** 输入框占位符 下方错误的提示 */
-  textErrorTertiary: palette.red["500"],
-  /** 用于副标题，比标题略淡，建立视觉平衡，不抢主标题风头 */
-  textSecondary: palette.gray["300"],
+  /** 同心圆第一层 */
+  ringDeep: palette.gray["50"],
+  /** 同心圆第二层 */
+  ringMedium: palette.gray["100"],
+  /** 同心圆第三层 */
+  ringLight: palette.gray["150"],
+  /** 同心圆第四层 */
+  ringFaint: palette.gray["100"],
+  /** 次要文字 */
+  secondaryWord: palette.gray["100"],
+  /** 主按钮背景色 */
+  primaryButtonBg: palette.black,
+  /** 次按钮背景色 */
+  secondaryButtonBg: palette.gray["50"],
+  /** 按钮文字颜色 */
+  primaryButtonTextColor: palette.white,
+  /** 次按钮文字颜色 */
+  secondaryButtonTextColor: palette.white,
+  /** 按钮边框颜色 */
+  ButtonBorderColor: palette.black,
 };

@@ -4,19 +4,15 @@ import styled, { css, useTheme } from "styled-components/native";
 import { Size } from "@/theme/presets";
 import { Typography } from "./Typography";
 
-type ButtonType = "primary" | "secondary";
-
-const ButtonContainer = styled.Pressable<{ $size: Size; $disabled: boolean; $block: boolean; $type: ButtonType }>`
-  ${({ theme, $size, $disabled, $block, $type }) => {
+const ButtonContainer = styled.Pressable<{ $size: Size; $disabled: boolean; $block: boolean; $type: string }>`
+  ${({ theme, $size, $block, $type }) => {
     const config = theme.presets.Button[$size];
-    const getBgColor = () => {
-      if ($disabled) return theme.colors.buttonDisabled;
-      return $type === "primary" ? theme.colors.primary : theme.colors.secondaryBg;
-    };
+
     return css`
       height: ${config.height}px;
       border-radius: ${config.borderRadius}px;
-      background-color: ${getBgColor()};
+      background-color: ${$type === "primary" ? theme.colors.primaryButtonBg : theme.colors.secondaryButtonBg};
+      border-width: 2px;
       flex-direction: row;
       align-items: center;
       justify-content: center;
@@ -37,20 +33,15 @@ const ButtonContent = styled.View`
 `;
 const ButtonText = styled(Typography)<{
   $size: Size;
-  $disabled: boolean;
-  $type: ButtonType;
+  $type: string;
 }>`
-  ${({ theme, $size, $disabled, $type }) => {
+  ${({ theme, $size, $type }) => {
     const config = theme.presets.Button[$size];
-    const getTextColor = () => {
-      if ($disabled) return theme.colors.buttonTextDisabled;
-      return $type === "primary" ? theme.colors.textInverse : theme.colors.secondaryButtonText;
-    };
 
     return css`
       font-family: ${theme.typography.family.base};
       font-size: ${config.fontSize}px;
-      color: ${getTextColor()};
+      color: ${$type === "primary" ? theme.colors.primaryButtonTextColor : theme.colors.secondaryButtonTextColor};
       font-weight: ${config.fontweight.semibold};
       include-font-padding: false;
       text-align-vertical: center;
@@ -62,8 +53,8 @@ interface ButtonProps extends PressableProps {
   size?: Size;
   block?: boolean;
   title: string;
-  type?: ButtonType;
   loading?: boolean;
+  type?: "primary" | "secondary";
 }
 
 export function Button({
@@ -71,30 +62,29 @@ export function Button({
   title,
   block = false,
   disabled = false,
-  type = "primary",
   loading = false,
+  type = "primary",
   ...props
 }: ButtonProps) {
   const theme = useTheme();
-  const isDisabled = !!disabled || loading;
-  const loaderColor = type === "primary" ? theme.colors.textInverse : theme.colors.primary;
+
   return (
     <ButtonContainer
       {...props}
       $size={size}
+      $type={type}
       $disabled={!!disabled}
       $block={block}
       disabled={disabled}
-      $type={type}
       style={({ pressed }) => ({
         opacity: pressed ? theme.interactive.activeOpacity : 1,
       })}>
       <ButtonContent>
-        <ButtonText $size={size} $disabled={isDisabled} $type={type}>
+        <ButtonText $type={type} $size={size}>
           {title}
         </ButtonText>
 
-        {loading && <ActivityIndicator color={loaderColor} size="small" />}
+        {loading && <ActivityIndicator size="small" />}
       </ButtonContent>
     </ButtonContainer>
   );

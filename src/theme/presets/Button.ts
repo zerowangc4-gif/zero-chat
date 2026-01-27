@@ -24,8 +24,8 @@ export const Button = {
   },
   lg: {
     fontSize: 16,
-    borderRadius: 4,
-    height: 44,
+    borderRadius: 12,
+    height: 64,
     fontweight: {
       regular: "400",
       semibold: "600",

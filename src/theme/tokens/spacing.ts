@@ -14,16 +14,10 @@ const step = {
 
 /** 2. 语义化布局预设：定义组装逻辑 */
 const layout = {
-  /** 登录页顶部内边距 */
-  paddingTopHeader: 160,
-  /** 标题距离登录页按钮的距离 */
-  ActionToHeader: 174,
-  /** 登录页水平内边距 */
-  screenHorizontalPadding: 24,
-  /** header内容边距 */
-  headerPaddingLeft: 16,
-  /** 导航栏左右操作区最小宽度：确保标题绝对居中 (建议 40-56 之间) */
-  headerLeftAndRightWidth: 56,
+  /** 同心圆距离顶部 */
+  homeTop: 120,
+  /** 操作按钮距底部*/
+  ActionButtonBottom: 96,
   /** 不同系统直接header的标准高度*/
   navBarHeight: Platform.OS === "ios" ? 44 : 56,
 } as const;

@@ -28,6 +28,7 @@ interface MainProps extends ViewProps {
 export const Main: React.FC<MainProps> = ({ children, hasHeader = false, style }) => {
   const theme = useTheme();
   const insets = useSafeAreaInsets();
+  console.log(insets);
 
   const paddingTop = hasHeader ? theme.spacing.layout.navBarHeight + insets.top : insets.top;
 
