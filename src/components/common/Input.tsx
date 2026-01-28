@@ -3,7 +3,6 @@ import { Platform, TextInputProps, Pressable, TextProps } from "react-native";
 import styled, { css, useTheme } from "styled-components/native";
 import { Size } from "@/theme/presets";
 import IconFont, { IconNames } from "@/assets/font/iconfont";
-
 export const BaseInput = styled.TextInput.attrs(
   () =>
     ({
@@ -75,6 +74,7 @@ export const Input = ({ size = "md", value, ...props }: InputProps) => {
   const theme = useTheme();
   const [isFocused, setIsFocused] = useState(false);
   const [passwordVisible, setPasswordVisible] = useState(false);
+
   return (
     <InputContainer $size={size} $isFocused={isFocused}>
       <InnerInput
@@ -100,13 +100,17 @@ export const Input = ({ size = "md", value, ...props }: InputProps) => {
       <RightActions $size={size}>
         {!!value && !props.secureTextEntry && (
           <Pressable onPress={() => props.onChangeText?.("")} hitSlop={20}>
-            <IconFont name="icon-eye-close-copy" size={16} color={theme.colors.bgPage} />
+            <IconFont name="icon-eye-close-copy" size={theme.typography.size.md} color={theme.colors.bgPage} />
           </Pressable>
         )}
 
         {props.secureTextEntry && (
           <Pressable onPress={() => setPasswordVisible(!passwordVisible)} hitSlop={20}>
-            <IconFont name={passwordVisible ? "icon-eye-open-copy" : "icon-eye-close-copy"} size={20} />
+            <IconFont
+              name={passwordVisible ? "icon-eye-open-copy" : "icon-eye-close-copy"}
+              size={theme.typography.size.lg}
+              color={theme.colors.inputEyesColor}
+            />
           </Pressable>
         )}
       </RightActions>

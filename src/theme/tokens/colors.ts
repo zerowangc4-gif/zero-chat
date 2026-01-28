@@ -60,6 +60,8 @@ export const lightColors = {
   inputBorderColor: palette.gray["150"],
   /** 输入框激活颜色 */
   inputBorderActiveColor: palette.brand,
+  /** 输入框眼睛颜色 */
+  inputEyesColor: palette.gray["400"],
 } as const;
 
 export const darkColors: typeof lightColors = {
@@ -101,4 +103,6 @@ export const darkColors: typeof lightColors = {
   inputBorderColor: palette.gray["150"],
   /** 输入框激活颜色 */
   inputBorderActiveColor: palette.brand,
+  /** 输入框眼睛颜色 */
+  inputEyesColor: palette.brand,
 };
