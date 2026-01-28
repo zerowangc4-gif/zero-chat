@@ -2,7 +2,6 @@ export const palette = {
   // 基础色
   white: "#FFFFFF",
   black: "#000000",
-
   // 灰度阶梯 (由浅入深)
   gray: {
     50: "#FAFAFA",
@@ -20,10 +19,11 @@ export const palette = {
   },
   // 品牌色
   brand: "#00e5ff",
+  error: "#FF3B30",
 };
 export const lightColors = {
   /** 纯白 */
-  white: palette.white,
+  word: palette.black,
   /** 纯黑 */
   black: palette.black,
   /** 背景色 */
@@ -42,17 +42,29 @@ export const lightColors = {
   primaryButtonBg: palette.black,
   /** 次按钮背景色 */
   secondaryButtonBg: palette.gray["50"],
+  /** 次按钮边框色 */
+  secondaryButtonBorderColor: palette.black,
+  /** 禁用按钮背景色 */
+  disableButtonBg: palette.gray["300"],
+  /** 禁用按钮背景色 */
+  disableButtonTextColor: palette.gray["400"],
   /** 主按钮文字颜色 */
   primaryButtonTextColor: palette.white,
   /** 次按钮文字颜色 */
   secondaryButtonTextColor: palette.black,
   /** 按钮边框颜色 */
-  ButtonBorderColor: palette.black,
+  buttonBorderColor: palette.black,
+  /** 输入框背景色 */
+  inputBg: palette.white,
+  /** 输入框常态颜色 */
+  inputBorderColor: palette.gray["150"],
+  /** 输入框激活颜色 */
+  inputBorderActiveColor: palette.brand,
 } as const;
 
 export const darkColors: typeof lightColors = {
   /** 纯白：用于容器底色、反色文字 */
-  white: palette.white,
+  word: palette.white,
   /** 纯黑：用于极端投影、遮罩层 */
   black: palette.black,
   /** 背景色 */
@@ -71,10 +83,22 @@ export const darkColors: typeof lightColors = {
   primaryButtonBg: palette.black,
   /** 次按钮背景色 */
   secondaryButtonBg: palette.gray["50"],
+  /** 次按钮边框色 */
+  secondaryButtonBorderColor: palette.black,
+  /** 禁用按钮背景色 */
+  disableButtonBg: palette.gray["300"],
+  /** 禁用按钮背景色 */
+  disableButtonTextColor: palette.gray["400"],
   /** 按钮文字颜色 */
   primaryButtonTextColor: palette.white,
   /** 次按钮文字颜色 */
   secondaryButtonTextColor: palette.white,
   /** 按钮边框颜色 */
-  ButtonBorderColor: palette.black,
+  buttonBorderColor: palette.black,
+  /** 输入框背景色 */
+  inputBg: palette.white,
+  /** 输入框常态颜色 */
+  inputBorderColor: palette.gray["150"],
+  /** 输入框激活颜色 */
+  inputBorderActiveColor: palette.brand,
 };

@@ -1,8 +1,21 @@
 {
   "auth": {
-    "welcome_title": "ZeroChat",
-    "welcome_slogan": "Secure Messaging Zero Trace",
+    "brand_name": "ZeroChat",
+    "brand_tagline": "Secure Messaging Zero Trace",
     "button_create_account": "Get Started",
-    "button_login_account": "Log In"
+    "button_login_account": "Log In",
+    "setting_mnemonic": "Set up Phrase Encryption",
+    "setting_mnemonic_tagline": "Encrypt your phrase into a QR code. Only this password can unlock it",
+    "setting_password": "Set Password",
+    "password_placeholder": "Enter password",
+    "setting_password_tagline": "At least 8 characters",
+    "verify_password": "Confirm Password",
+    "verify_password_placeholder": "Confirm password",
+    "verify_password_tagline": "Passwords do not match",
+    "action_generate_and_backup": "Generate & Back up",
+    "auth.error_generation_failed": "Failed to generate secure keys. Please try again"
+  },
+  "common": {
+    "loading": "加载中"
   }
 }

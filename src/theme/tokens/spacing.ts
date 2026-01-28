@@ -1,5 +1,5 @@
 import { Platform } from "react-native";
-/** 物理间距阶梯：所有的 UI 间距必须从此选择 */
+
 const step = {
   none: 0,
   xxs: 4,
@@ -12,7 +12,6 @@ const step = {
   xxxl: 56,
 };
 
-/** 2. 语义化布局预设：定义组装逻辑 */
 const layout = {
   /** 同心圆距离顶部 */
   homeTop: 104,
@@ -22,7 +21,6 @@ const layout = {
   navBarHeight: Platform.OS === "ios" ? 44 : 56,
 } as const;
 
-/** 3. 统一导出对象 */
 export const spacing = {
   step,
   layout,

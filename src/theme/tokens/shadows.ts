@@ -5,7 +5,7 @@ export const getShadows = (isDark: boolean) => ({
     ios: {
       shadowColor: palette.black,
       shadowOffset: { width: 0, height: 2 },
-      shadowOpacity: isDark ? 0.3 : 0.1, // 直接在这里判断
+      shadowOpacity: isDark ? 0.3 : 0.1,
       shadowRadius: 4,
     },
     android: {

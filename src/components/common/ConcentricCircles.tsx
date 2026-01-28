@@ -1,13 +1,14 @@
 import React from "react";
 import styled, { useTheme } from "styled-components/native";
 import IconFont from "@/assets/font/iconfont";
-
+/**以8px 为基本单位 */
+const step = 8;
 const CONFIG = {
-  containerHeight: 300,
-  iconBoxSize: 96,
-  iconBoxRadius: 24,
-  ringBaseSize: 136,
-  ringStep: 40,
+  containerHeight: step * 37,
+  iconBoxSize: step * 12,
+  iconBoxRadius: step * 3,
+  ringBaseSize: step * 17,
+  ringStep: step * 5,
   ringBorderWidth: 1.5,
 };
 
@@ -41,7 +42,7 @@ const IconContainer = styled.View`
 `;
 
 export const ConcentricCircles = () => {
-  const { colors } = useTheme();
+  const { colors, typography } = useTheme();
 
   const ringPalette = [colors.ringDeep, colors.ringMedium, colors.ringLight, colors.ringFaint];
 
@@ -52,7 +53,7 @@ export const ConcentricCircles = () => {
       ))}
 
       <IconContainer>
-        <IconFont name="daoban-copy" size={48} />
+        <IconFont name="daoban-copy" size={typography.size.xxxl} />
       </IconContainer>
     </Container>
   );

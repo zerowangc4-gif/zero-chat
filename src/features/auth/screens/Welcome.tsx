@@ -1,6 +1,5 @@
 import { useWelcome } from "../hooks";
-import { BaseScreen, Button, Typography, Main } from "@/components";
-import { ConcentricCircles } from "../components";
+import { BaseScreen, Button, Typography, Main, ConcentricCircles } from "@/components";
 import styled from "styled-components/native";
 
 const ContentContainer = styled(Main)`
@@ -8,8 +7,8 @@ const ContentContainer = styled(Main)`
 `;
 const WelcomeMessage = styled.View`
   align-items: center;
-  margin-top: ${props => props.theme.spacing.step.lg}px;
-  gap: ${props => props.theme.spacing.step.sm}px;
+  margin-top: ${props => props.theme.spacing.step.md}px;
+  gap: ${props => props.theme.spacing.step.xs}px;
 `;
 const ButtonAction = styled.View`
   gap: ${props => props.theme.spacing.step.md}px;
@@ -27,8 +26,10 @@ export function Welcome() {
       <ContentContainer>
         <ConcentricCircles />
         <WelcomeMessage>
-          <Typography type="heading">{t("auth.welcome_title")}</Typography>
-          <Typography color={theme.colors.secondaryWord}>{t("auth.welcome_slogan")}</Typography>
+          <Typography type="brand" weight="bold">
+            {t("auth.brand_name")}
+          </Typography>
+          <Typography color={theme.colors.secondaryWord}>{t("auth.brand_tagline")}</Typography>
         </WelcomeMessage>
       </ContentContainer>
       <Footer>

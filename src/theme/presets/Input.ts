@@ -2,8 +2,8 @@ export const Input = {
   lg: {
     height: 56,
     fontSize: 16,
-    borderWidth: 2,
-    borderRadius: 6,
+    borderWidth: 1,
+    borderRadius: 8,
     paddingHorizontal: 0,
   },
 

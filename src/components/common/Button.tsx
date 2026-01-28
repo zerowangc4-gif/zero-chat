@@ -5,14 +5,18 @@ import { Size } from "@/theme/presets";
 import { Typography } from "./Typography";
 
 const ButtonContainer = styled.Pressable<{ $size: Size; $disabled: boolean; $block: boolean; $type: string }>`
-  ${({ theme, $size, $block, $type }) => {
+  ${({ theme, $size, $block, $type, $disabled }) => {
     const config = theme.presets.Button[$size];
-
+    const bg = $disabled
+      ? theme.colors.disableButtonBg
+      : $type === "primary"
+        ? theme.colors.primaryButtonBg
+        : theme.colors.secondaryButtonBg;
     return css`
       height: ${config.height}px;
       border-radius: ${config.borderRadius}px;
-      background-color: ${$type === "primary" ? theme.colors.primaryButtonBg : theme.colors.secondaryButtonBg};
-      border-width: 1px;
+      background-color: ${bg};
+      border-width: ${$type === "primary" ? 0 : 1}px;
       flex-direction: row;
       align-items: center;
       justify-content: center;
@@ -34,14 +38,20 @@ const ButtonContent = styled.View`
 const ButtonText = styled(Typography)<{
   $size: Size;
   $type: string;
+  $disabled: boolean;
 }>`
-  ${({ theme, $size, $type }) => {
+  ${({ theme, $size, $type, $disabled }) => {
     const config = theme.presets.Button[$size];
+    const color = $disabled
+      ? theme.colors.disableButtonTextColor
+      : $type === "primary"
+        ? theme.colors.primaryButtonTextColor
+        : theme.colors.secondaryButtonTextColor;
 
     return css`
       font-family: ${theme.typography.family.base};
       font-size: ${config.fontSize}px;
-      color: ${$type === "primary" ? theme.colors.primaryButtonTextColor : theme.colors.secondaryButtonTextColor};
+      color: ${color};
       font-weight: ${config.fontweight.semibold};
       include-font-padding: false;
       text-align-vertical: center;
@@ -80,7 +90,7 @@ export function Button({
         opacity: pressed ? theme.interactive.activeOpacity : 1,
       })}>
       <ButtonContent>
-        <ButtonText $type={type} $size={size}>
+        <ButtonText $type={type} $size={size} $disabled={!!disabled}>
           {title}
         </ButtonText>
 

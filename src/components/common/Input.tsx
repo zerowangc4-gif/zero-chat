@@ -24,7 +24,7 @@ const InnerInput = styled(BaseInput)<{ $size: Size }>`
   ${({ theme, $size }) => {
     const config = theme.presets.Input[$size];
     return css`
-      color: ${theme.colors.textPrimary};
+      color: ${theme.colors.word};
       font-family: ${theme.typography.family.base};
       font-size: ${config.fontSize}px;
     `;
@@ -37,7 +37,7 @@ const InputContainer = styled.View<{
 }>`
   ${({ theme, $size, $isFocused }) => {
     const config = theme.presets.Input[$size];
-    const borderColor = $isFocused ? theme.colors.primary : theme.colors.borderBase;
+    const borderColor = $isFocused ? theme.colors.inputBorderActiveColor : theme.colors.inputBorderColor;
     return css`
       flex-direction: row;
       align-items: center;
@@ -46,6 +46,7 @@ const InputContainer = styled.View<{
       border-width: ${config.borderWidth}px;
       border-color: ${borderColor};
       border-radius: ${config.borderRadius}px;
+      background-color: ${theme.colors.inputBg};
     `;
   }}
 `;
@@ -84,8 +85,8 @@ export const Input = ({ size = "md", value, ...props }: InputProps) => {
         secureTextEntry={props.secureTextEntry && !passwordVisible}
         autoCapitalize="none"
         autoCorrect={false}
-        placeholderTextColor={theme.colors.textTertiary}
-        selectionColor={theme.colors.primary}
+        placeholderTextColor={theme.colors.secondaryWord}
+        selectionColor={theme.palette.brand}
         onFocus={e => {
           setIsFocused(true);
           props.onFocus?.(e);
@@ -99,13 +100,13 @@ export const Input = ({ size = "md", value, ...props }: InputProps) => {
       <RightActions $size={size}>
         {!!value && !props.secureTextEntry && (
           <Pressable onPress={() => props.onChangeText?.("")} hitSlop={20}>
-            <IconFont name="close_circle" size={16} color={theme.colors.textTertiary} />
+            <IconFont name="icon-eye-close-copy" size={16} color={theme.colors.bgPage} />
           </Pressable>
         )}
 
         {props.secureTextEntry && (
           <Pressable onPress={() => setPasswordVisible(!passwordVisible)} hitSlop={20}>
-            <IconFont name={passwordVisible ? "open_eyes" : "icon-close-eyes"} size={20} />
+            <IconFont name={passwordVisible ? "icon-eye-open-copy" : "icon-eye-close-copy"} size={20} />
           </Pressable>
         )}
       </RightActions>

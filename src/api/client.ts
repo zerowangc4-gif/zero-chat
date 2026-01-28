@@ -1,8 +1,8 @@
-import { store } from "@/store";
 import axios from "axios";
-
+import { store } from "@/store";
+import { url } from "@/constants";
 export const apiClient = axios.create({
-  baseURL: "https://zerochat.top",
+  baseURL: url,
   timeout: 10000,
 });
 

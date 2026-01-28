@@ -1,12 +1,12 @@
 import { useCallback } from "react"; // 必须导入
 import { Toast } from "@/components";
-import { useGenerateWallet } from "@/features/wallet";
+import { useGenerateWallet, WalletType } from "@/features/wallet";
 import { useApp, useInput } from "@/hooks";
 import { ROUTES } from "@/navigation";
-
+import { getErrorMessage } from "@/utils";
 export function useSetupPassword() {
   const { theme, t, navigation } = useApp();
-  const { generate, isGenerating, error: walletError } = useGenerateWallet();
+  const { generate, isGenerating } = useGenerateWallet();
 
   const password = useInput("");
   const confirmPassword = useInput("");
@@ -17,28 +17,35 @@ export function useSetupPassword() {
 
   const isFormValid = isPasswordValid && isPasswordMatch && !isGenerating;
 
+  function isWalletComplete(wallet: WalletType | undefined | null): wallet is WalletType {
+    return !!(wallet && wallet.mnemonic && wallet.address && wallet.privateKey && wallet.publicKey);
+  }
+
   const handleContinue = useCallback(async () => {
     if (!isFormValid || isGenerating) return;
 
     try {
       const wallet = await generate();
+      const isWallet = isWalletComplete(wallet);
 
-      if (wallet) {
-        navigation.replace(ROUTES.BackupSecretQR, {
-          mnemonic: wallet.mnemonic,
-          address: wallet.address,
-          publicKey: wallet.publicKey,
-          username: "wangc4",
-          password: password.value,
-        });
-      } else {
-        Toast.error(walletError || t("auth.create_account.errors_wallet_gen_failed"));
+      if (!isWallet) {
+        const message = t("auth.error_generation_failed");
+        Toast.error(message);
+        return;
       }
+
+      navigation.replace(ROUTES.BackupSecretQR, {
+        mnemonic: wallet.mnemonic,
+        address: wallet.address,
+        publicKey: wallet.publicKey,
+        username: `User_${wallet.address.slice(-4).toUpperCase()}`,
+        password: password.value,
+      });
     } catch (e: unknown) {
-      const message = e instanceof Error ? e.message : t("common.error");
+      const message = getErrorMessage(e);
       Toast.error(message);
     }
-  }, [isFormValid, isGenerating, generate, navigation, password.value, walletError, t]);
+  }, [isFormValid, isGenerating, generate, t, navigation, password.value]);
 
   return {
     theme,
