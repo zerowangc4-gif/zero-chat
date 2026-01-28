@@ -52,7 +52,6 @@ const ButtonText = styled(Typography)<{
       font-family: ${theme.typography.family.base};
       font-size: ${config.fontSize}px;
       color: ${color};
-      font-weight: ${config.fontweight.semibold};
       include-font-padding: false;
       text-align-vertical: center;
     `;
