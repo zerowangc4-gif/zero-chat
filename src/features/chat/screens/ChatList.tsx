@@ -5,10 +5,11 @@ import { Text } from "react-native";
 
 export function ChatListScreen() {
   const { isConnected } = useSocket();
-  const publicKey = useAppSelector(state => state.auth.user.publicKey);
+  const { publicKey, username } = useAppSelector(state => state.auth.user);
   return (
     <BaseScreen>
-      <Typography type="body">你好啊世界</Typography>
+      <Typography type="main">你好啊世界</Typography>
+      <Text>{username}</Text>
       <Text>Socket 状态: {isConnected ? "🟢 已连接" : "🔴 未连接"}</Text>
       <Avatar publicKey={publicKey} />
     </BaseScreen>

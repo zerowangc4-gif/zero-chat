@@ -5,7 +5,7 @@ import ViewShot from "react-native-view-shot";
 import QRCode from "react-native-qrcode-svg";
 import { useApp, useAndroidPermission } from "@/hooks";
 import { loginApp } from "../store";
-import { getErrorMessage } from "@/utils";
+import { getErrorMessage, getFormatEncryptedMnemonic } from "@/utils";
 
 export function useBackupSecretQR() {
   const { t, theme, route, dispatch } = useApp();
@@ -24,8 +24,8 @@ export function useBackupSecretQR() {
     }
 
     const ciphertext = CryptoJS.AES.encrypt(mnemonic, password).toString();
-
-    return `ZT_V1:${ciphertext}`;
+    const formatEncryptedMnemonic = getFormatEncryptedMnemonic(ciphertext);
+    return formatEncryptedMnemonic;
   }, [mnemonic, password]);
 
   async function handleBackup() {
