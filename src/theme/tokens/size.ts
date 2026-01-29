@@ -5,11 +5,11 @@ export const size = {
 
   md: 56,
 
-  lg: 64,
+  lg: 96,
 
   xl: 128,
 
-  xxl: 240,
+  xxl: 200,
 
   xxxl: 320,
 };

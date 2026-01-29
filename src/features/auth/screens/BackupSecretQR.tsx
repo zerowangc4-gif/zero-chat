@@ -40,7 +40,6 @@ const QrContanier = styled.View`
   align-items: center;
   justify-content: center;
   gap: ${props => props.theme.spacing.step.xs}px;
-  border-radius: ${props => props.theme.radii.scale.md}px;
 `;
 
 const TextContent = styled.View`
@@ -74,7 +73,7 @@ export function BackupSecretQR() {
         </SeedCard>
         <ViewShot ref={viewShotRef} options={{ format: "jpg", quality: 1 }}>
           <QrContanier>
-            <QRCode size={140} value={encryptedMnemonic} backgroundColor="transparent" />
+            <QRCode size={theme.size.lg} value={encryptedMnemonic} backgroundColor="transparent" />
             <TextContent>
               <Typography type="main" weight="bold">
                 {t("auth.backup_qr_title")}
