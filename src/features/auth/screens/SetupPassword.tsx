@@ -8,13 +8,13 @@ const MainContent = styled(Main)`
 `;
 const IntroSection = styled.View`
   align-items: center;
-  gap: ${props => props.theme.spacing.step.xl}px;
-  margin-bottom: ${props => props.theme.spacing.step.xxxl}px;
+  margin-bottom: ${props => props.theme.spacing.step.xl}px;
+  gap: ${props => props.theme.spacing.step.xs}px;
 `;
 
 const FormGroup = styled.View`
-  gap: ${props => props.theme.spacing.step.xl}px;
   margin-bottom: ${props => props.theme.spacing.step.xl}px;
+  gap: ${props => props.theme.spacing.step.lg}px;
 `;
 
 const FormItem = styled.View`

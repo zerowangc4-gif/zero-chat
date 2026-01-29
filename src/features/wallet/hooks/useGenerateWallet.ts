@@ -1,13 +1,7 @@
 import { useState, useCallback } from "react";
-import { walletService, savePrivateKey } from "../services";
+import { createRandomMnemonic, deriveWalletFromMnemonic, savePrivateKey } from "../services";
 
 import { getErrorMessage } from "@/utils";
-export interface WalletType {
-  mnemonic: string;
-  address: string;
-  publicKey: string;
-  privateKey: string;
-}
 export const useGenerateWallet = () => {
   const [isGenerating, setIsGenerating] = useState(false);
 
@@ -18,12 +12,12 @@ export const useGenerateWallet = () => {
 
     await new Promise(resolve => setTimeout(resolve, 0));
     try {
-      const mnemonic = walletService.createRandomMnemonic();
+      const mnemonic = createRandomMnemonic();
 
       if (!mnemonic) {
         throw new Error("EMPTY_MNEMONIC");
       }
-      const walletInfo = walletService.deriveWalletFromMnemonic(mnemonic);
+      const walletInfo = deriveWalletFromMnemonic(mnemonic);
       await savePrivateKey(walletInfo.address, walletInfo.privateKey);
 
       return {
