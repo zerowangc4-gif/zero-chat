@@ -32,8 +32,17 @@ const Footer = styled.View`
 `;
 
 export function SetupPassword() {
-  const { t, theme, password, confirmPassword, showPasswordMismatchError, isFormValid, isGenerating, handleContinue } =
-    useSetupPassword();
+  const {
+    t,
+    theme,
+    password,
+    confirmPassword,
+    showPasswordMismatchError,
+    isFormValid,
+    showPasswordTagline,
+    isGenerating,
+    handleContinue,
+  } = useSetupPassword();
 
   return (
     <BaseScreen>
@@ -60,9 +69,11 @@ export function SetupPassword() {
                 placeholder={t("auth.password_placeholder")}
               />
             </FormField>
-            <Typography type="caption" color={theme.colors.secondaryWord}>
-              {t("auth.setting_password_tagline")}
-            </Typography>
+            {showPasswordTagline && (
+              <Typography type="caption" color={theme.colors.secondaryWord}>
+                {t("auth.setting_password_tagline")}
+              </Typography>
+            )}
           </FormItem>
           <FormItem>
             <FormField>

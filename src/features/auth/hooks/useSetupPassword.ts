@@ -12,6 +12,7 @@ export function useSetupPassword() {
   const confirmPassword = useInput("");
 
   const isPasswordValid = password.value.length >= 8;
+  const showPasswordTagline = !isPasswordValid && !!password.value;
   const isPasswordMatch = password.value === confirmPassword.value;
   const showPasswordMismatchError = confirmPassword.value.length > 0 && !isPasswordMatch;
 
@@ -51,6 +52,7 @@ export function useSetupPassword() {
     theme,
     t,
     navigation,
+    showPasswordTagline,
     password,
     confirmPassword,
     showPasswordMismatchError,
