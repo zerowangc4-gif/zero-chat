@@ -1,27 +1,27 @@
-import { family, size, letterSpacing, variant } from "../tokens";
+import { typography } from "../tokens";
 export const Text = {
   brand: {
-    fontFamily: family.base,
-    fontSize: size.xxl,
-    letterSpacing: letterSpacing.xxxl,
+    fontFamily: typography.family.base,
+    fontSize: typography.size.xxl,
+    letterSpacing: typography.letterSpacing.xxxl,
   },
   heading: {
-    fontFamily: family.base,
-    fontSize: size.xl,
-    letterSpacing: letterSpacing.xxxl,
+    fontFamily: typography.family.base,
+    fontSize: typography.size.xl,
+    letterSpacing: typography.letterSpacing.xxxl,
   },
   main: {
-    fontFamily: family.base,
-    fontSize: size.md,
+    fontFamily: typography.family.base,
+    fontSize: typography.size.md,
   },
   caption: {
-    fontFamily: family.base,
-    fontSize: size.xs,
+    fontFamily: typography.family.base,
+    fontSize: typography.size.xs,
   },
   numeric: {
-    fontFamily: family.numeric,
-    fontSize: size.xl,
-    fontVariant: variant.numeric,
+    fontFamily: typography.family.numeric,
+    fontSize: typography.size.xl,
+    fontVariant: typography.variant.numeric,
   },
 };
 export interface TextStyle {

@@ -6,6 +6,7 @@ export const palette = {
   gray: {
     50: "#FAFAFA",
     100: "#F5F5F5",
+    125: "#F1F5F9",
     150: "#E8E8E8",
     200: "#EEEEEE",
     300: "#DDDDDD",
@@ -62,6 +63,12 @@ export const lightColors = {
   inputBorderActiveColor: palette.brand,
   /** 输入框眼睛颜色 */
   inputEyesColor: palette.gray["400"],
+  /** 按钮边框颜色 */
+  borderColor: palette.gray["150"],
+  /** 助记忆词砖块背景色 */
+  mnemonic_tile: palette.gray["125"],
+  /** 通用小组件背景 */
+  surface_bg: palette.white,
 } as const;
 
 export const darkColors: typeof lightColors = {
@@ -105,4 +112,10 @@ export const darkColors: typeof lightColors = {
   inputBorderActiveColor: palette.brand,
   /** 输入框眼睛颜色 */
   inputEyesColor: palette.brand,
+  /** 按钮边框颜色 */
+  borderColor: palette.gray["150"],
+  /** 助记忆词砖块背景色 */
+  mnemonic_tile: palette.gray["125"],
+  /** 通用小组件背景 */
+  surface_bg: palette.white,
 };

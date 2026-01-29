@@ -13,7 +13,12 @@
     "verify_password_placeholder": "Confirm password",
     "verify_password_tagline": "Passwords do not match",
     "action_generate_and_backup": "Generate & Back up",
-    "auth.error_generation_failed": "Failed to generate secure keys. Please try again"
+    "auth.error_generation_failed": "Failed to generate secure keys. Please try again",
+    "remember_mnemonic": "Backup your recovery phrase",
+    "remember_mnemonic_tagline": "This is your only way to recover your account. Write it down and store it offline",
+    "backup_qr_title": "Secure Recovery QR Code",
+    "backup_qr_helper": "Universal recovery credential · Do not store online",
+    "action_claim_identity": "Claim Your Digital Identity"
   },
   "common": {
     "loading": "加载中"

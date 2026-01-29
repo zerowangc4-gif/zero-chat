@@ -13,7 +13,12 @@
     "verify_password_placeholder": "再次确认您的密码",
     "verify_password_tagline": "密码不匹配",
     "action_generate_and_backup": "生成并备份",
-    "error_generation_failed": "生成安全凭证失败，请重试"
+    "error_generation_failed": "生成安全凭证失败，请重试",
+    "remember_mnemonic": "请备份助记词",
+    "remember_mnemonic_tagline": "这是您的唯一恢复凭证,请手抄并离线保存",
+    "backup_qr_title": "安全恢复二维码",
+    "backup_qr_helper": "身份恢复唯一凭证 · 请勿联网存储",
+    "action_claim_identity": "领取数字身份"
   },
   "common": {
     "loading": "加载中"
