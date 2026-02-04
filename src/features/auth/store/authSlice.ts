@@ -1,6 +1,7 @@
 import { createAction, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface User {
+  id: string;
   address: string;
   publicKey: string;
   username: string;
@@ -8,16 +9,22 @@ export interface User {
 
 export interface AuthData {
   user: User;
-  token: string;
+  accessToken: string;
+  refreshToken: string;
 }
-
+export interface TokensType {
+  accessToken: string;
+  refreshToken: string;
+}
 const authData = {
   user: {
+    id: "",
     address: "",
     publicKey: "",
     username: "",
   },
-  token: "",
+  accessToken: "",
+  refreshToken: "",
 };
 
 const authSlice = createSlice({
@@ -25,13 +32,17 @@ const authSlice = createSlice({
   initialState: authData,
   reducers: {
     setAuthData: (state, action: PayloadAction<AuthData>) => {
-      const { user, token } = action.payload;
+      const { user, accessToken, refreshToken } = action.payload;
       state.user = { ...user };
-      state.token = token;
+      state.accessToken = accessToken;
+      state.refreshToken = refreshToken;
     },
-    clearAuthData: state => {
-      state.user = { ...authData.user };
-      state.token = "";
+    clearAuthData: _state => {
+      return authData;
+    },
+    setTokens: (state, action: PayloadAction<TokensType>) => {
+      state.accessToken = action.payload.accessToken;
+      state.refreshToken = action.payload.refreshToken;
     },
   },
 });
@@ -45,6 +56,6 @@ export interface RegistrationPayload {
 
 export const loginApp = createAction<RegistrationPayload>("auth/loginApp");
 
-export const { setAuthData, clearAuthData } = authSlice.actions;
+export const { setAuthData, clearAuthData, setTokens } = authSlice.actions;
 
 export default authSlice.reducer;

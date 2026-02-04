@@ -1,4 +1,5 @@
 import { store } from "@/store";
+import { url } from "@/constants";
 import { io, Socket } from "socket.io-client";
 import { setupSocketListeners } from "./listeners";
 type SocketType = Socket | null;
@@ -41,8 +42,7 @@ export class SocketManager {
   }
 
   public connect() {
-    const URL = "https://zerochat.top";
-    const token = store.getState().auth.token;
+    const token = store.getState().auth.accessToken;
 
     if (!token) {
       return;
@@ -60,7 +60,7 @@ export class SocketManager {
 
     this.currentToken = token;
 
-    this.socket = io(URL, {
+    this.socket = io(url, {
       auth: { token: token },
       transports: ["websocket", "polling"],
       autoConnect: false,

@@ -15,3 +15,8 @@ export function deriveWalletFromMnemonic(mnemonic: string): WalletType {
     publicKey: hdNode.publicKey,
   };
 }
+export async function signMessage(privateKey: string, message: string): Promise<string> {
+  const wallet = new Wallet(privateKey);
+  const signature = await wallet.signMessage(message);
+  return signature;
+}
