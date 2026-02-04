@@ -1,39 +1,32 @@
-import { family, size, weight, letterSpacing, variant } from "../tokens";
+import { typography } from "../tokens";
 export const Text = {
-  /** 登录页品牌名 */
+  brand: {
+    fontFamily: typography.family.base,
+    fontSize: typography.size.xxl,
+    letterSpacing: typography.letterSpacing.xxxl,
+  },
   heading: {
-    fontFamily: family.base,
-    fontSize: size.xxl,
-    fontWeight: weight.bold,
-    letterSpacing: letterSpacing.xxxl,
+    fontFamily: typography.family.base,
+    fontSize: typography.size.xl,
+    letterSpacing: typography.letterSpacing.xxxl,
   },
-  body: {
-    fontFamily: family.base,
-    fontSize: size.md,
-    fontWeight: weight.regular,
-  },
-  label: {
-    fontFamily: family.base,
-    fontSize: size.sm,
-    fontWeight: weight.regular,
+  main: {
+    fontFamily: typography.family.base,
+    fontSize: typography.size.md,
   },
   caption: {
-    fontFamily: family.base,
-    fontSize: size.xs,
-    fontWeight: weight.regular,
+    fontFamily: typography.family.base,
+    fontSize: typography.size.xs,
   },
-  /** 等宽数字：专门用于余额、倒计时、金融账单 */
   numeric: {
-    fontFamily: family.numeric,
-    fontSize: size.xl,
-    fontWeight: weight.bold,
-    fontVariant: variant.numeric,
+    fontFamily: typography.family.numeric,
+    fontSize: typography.size.xl,
+    fontVariant: typography.variant.numeric,
   },
 };
 export interface TextStyle {
   fontFamily: string;
   fontSize: number;
-  fontWeight: string | number;
   letterSpacing?: number;
   fontVariant?: string[];
 }

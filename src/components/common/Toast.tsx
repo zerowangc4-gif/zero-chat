@@ -6,9 +6,9 @@ import { Typography } from "./Typography";
 const ErrorToastContainer = styled.View`
   ${({ theme }) => css`
     width: 90%;
-    padding: ${theme.spacing.layout.headerPaddingLeft}px;
+    padding: ${theme.spacing.layout.navBarHeight}px;
     border-radius: ${theme.radii.scale.lg}px;
-    background-color: ${theme.colors.textPrimary};
+    background-color: ${theme.colors.black};
     align-self: center;
     ${theme.shadows.mid}
     elevation:6;
@@ -16,7 +16,7 @@ const ErrorToastContainer = styled.View`
 `;
 const Text = styled(Typography)`
   ${({ theme }) => css`
-    color: ${theme.colors.white};
+    color: ${theme.colors.bgPage};
   `}
 `;
 const toastConfig: ToastConfig = {

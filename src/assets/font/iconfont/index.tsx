@@ -4,26 +4,20 @@
 import React, { FunctionComponent } from 'react';
 import { ViewProps } from 'react-native';
 import { GProps } from 'react-native-svg';
-import IconXiangzuojiantou from './IconXiangzuojiantou';
-import IconOpenEyes from './IconOpenEyes';
-import IconIconCloseEyes from './IconIconCloseEyes';
-import IconWeixuanzhongyuanquan from './IconWeixuanzhongyuanquan';
-import IconDuihao from './IconDuihao';
-import IconDuihao1 from './IconDuihao1';
-import IconCloseCircle from './IconCloseCircle';
-import IconLaba from './IconLaba';
-import IconSousuo from './IconSousuo';
-export { default as IconXiangzuojiantou } from './IconXiangzuojiantou';
-export { default as IconOpenEyes } from './IconOpenEyes';
-export { default as IconIconCloseEyes } from './IconIconCloseEyes';
-export { default as IconWeixuanzhongyuanquan } from './IconWeixuanzhongyuanquan';
-export { default as IconDuihao } from './IconDuihao';
-export { default as IconDuihao1 } from './IconDuihao1';
-export { default as IconCloseCircle } from './IconCloseCircle';
-export { default as IconLaba } from './IconLaba';
-export { default as IconSousuo } from './IconSousuo';
+import IconIconEyeOpenCopy from './IconIconEyeOpenCopy';
+import IconIconEyeCloseCopy from './IconIconEyeCloseCopy';
+import IconIconEyeOpenCopyCopy from './IconIconEyeOpenCopyCopy';
+import IconIconEyeCloseCopyCopy from './IconIconEyeCloseCopyCopy';
+import IconIconEyeOpenCopyCopy1 from './IconIconEyeOpenCopyCopy1';
+import IconDaobanCopy from './IconDaobanCopy';
+export { default as IconIconEyeOpenCopy } from './IconIconEyeOpenCopy';
+export { default as IconIconEyeCloseCopy } from './IconIconEyeCloseCopy';
+export { default as IconIconEyeOpenCopyCopy } from './IconIconEyeOpenCopyCopy';
+export { default as IconIconEyeCloseCopyCopy } from './IconIconEyeCloseCopyCopy';
+export { default as IconIconEyeOpenCopyCopy1 } from './IconIconEyeOpenCopyCopy1';
+export { default as IconDaobanCopy } from './IconDaobanCopy';
 
-export type IconNames = 'xiangzuojiantou' | 'open_eyes' | 'icon-close-eyes' | 'weixuanzhongyuanquan' | 'duihao' | 'duihao1' | 'close_circle' | 'laba' | 'sousuo';
+export type IconNames = 'icon-eye-open-copy' | 'icon-eye-close-copy' | 'icon-eye-open-copy-copy' | 'icon-eye-close-copy-copy' | 'icon-eye-open-copy-copy1' | 'daoban-copy';
 
 interface Props extends GProps, ViewProps {
   name: IconNames;
@@ -33,24 +27,18 @@ interface Props extends GProps, ViewProps {
 
 let IconFont: FunctionComponent<Props> = ({ name, ...rest }) => {
   switch (name) {
-    case 'xiangzuojiantou':
-      return <IconXiangzuojiantou key="1" {...rest} />;
-    case 'open_eyes':
-      return <IconOpenEyes key="2" {...rest} />;
-    case 'icon-close-eyes':
-      return <IconIconCloseEyes key="3" {...rest} />;
-    case 'weixuanzhongyuanquan':
-      return <IconWeixuanzhongyuanquan key="4" {...rest} />;
-    case 'duihao':
-      return <IconDuihao key="5" {...rest} />;
-    case 'duihao1':
-      return <IconDuihao1 key="6" {...rest} />;
-    case 'close_circle':
-      return <IconCloseCircle key="7" {...rest} />;
-    case 'laba':
-      return <IconLaba key="8" {...rest} />;
-    case 'sousuo':
-      return <IconSousuo key="9" {...rest} />;
+    case 'icon-eye-open-copy':
+      return <IconIconEyeOpenCopy key="1" {...rest} />;
+    case 'icon-eye-close-copy':
+      return <IconIconEyeCloseCopy key="2" {...rest} />;
+    case 'icon-eye-open-copy-copy':
+      return <IconIconEyeOpenCopyCopy key="3" {...rest} />;
+    case 'icon-eye-close-copy-copy':
+      return <IconIconEyeCloseCopyCopy key="4" {...rest} />;
+    case 'icon-eye-open-copy-copy1':
+      return <IconIconEyeOpenCopyCopy1 key="5" {...rest} />;
+    case 'daoban-copy':
+      return <IconDaobanCopy key="6" {...rest} />;
   }
 
   return null;

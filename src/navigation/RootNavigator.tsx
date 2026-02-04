@@ -10,7 +10,7 @@ import { SocketProvider } from "@/socket";
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export function RootNavigator() {
-  const token = useAppSelector(state => state.auth.token);
+  const token = useAppSelector(state => state.auth.accessToken);
   const isLoggedIn = !!token;
   return (
     <SocketProvider token={token}>

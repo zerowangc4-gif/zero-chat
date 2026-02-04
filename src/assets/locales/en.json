@@ -1,35 +1,26 @@
 {
   "auth": {
-    "welcome_title": "ZeroChat",
-    "welcome_slogan": "Secure Messaging Zero Trace",
+    "brand_name": "ZeroChat",
+    "brand_tagline": "Secure Messaging Zero Trace",
     "button_create_account": "Get Started",
     "button_login_account": "Log In",
-
-    "encrypt_title": "Set Seed Encryption Password",
-    "encrypt_desc": "This password will be used to encrypt your recovery phrase. It will generate an offline QR code that can only be decrypted and restored using this specific password.",
-    "title": "Create Account",
-    "label_password": "Password",
-    "label_confirm_password": "Confirm Password",
-    "placeholder_username": "Enter username",
-    "placeholder_password": "Enter password",
-    "placeholder_confirm_password": "Re-enter password",
-    "hint_password": "Must be at least 8 characters",
-    "error_password_mismatch": "Passwords do not match",
-    "button_continue": "Continue",
-    "loading": "loading",
-    "errors_wallet_gen_failed": "Failed to create wallet. Please try again later.",
-    "errors_mnemonic_empty": "We couldn't create your security phrase. Please check your device space and try again",
-    "intro_title": "Write Down Your Seed Phrase",
-    "intro_desc": "This is the only way to recover your account. Please write them down in order and store them safely. You can also export a secure recovery card below",
-    "backup_failed": "Unable to save image. Please check gallery permissions or storage space.",
-    "button_save": "Save Mnemonic",
-    "qr_label": "Identity Recovery Credential"
-  },
-  "tabs": {
-    "chats": "Chats",
-    "me": "Me"
+    "setting_mnemonic": "Set up Phrase Encryption",
+    "setting_mnemonic_tagline": "Encrypt your phrase into a QR code. Only this password can unlock it",
+    "setting_password": "Set Password",
+    "password_placeholder": "Enter password",
+    "setting_password_tagline": "At least 8 characters",
+    "verify_password": "Confirm Password",
+    "verify_password_placeholder": "Confirm password",
+    "verify_password_tagline": "Passwords do not match",
+    "action_generate_and_backup": "Generate & Back up",
+    "auth.error_generation_failed": "Failed to generate secure keys. Please try again",
+    "remember_mnemonic": "Backup your recovery phrase",
+    "remember_mnemonic_tagline": "This is your only way to recover your account. Write it down and store it offline",
+    "backup_qr_title": "Secure Recovery QR Code",
+    "backup_qr_helper": "Universal recovery credential · Do not store online",
+    "action_claim_identity": "Claim Your Digital Identity"
   },
   "common": {
-    "error": "An unknown error occurred"
+    "loading": "加载中"
   }
 }

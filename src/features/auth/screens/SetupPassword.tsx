@@ -3,66 +3,85 @@ import { useSetupPassword } from "../hooks";
 import styled from "styled-components/native";
 
 const MainContent = styled(Main)`
-  padding-left: ${props => props.theme.spacing.layout.headerPaddingLeft}px;
-  padding-right: ${props => props.theme.spacing.layout.headerPaddingLeft}px;
+  padding-left: ${props => props.theme.spacing.step.xl}px;
+  padding-right: ${props => props.theme.spacing.step.xl}px;
 `;
 const IntroSection = styled.View`
+  align-items: center;
+  margin-bottom: ${props => props.theme.spacing.step.xl}px;
   gap: ${props => props.theme.spacing.step.xs}px;
-  margin-bottom: ${props => props.theme.spacing.step.md}px;
 `;
 
 const FormGroup = styled.View`
-  gap: ${props => props.theme.spacing.step.lg}px;
   margin-bottom: ${props => props.theme.spacing.step.xl}px;
+  gap: ${props => props.theme.spacing.step.lg}px;
 `;
 
 const FormItem = styled.View`
-  gap: ${props => props.theme.spacing.step.xs}px;
+  gap: ${props => props.theme.spacing.step.sm}px;
 `;
 
 const FormField = styled.View`
-  gap: ${props => props.theme.spacing.step.sm}px;
+  gap: ${props => props.theme.spacing.step.md}px;
 `;
 const Footer = styled.View`
   position: absolute;
-  bottom: ${props => props.theme.spacing.step.xl}px;
-  left: ${props => props.theme.spacing.step.md}px;
-  right: ${props => props.theme.spacing.step.md}px;
+  bottom: ${props => props.theme.spacing.layout.ActionButtonToBottom}px;
+  left: ${props => props.theme.spacing.step.xl}px;
+  right: ${props => props.theme.spacing.step.xl}px;
 `;
+
 export function SetupPassword() {
-  const { t, theme, password, confirmPassword, showPasswordMismatchError, isFormValid, isGenerating, handleContinue } =
-    useSetupPassword();
+  const {
+    t,
+    theme,
+    password,
+    confirmPassword,
+    showPasswordMismatchError,
+    isFormValid,
+    showPasswordTagline,
+    isGenerating,
+    handleContinue,
+  } = useSetupPassword();
 
   return (
     <BaseScreen>
       <Header />
       <MainContent hasHeader={true}>
         <IntroSection>
-          <Typography type="heading">{t("auth.encrypt_title")}</Typography>
-          <Typography type="caption" color={theme.colors.textTertiary}>
-            {t("auth.encrypt_desc")}
+          <Typography type="heading" weight="bold">
+            {t("auth.setting_mnemonic")}
           </Typography>
+          <Typography color={theme.colors.secondaryWord}>{t("auth.setting_mnemonic_tagline")}</Typography>
         </IntroSection>
         <FormGroup>
           <FormItem>
             <FormField>
-              <Typography type="label">{t("auth.label_password")}</Typography>
+              <Typography type="main" weight="bold">
+                {t("auth.setting_password")}
+              </Typography>
               <Input
                 size="lg"
                 onChangeText={password.onChange}
                 secureTextEntry
                 editable={!isGenerating}
                 value={password.value}
+                placeholder={t("auth.password_placeholder")}
               />
             </FormField>
-            <Typography type="caption" color={theme.colors.textTertiary}>
-              {t("auth.hint_password")}
-            </Typography>
+            {showPasswordTagline && (
+              <Typography type="caption" color={theme.colors.secondaryWord}>
+                {t("auth.setting_password_tagline")}
+              </Typography>
+            )}
           </FormItem>
           <FormItem>
             <FormField>
-              <Typography type="label">{t("auth.label_confirm_password")}</Typography>
+              <Typography type="main" weight="bold">
+                {t("auth.verify_password")}
+              </Typography>
               <Input
+                placeholder={t("auth.verify_password_placeholder")}
                 size="lg"
                 onChangeText={confirmPassword.onChange}
                 secureTextEntry
@@ -71,19 +90,21 @@ export function SetupPassword() {
               />
             </FormField>
             {showPasswordMismatchError && (
-              <Typography type="caption" color={theme.colors.textErrorTertiary}>
-                {t("auth.error_password_mismatch")}
+              <Typography type="caption" color={theme.palette.error}>
+                {t("auth.verify_password_tagline")}
               </Typography>
             )}
           </FormItem>
         </FormGroup>
       </MainContent>
+
       <Footer>
         <Button
+          size="lg"
           type="primary"
           block={true}
           loading={isGenerating}
-          title={isGenerating ? t("auth.loading") : t("auth.button_continue")}
+          title={isGenerating ? t("common.loading") : t("auth.action_generate_and_backup")}
           onPress={handleContinue}
           disabled={!isFormValid}
         />
