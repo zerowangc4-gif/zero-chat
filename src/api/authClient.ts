@@ -24,6 +24,14 @@ authClient.interceptors.response.use(
     }
   },
   function (error) {
+    const { response } = error;
+
+    const message = response?.data?.message;
+
+    if (message) {
+      error.message = message;
+    }
+
     return Promise.reject(error);
   },
 );
