@@ -25,7 +25,7 @@ apiClient.interceptors.request.use(
 );
 
 apiClient.interceptors.response.use(
-  response => {
+  function (response) {
     const { data } = response;
     if (data.success) {
       return data.data;
@@ -33,7 +33,7 @@ apiClient.interceptors.response.use(
       return Promise.reject(new Error(data.message));
     }
   },
-  async error => {
+  async function (error) {
     const { config, response } = error;
     const message = response?.data?.message;
     if (message) {
