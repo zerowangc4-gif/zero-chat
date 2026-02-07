@@ -2,6 +2,8 @@ import { store } from "@/store";
 import { url } from "@/constants";
 import { io, Socket } from "socket.io-client";
 import { setupSocketListeners } from "./listeners";
+import { authService } from "@/api";
+import { AT_EXPIRE } from "@/constants";
 type SocketType = Socket | null;
 
 export class SocketManager {
@@ -79,9 +81,26 @@ export class SocketManager {
       this.setStatus(false);
       this.stopHeartbeat();
     });
-    this.socket.on("connect_error", () => {
+
+    this.socket.on("connect_error", async (err: Error) => {
       this.setStatus(false);
       this.stopHeartbeat();
+
+      if (err.message === AT_EXPIRE) {
+        console.log("检测到 Token 过期，准备通过 AuthService 自愈...");
+
+        try {
+          await authService.refreshToken("at_expire");
+
+          console.log("换票成功，重新初始化连接...");
+          this.disconnect();
+          this.connect();
+        } catch (error: unknown) {
+          console.error("Token 换票失败，无法自动恢复连接", error);
+        }
+      } else {
+        console.error("Socket 连接错误:", err.message);
+      }
     });
 
     setupSocketListeners(this.socket);

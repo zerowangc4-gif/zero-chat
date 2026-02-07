@@ -1,34 +1,9 @@
 import React, { useState } from "react";
-import { Platform, TextInputProps, Pressable, TextProps } from "react-native";
+import { TextInputProps, Pressable } from "react-native";
 import styled, { css, useTheme } from "styled-components/native";
 import { Size } from "@/theme/presets";
 import IconFont, { IconNames } from "@/assets/font/iconfont";
-export const BaseInput = styled.TextInput.attrs(
-  () =>
-    ({
-      includeFontPadding: Platform.OS === "android" ? false : undefined,
-      textAlignVertical: Platform.OS === "android" ? "center" : undefined,
-      underlineColorAndroid: "transparent",
-    }) as TextProps,
-)`
-  flex: 1;
-  align-self: stretch;
-  margin: 0;
-  padding: 0;
-  background-color: transparent;
-  border-width: 0;
-`;
-
-const InnerInput = styled(BaseInput)<{ $size: Size }>`
-  ${({ theme, $size }) => {
-    const config = theme.presets.Input[$size];
-    return css`
-      color: ${theme.colors.word};
-      font-family: ${theme.typography.family.base};
-      font-size: ${config.fontSize}px;
-    `;
-  }}
-`;
+import { BaseInput } from "./BaseInput";
 
 const InputContainer = styled.View<{
   $size: Size;
@@ -77,16 +52,12 @@ export const Input = ({ size = "md", value, ...props }: InputProps) => {
 
   return (
     <InputContainer $size={size} $isFocused={isFocused}>
-      <InnerInput
+      <BaseInput
         {...props}
         $size={size}
         value={value}
         onChangeText={props.onChangeText}
         secureTextEntry={props.secureTextEntry && !passwordVisible}
-        autoCapitalize="none"
-        autoCorrect={false}
-        placeholderTextColor={theme.colors.secondaryWord}
-        selectionColor={theme.palette.brand}
         onFocus={e => {
           setIsFocused(true);
           props.onFocus?.(e);

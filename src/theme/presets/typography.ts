@@ -29,4 +29,5 @@ export interface TextStyle {
   fontSize: number;
   letterSpacing?: number;
   fontVariant?: string[];
+  lineHeight?: number;
 }
