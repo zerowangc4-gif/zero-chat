@@ -44,7 +44,7 @@ export const Header: React.FC<HeaderProps> = ({ title, leftElement, rightElement
   const theme = useTheme();
   const insets = useSafeAreaInsets();
   const height = theme.spacing.layout.navBarHeight + insets.top;
-  const hasContent = title || leftElement || rightElement;
+  const hasContent = !!(title || leftElement || rightElement);
   return (
     <HeaderContainer height={height} paddingTop={insets.top} hasContent={hasContent}>
       <HeaderContent>
