@@ -10,7 +10,7 @@ const HeaderContainer = styled.View<{ height: number; paddingTop: number; hasCon
   z-index: 10;
   height: ${props => props.height}px;
   padding-top: ${props => props.paddingTop}px;
-  border-bottom-width: 1px;
+  border-bottom-width: ${props => (props.hasContent ? 1 : 0)}px;
   border-bottom-color: ${props => props.theme.colors.divider};
   background-color: ${props => (props.hasContent ? props.theme.colors.base : props.theme.colors.bgPage)};
 `;
