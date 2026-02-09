@@ -1,7 +1,7 @@
 import { apiClient } from "@/api";
 
-export async function getNonce(address: string) {
-  const result = await apiClient.post("/api/auth/getNonce", {
+export async function getNonce(address: string): Promise<string> {
+  const result: string = await apiClient.post("/api/auth/getNonce", {
     address,
   });
   return result;

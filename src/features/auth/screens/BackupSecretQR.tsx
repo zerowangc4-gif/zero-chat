@@ -44,6 +44,7 @@ const QrContanier = styled.View`
 
 const TextContent = styled.View`
   align-items: center;
+  gap: ${props => props.theme.spacing.step.xs}px;
 `;
 const Footer = styled.View`
   position: absolute;
