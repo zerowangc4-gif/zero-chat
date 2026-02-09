@@ -1,8 +1,8 @@
 import { Typography, BaseScreen } from "@/components";
-export function MeScreen() {
+export function Me() {
   return (
     <BaseScreen>
-      <Typography type="body">你好啊世界</Typography>
+      <Typography>你好啊世界</Typography>
     </BaseScreen>
   );
 }

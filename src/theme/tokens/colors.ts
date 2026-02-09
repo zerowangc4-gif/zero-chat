@@ -25,6 +25,8 @@ export const palette = {
 export const lightColors = {
   /** 纯白 */
   word: palette.black,
+  /** 模式基础色 */
+  base: palette.white,
   /** 纯黑 */
   black: palette.black,
   /** 背景色 */
@@ -65,15 +67,21 @@ export const lightColors = {
   inputEyesColor: palette.gray["400"],
   /** 按钮边框颜色 */
   borderColor: palette.gray["150"],
-  /** 助记忆词砖块背景色 */
-  mnemonic_tile: palette.gray["125"],
   /** 通用小组件背景 */
   surface_bg: palette.white,
+  /** tab 图标和文字激活时的颜色 */
+  tabBarActive: palette.brand,
+  /** 分割线的颜色 */
+  divider: palette.gray["100"],
+  /** 次级填充色*/
+  fillSecondary: palette.gray["125"],
 } as const;
 
 export const darkColors: typeof lightColors = {
   /** 纯白：用于容器底色、反色文字 */
   word: palette.white,
+  /** 模式基础色 */
+  base: palette.black,
   /** 纯黑：用于极端投影、遮罩层 */
   black: palette.black,
   /** 背景色 */
@@ -114,8 +122,12 @@ export const darkColors: typeof lightColors = {
   inputEyesColor: palette.brand,
   /** 按钮边框颜色 */
   borderColor: palette.gray["150"],
-  /** 助记忆词砖块背景色 */
-  mnemonic_tile: palette.gray["125"],
   /** 通用小组件背景 */
   surface_bg: palette.white,
+  /** tab 图标和文字激活时的颜色 */
+  tabBarActive: palette.brand,
+  /** 分割线的颜色 */
+  divider: palette.gray["100"],
+  /** 次级填充色*/
+  fillSecondary: palette.gray["125"],
 };

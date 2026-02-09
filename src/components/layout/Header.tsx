@@ -1,9 +1,7 @@
 import React from "react";
-import { StyleSheet } from "react-native";
 import styled, { useTheme } from "styled-components/native";
 import { Typography } from "../common/Typography";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import IconFont from "@/assets/font/iconfont";
 const HeaderContainer = styled.View<{ height: number; paddingTop: number; title?: string }>`
   position: absolute;
   top: 0;
@@ -12,50 +10,46 @@ const HeaderContainer = styled.View<{ height: number; paddingTop: number; title?
   z-index: 10;
   height: ${props => props.height}px;
   padding-top: ${props => props.paddingTop}px;
-  border-bottom-width: ${props => (props.title ? StyleSheet.hairlineWidth : 0)}px;
-  border-bottom-color: ${props => props.theme.colors.borderBase};
+  border-bottom-width: 1px;
+  border-bottom-color: ${props => props.theme.colors.divider};
+  background-color: ${props => props.theme.colors.base};
 `;
 const HeaderContent = styled.View`
   flex: 1;
   flex-direction: row;
   align-items: center;
-  padding-left: ${props => props.theme.spacing.layout.headerPaddingLeft}px;
-  padding-right: ${props => props.theme.spacing.layout.headerPaddingLeft}px;
+  padding-left: ${props => props.theme.spacing.step.md}px;
+  padding-right: ${props => props.theme.spacing.step.md}px;
 `;
 
-const HeaderContentLeft = styled.View`
-  width: ${props => props.theme.spacing.layout.headerLeftAndRightWidth}px;
-  flex-direction: row;
-  align-items: center;
-`;
 const NavTitle = styled(Typography)`
   flex: 1;
   text-align: center;
 `;
-const HeaderContentRight = styled.View`
-  width: ${props => props.theme.spacing.layout.headerLeftAndRightWidth}px;
+
+const SideSlot = styled.View<{ $align: "left" | "right" }>`
+  flex: 1;
   flex-direction: row;
-  justify-content: flex-end;
   align-items: center;
+  justify-content: ${props => (props.$align === "left" ? "flex-start" : "flex-end")};
 `;
+
 interface HeaderProps {
   title?: string;
-  showLeft?: boolean;
-  rightComponent?: React.ReactNode;
+  leftElement?: React.ReactNode;
+  rightElement?: React.ReactNode;
 }
 
-export const Header: React.FC<HeaderProps> = ({ title, showLeft, rightComponent }) => {
+export const Header: React.FC<HeaderProps> = ({ title, leftElement, rightElement }) => {
   const theme = useTheme();
   const insets = useSafeAreaInsets();
   const height = theme.spacing.layout.navBarHeight + insets.top;
   return (
     <HeaderContainer height={height} paddingTop={insets.top} title={title}>
       <HeaderContent>
-        <HeaderContentLeft>
-          {showLeft && <IconFont name="xiangzuojiantou" size={20} color={theme.colors.iconColor} />}
-        </HeaderContentLeft>
+        <SideSlot $align="left">{leftElement}</SideSlot>
         <NavTitle numberOfLines={1}>{title}</NavTitle>
-        <HeaderContentRight>{rightComponent}</HeaderContentRight>
+        <SideSlot $align="right">{rightElement}</SideSlot>
       </HeaderContent>
     </HeaderContainer>
   );

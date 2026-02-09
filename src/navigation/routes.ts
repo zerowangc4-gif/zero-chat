@@ -6,7 +6,7 @@ export const ROUTES = {
   BackupSecretQR: "BackupSecretQR",
   // 主页滑动 Tab
   MainTab: "MainTab",
-  ChatList: "ChatList",
+  Chats: "Chats",
   Me: "Me",
 
   // 全局

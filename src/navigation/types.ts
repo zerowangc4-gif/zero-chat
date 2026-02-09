@@ -10,7 +10,7 @@ export type AuthStackParamList = {
 };
 
 export type MainTabParamList = {
-  [ROUTES.ChatList]: undefined;
+  [ROUTES.Chats]: undefined;
   [ROUTES.Me]: undefined;
 };
 

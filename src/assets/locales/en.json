@@ -20,6 +20,14 @@
     "backup_qr_helper": "Universal recovery credential · Do not store online",
     "action_claim_identity": "Claim Your Digital Identity"
   },
+  "tabs": {
+    "chats": "Chats",
+    "me": "Me"
+  },
+  "chat": {
+    "Online": "Online",
+    "Offline": "Offline"
+  },
   "common": {
     "loading": "加载中"
   }

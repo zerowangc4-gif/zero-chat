@@ -29,7 +29,7 @@ const WordItem = styled.View`
   height: ${props => props.theme.size.sm}px;
   border-width: 1px;
   border-color: ${props => props.theme.colors.borderColor};
-  background-color: ${props => props.theme.colors.mnemonic_tile};
+  background-color: ${props => props.theme.colors.fillSecondary};
   border-radius: ${props => props.theme.radii.scale.md}px;
 `;
 
