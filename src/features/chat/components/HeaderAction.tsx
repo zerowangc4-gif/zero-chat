@@ -18,7 +18,7 @@ export function HeaderAction() {
   const { theme } = useApp();
   return (
     <HeaderActionContainer>
-      <IconFont name="jiahao1" size={theme.typography.size.md} color={theme.colors.word} />
+      <IconFont name="jiahao1" size={theme.typography.size.md} color={theme.colors.baseInverse} />
     </HeaderActionContainer>
   );
 }
