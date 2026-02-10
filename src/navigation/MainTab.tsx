@@ -16,15 +16,14 @@ function MainTab() {
     <Tab.Navigator
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: theme.colors.tabBarActive,
-        tabBarInactiveTintColor: theme.colors.word,
-        tabBarLabelStyle: { fontSize: theme.typography.size.xs, marginTop: theme.spacing.step.sm },
+        tabBarActiveTintColor: theme.colors.activeColor,
+        tabBarInactiveTintColor: theme.colors.baseInverse,
+        tabBarLabelStyle: { fontSize: theme.typography.size.xs },
         tabBarStyle: {
           height: TAB_BAR_HEIGHT,
-          paddingTop: theme.spacing.step.xs,
           paddingBottom: insets.bottom > 0 ? insets.bottom : theme.spacing.step.xs,
           backgroundColor: theme.colors.base,
-          borderTopWidth: 1,
+          borderTopWidth: 0.5,
           elevation: 0,
           shadowOpacity: 0,
         },

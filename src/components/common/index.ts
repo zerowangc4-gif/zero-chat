@@ -3,5 +3,4 @@ export * from "./Button";
 export * from "./Input";
 export * from "./Toast";
 export * from "./Avatar";
-export * from "./ConcentricCircles";
 export * from "./BaseInput";

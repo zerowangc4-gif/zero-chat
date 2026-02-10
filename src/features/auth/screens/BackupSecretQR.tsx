@@ -34,7 +34,7 @@ const WordItem = styled.View`
 `;
 
 const QrContanier = styled.View`
-  background-color: ${props => props.theme.colors.surface_bg};
+  background-color: ${props => props.theme.colors.surfaceBg};
   align-self: stretch;
   height: ${props => props.theme.size.xxl}px;
   align-items: center;
@@ -89,7 +89,12 @@ export function BackupSecretQR() {
       </MainContent>
 
       <Footer>
-        <Button type="primary" size="lg" block={true} title={t("auth.action_claim_identity")} onPress={handleBackup} />
+        <Button
+          size="lg"
+          title={t("auth.action_claim_identity")}
+          bgColor={theme.colors.baseInverse}
+          onPress={handleBackup}
+        />
       </Footer>
     </BaseScreen>
   );

@@ -10,14 +10,16 @@ import IconGlBubble from './IconGlBubble';
 import IconIconEyeOpenCopy from './IconIconEyeOpenCopy';
 import IconIconEyeCloseCopy from './IconIconEyeCloseCopy';
 import IconDaobanCopy from './IconDaobanCopy';
+import IconSousuo from './IconSousuo';
 export { default as IconJiahao1 } from './IconJiahao1';
 export { default as IconWode } from './IconWode';
 export { default as IconGlBubble } from './IconGlBubble';
 export { default as IconIconEyeOpenCopy } from './IconIconEyeOpenCopy';
 export { default as IconIconEyeCloseCopy } from './IconIconEyeCloseCopy';
 export { default as IconDaobanCopy } from './IconDaobanCopy';
+export { default as IconSousuo } from './IconSousuo';
 
-export type IconNames = 'jiahao1' | 'wode' | 'gl-bubble' | 'icon-eye-open-copy' | 'icon-eye-close-copy' | 'daoban-copy';
+export type IconNames = 'jiahao1' | 'wode' | 'gl-bubble' | 'icon-eye-open-copy' | 'icon-eye-close-copy' | 'daoban-copy' | 'sousuo';
 
 interface Props extends GProps, ViewProps {
   name: IconNames;
@@ -39,6 +41,8 @@ let IconFont: FunctionComponent<Props> = ({ name, ...rest }) => {
       return <IconIconEyeCloseCopy key="5" {...rest} />;
     case 'daoban-copy':
       return <IconDaobanCopy key="6" {...rest} />;
+    case 'sousuo':
+      return <IconSousuo key="7" {...rest} />;
   }
 
   return null;
