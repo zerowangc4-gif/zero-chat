@@ -26,7 +26,6 @@ const AvatarContent = styled.View`
     margin-right: ${theme.spacing.step.sm}px;
   `}
 `;
-
 const StatusDot = styled.View<{ $isConnected: boolean }>`
   ${({ theme, $isConnected }) => css`
     width: ${STATUS_DOT_SIZE}px;
@@ -37,11 +36,10 @@ const StatusDot = styled.View<{ $isConnected: boolean }>`
     bottom: -1px;
     right: -1px;
     border-width: 2px;
-    border-color: ${theme.colors.surface_bg};
+    border-color: ${theme.colors.surfaceBg};
     z-index: 10;
   `}
 `;
-
 const InfoContent = styled.View`
   ${({ theme }) => css`
     gap: ${theme.spacing.step.xs}px;
