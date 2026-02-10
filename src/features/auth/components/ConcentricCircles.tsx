@@ -44,7 +44,7 @@ const IconContainer = styled.View`
 export const ConcentricCircles = () => {
   const { palette, typography } = useTheme();
 
-  const ringPalette = [palette.gray["300"], palette.gray["200"], palette.gray["200"], palette.white];
+  const ringPalette = [palette.gray["300"], palette.gray["200"], palette.gray["100"], palette.white];
 
   return (
     <Container>
