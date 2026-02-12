@@ -1,2 +1,1 @@
-export * from "./AccountInfo";
-export * from "./HeaderAction";
+export * from "./Chats";

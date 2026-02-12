@@ -7,7 +7,7 @@ interface Props {
   size?: number;
 }
 
-export function Avatar({ publicKey, size = 50 }: Props) {
+export function Avatar({ publicKey, size }: Props) {
   const svgCode = useMemo(() => {
     return multiavatar(publicKey);
   }, [publicKey]);

@@ -22,7 +22,7 @@ export const BaseInput = styled.TextInput.attrs<TextInputProps & { $size?: Size 
   ${({ theme, $size }) => {
     const config = $size ? theme.presets.Input[$size] : null;
     return css`
-      color: ${theme.colors.word};
+      color: ${theme.colors.base};
       font-family: ${theme.typography.family.base};
       font-size: ${config ? config.fontSize : theme.typography.size.md}px;
     `;

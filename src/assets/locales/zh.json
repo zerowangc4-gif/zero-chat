@@ -26,7 +26,8 @@
   },
   "chat": {
     "Online": "在线",
-    "Offline": "离线"
+    "Offline": "离线",
+    "searchFriend": "搜索好友"
   },
   "common": {
     "loading": "加载中"

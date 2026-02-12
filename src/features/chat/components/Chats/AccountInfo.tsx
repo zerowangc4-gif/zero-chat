@@ -1,7 +1,7 @@
 import React from "react";
 import styled, { css } from "styled-components/native";
 import { Avatar, Typography } from "@/components";
-import { useChars } from "../hooks";
+import { useChars } from "@/features/chat/hooks";
 import { useSocket } from "@/socket";
 import { useApp } from "@/hooks";
 
