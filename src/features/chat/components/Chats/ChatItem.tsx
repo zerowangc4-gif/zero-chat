@@ -30,7 +30,7 @@ const Content = styled.View`
   ${({ theme }) => {
     return css`
       flex: 1;
-      gap: ${theme.spacing.step.sm}px;
+      gap: ${theme.spacing.step.xs}px;
     `;
   }}
 `;
