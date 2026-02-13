@@ -2,7 +2,6 @@ import styled, { css } from "styled-components/native";
 import { Avatar, Typography } from "@/components";
 import { useApp } from "@/hooks";
 import { size } from "./AccountInfo";
-import { useChars } from "@/features/chat/hooks";
 const Container = styled.Pressable`
   ${({ theme }) => {
     return css`
@@ -50,9 +49,9 @@ interface ChatItemProps {
   lastMsg?: string;
   time?: string;
 }
-export function ChatItem(_props: ChatItemProps) {
+export function ChatItem({ username, publicKey, address, lastMsg, time }: ChatItemProps) {
   const { theme } = useApp();
-  const { username, publicKey } = useChars();
+  console.log(address);
   return (
     <Container>
       <AvatarBox>
@@ -64,11 +63,11 @@ export function ChatItem(_props: ChatItemProps) {
             {username}
           </Typography>
           <Typography type="caption" color={theme.colors.secondaryWord}>
-            10:20
+            {time}
           </Typography>
         </TitleRow>
         <Typography type="caption" color={theme.colors.secondaryWord}>
-          你好这是最后一条信息
+          {lastMsg}
         </Typography>
       </Content>
     </Container>

@@ -1,7 +1,6 @@
 import styled from "styled-components/native";
-import { useWelcome } from "../hooks";
+import { useWelcome, ConcentricCircles } from "@/features/auth";
 import { BaseScreen, Button, Typography, Main } from "@/components";
-import { ConcentricCircles } from "../components";
 
 const ContentContainer = styled(Main)`
   padding-top: ${props => props.theme.spacing.layout.homeTop}px;

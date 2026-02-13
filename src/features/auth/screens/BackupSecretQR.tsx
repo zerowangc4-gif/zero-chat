@@ -1,7 +1,7 @@
 import styled from "styled-components/native";
 
 import { BaseScreen, Button, Header, Main, Typography } from "@/components";
-import { useBackupSecretQR } from "../hooks";
+import { useBackupSecretQR } from "@/features/auth";
 
 const MainContent = styled(Main)`
   padding-left: ${props => props.theme.spacing.step.xl}px;

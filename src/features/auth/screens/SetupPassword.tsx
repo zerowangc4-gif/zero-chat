@@ -1,5 +1,5 @@
 import { BaseScreen, Header, Main, Typography, Input, Button } from "@/components";
-import { useSetupPassword } from "../hooks";
+import { useSetupPassword } from "@/features/auth";
 import styled from "styled-components/native";
 
 const MainContent = styled(Main)`
