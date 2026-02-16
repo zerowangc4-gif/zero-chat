@@ -6,6 +6,7 @@ import { ThemeProvider } from "styled-components/native";
 import { Provider } from "react-redux";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { PersistGate } from "redux-persist/integration/react";
+import { KeyboardProvider } from "react-native-keyboard-controller";
 import { lightTheme, darkTheme } from "@/theme";
 import { RootNavigator } from "@/navigation";
 import { store, persistor } from "@/store";
@@ -16,10 +17,12 @@ const App = () => {
     <SafeAreaProvider>
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
-          <ThemeProvider theme={theme}>
-            <RootNavigator />
-            <ToastAPI config={Toast.config} />
-          </ThemeProvider>
+          <KeyboardProvider>
+            <ThemeProvider theme={theme}>
+              <RootNavigator />
+              <ToastAPI config={Toast.config} />
+            </ThemeProvider>
+          </KeyboardProvider>
         </PersistGate>
       </Provider>
     </SafeAreaProvider>

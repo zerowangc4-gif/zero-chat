@@ -9,10 +9,6 @@ interface Message {
   createdAt: number;
 }
 
-const Container = styled.View`
-  flex: 1;
-`;
-
 // 这是一个临时的消息气泡组件，稍后我们会详细美化它
 const MessageItem = styled.View<{ isMe: boolean }>`
   padding: 12px;
@@ -66,27 +62,22 @@ export function MessageList() {
   };
 
   return (
-    <Container>
+    <>
       <FlatList
         data={messages}
         renderItem={renderItem}
         keyExtractor={item => item.id}
-        // 核心：反转列表，让消息从底部开始排列
         inverted
-        // 隐藏滚动条让界面更清爽
         showsVerticalScrollIndicator={false}
-        // 优化性能
         contentContainerStyle={styles.listContentContainer}
       />
       <MessageInput />
-    </Container>
+    </>
   );
 }
 
 const styles = StyleSheet.create({
   listContentContainer: {
-    flexGrow: 1,
     paddingVertical: 16,
-    justifyContent: "flex-end",
   },
 });
