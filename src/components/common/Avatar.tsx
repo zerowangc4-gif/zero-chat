@@ -3,13 +3,13 @@ import multiavatar from "@multiavatar/multiavatar";
 import { SvgXml } from "react-native-svg";
 
 interface Props {
-  publicKey: string;
+  avatarSeed: string;
   size?: number;
 }
 
-export function Avatar({ publicKey, size }: Props) {
+export function Avatar({ avatarSeed, size }: Props) {
   const svgCode = useMemo(() => {
-    return multiavatar(publicKey);
-  }, [publicKey]);
+    return multiavatar(avatarSeed);
+  }, [avatarSeed]);
   return <SvgXml xml={svgCode} width={size} height={size} />;
 }

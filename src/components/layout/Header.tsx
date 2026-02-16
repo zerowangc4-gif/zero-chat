@@ -49,7 +49,9 @@ export const Header: React.FC<HeaderProps> = ({ title, leftElement, rightElement
     <HeaderContainer height={height} paddingTop={insets.top} hasContent={hasContent}>
       <HeaderContent>
         <SideSlot $align="left">{leftElement}</SideSlot>
-        <NavTitle numberOfLines={1}>{title}</NavTitle>
+        <NavTitle numberOfLines={1} weight="bold">
+          {title}
+        </NavTitle>
         <SideSlot $align="right">{rightElement}</SideSlot>
       </HeaderContent>
     </HeaderContainer>

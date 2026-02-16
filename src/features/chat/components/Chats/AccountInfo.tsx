@@ -48,13 +48,13 @@ const InfoContent = styled.View`
 
 export function AccountInfo(props: AccountInfoProps) {
   const { theme, t } = useApp();
-  const { publicKey, username } = useChars();
+  const { avatarSeed, username } = useChars();
   const { isConnected } = useSocket();
 
   return (
     <AccountInfoContainer>
       <AvatarContent>
-        <Avatar publicKey={publicKey} size={size[props.type]} />
+        <Avatar avatarSeed={avatarSeed} size={size[props.type]} />
         <StatusDot $isConnected={isConnected} />
       </AvatarContent>
       <InfoContent>

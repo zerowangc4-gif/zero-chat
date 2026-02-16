@@ -42,20 +42,27 @@ const TitleRow = styled.View`
     `;
   }}
 `;
-interface ChatItemProps {
+export interface ChatItemProps {
   username: string;
   publicKey: string;
+  avatarSeed: string;
   address: string;
   lastMsg?: string;
   time?: string;
+  onPress?: () => void;
 }
-export function ChatItem({ username, publicKey, address, lastMsg, time }: ChatItemProps) {
+export function ChatItem({ username, avatarSeed, lastMsg, time, onPress, ...props }: ChatItemProps) {
   const { theme } = useApp();
-  console.log(address);
   return (
-    <Container>
+    <Container
+      {...props}
+      onPress={onPress}
+      style={({ pressed }) => ({
+        backgroundColor: pressed ? theme.colors.fillSecondary : theme.colors.base,
+        opacity: pressed ? theme.interactive.activeOpacity : 1,
+      })}>
       <AvatarBox>
-        <Avatar publicKey={publicKey} size={size.medium} />
+        <Avatar avatarSeed={avatarSeed} size={size.medium} />
       </AvatarBox>
       <Content>
         <TitleRow>

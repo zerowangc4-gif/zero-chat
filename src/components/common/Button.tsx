@@ -77,6 +77,7 @@ export function Button({
       $block={block}
       $bg={bg}
       style={({ pressed }) => ({
+        backgroundColor: pressed ? theme.colors.fillSecondary : bg,
         opacity: pressed ? theme.interactive.activeOpacity : 1,
       })}>
       <Content>

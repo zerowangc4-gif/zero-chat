@@ -30,6 +30,7 @@
     "searchFriend": "搜索好友"
   },
   "common": {
-    "loading": "加载中"
+    "loading": "加载中",
+    "server_error": "系统异常，请稍后再试"
   }
 }

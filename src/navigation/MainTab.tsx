@@ -14,6 +14,7 @@ function MainTab() {
 
   return (
     <Tab.Navigator
+      id="tabs"
       screenOptions={{
         headerShown: false,
         tabBarActiveTintColor: theme.colors.activeColor,

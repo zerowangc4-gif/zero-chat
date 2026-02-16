@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "sync": "rimraf node_modules package-lock.json && npm install",
+    "sync": "rimraf node_modules package-lock.json android/app/.cxx android/app/build android/.gradle && npm install",
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "lint": "eslint .",

@@ -4,7 +4,7 @@ import { Toast } from "@/components";
 import ViewShot from "react-native-view-shot";
 import QRCode from "react-native-qrcode-svg";
 import { useApp, useAndroidPermission } from "@/hooks";
-import { loginApp } from "../store";
+import { loginApp } from "@/features/auth";
 import { getErrorMessage, getFormatEncryptedMnemonic } from "@/utils";
 
 export function useBackupSecretQR() {

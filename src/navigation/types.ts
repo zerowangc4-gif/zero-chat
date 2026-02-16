@@ -17,7 +17,7 @@ export type MainTabParamList = {
 export type RootStackParamList = {
   [ROUTES.AuthStack]: NavigatorScreenParams<AuthStackParamList>;
   [ROUTES.MainTab]: NavigatorScreenParams<MainTabParamList>;
-  [ROUTES.Chat]: { chatId: string; title: string };
+  [ROUTES.Chat]: { avatarSeed: string; username: string };
 };
 
 // 平铺所有路由，用于全局导航提示
