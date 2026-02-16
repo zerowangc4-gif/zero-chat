@@ -11,18 +11,22 @@ const Container = styled.View<{
       flex-direction: row;
       min-height: ${theme.size.md}px;
       align-items: flex-end;
-      padding-top: ${props => props.theme.spacing.step.xs};
-      padding-right: ${props => props.theme.spacing.step.sm}px;
-      padding-bottom: ${$bottom};
-      padding-left: ${props => props.theme.spacing.step.sm}px;
+      padding-top: ${theme.spacing.step.xs}px;
+      padding-right: ${theme.spacing.step.sm}px;
+      padding-bottom: ${$bottom}px;
+      padding-left: ${theme.spacing.step.sm}px;
       background-color: ${theme.colors.fillSecondary};
     `;
   }}
 `;
 
 const Left = styled.View`
-  padding-right: ${props => props.theme.spacing.step.sm}px;
-  padding-bottom: ${props => props.theme.spacing.step.xs}px;
+  ${({ theme }) => {
+    return css`
+      padding-right: ${theme.spacing.step.sm}px;
+      padding-bottom: ${theme.spacing.step.xs}px;
+    `;
+  }}
 `;
 
 const Center = styled.View`
@@ -38,19 +42,24 @@ const Center = styled.View`
 `;
 
 const Right = styled.View`
-  flex-direction: row;
-  padding-left: ${props => props.theme.spacing.step.sm}px;
-  padding-bottom: ${props => props.theme.spacing.step.xs}px;
-  gap: ${props => props.theme.spacing.step.sm}px;
+  ${({ theme }) => {
+    return css`
+      flex-direction: row;
+      padding-left: ${theme.spacing.step.sm}px;
+      padding-bottom: ${theme.spacing.step.xs}px;
+      gap: ${theme.spacing.step.sm}px;
+    `;
+  }}
 `;
+
 export function MessageInput() {
   const { insets, theme } = useApp();
   const [text, setText] = useState("");
-
+  const bottom = insets.bottom + theme.spacing.step.xs;
   return (
-    <Container $bottom={insets.bottom}>
+    <Container $bottom={bottom}>
       <Left>
-        <ActionIcon name="shengyin" size={24} color={theme.colors.baseInverse} />
+        <ActionIcon name="shengyin" size={theme.typography.size.lg} color={theme.colors.baseInverse} />
       </Left>
       <Center>
         <BaseInput

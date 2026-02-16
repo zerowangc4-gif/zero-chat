@@ -5,7 +5,7 @@ export function Chat() {
   return (
     <BaseScreen>
       <ChatHeader />
-      <Main hasHeader={true}>
+      <Main hasHeader={true} enableKeyboardAvoiding={true}>
         <MessageList />
       </Main>
     </BaseScreen>
