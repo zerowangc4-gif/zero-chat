@@ -87,12 +87,9 @@ export class SocketManager {
       this.stopHeartbeat();
 
       if (err.message === AT_EXPIRE) {
-        console.log("检测到 Token 过期，准备通过 AuthService 自愈...");
-
         try {
           await authService.refreshToken("at_expire");
 
-          console.log("换票成功，重新初始化连接...");
           this.disconnect();
           this.connect();
         } catch (error: unknown) {

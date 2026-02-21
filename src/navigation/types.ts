@@ -10,14 +10,14 @@ export type AuthStackParamList = {
 };
 
 export type MainTabParamList = {
-  [ROUTES.ChatList]: undefined;
+  [ROUTES.Chats]: undefined;
   [ROUTES.Me]: undefined;
 };
 
 export type RootStackParamList = {
   [ROUTES.AuthStack]: NavigatorScreenParams<AuthStackParamList>;
   [ROUTES.MainTab]: NavigatorScreenParams<MainTabParamList>;
-  [ROUTES.Chat]: { chatId: string; title: string };
+  [ROUTES.Chat]: { avatarSeed: string; username: string; address: string; publicKey: string };
 };
 
 // 平铺所有路由，用于全局导航提示

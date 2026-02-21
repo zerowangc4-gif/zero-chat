@@ -11,7 +11,7 @@ const InputContainer = styled.View<{
 }>`
   ${({ theme, $size, $isFocused }) => {
     const config = theme.presets.Input[$size];
-    const borderColor = $isFocused ? theme.colors.inputBorderActiveColor : theme.colors.inputBorderColor;
+    const borderColor = $isFocused ? theme.colors.activeColor : theme.colors.borderColor;
     return css`
       flex-direction: row;
       align-items: center;
@@ -20,7 +20,7 @@ const InputContainer = styled.View<{
       border-width: ${config.borderWidth}px;
       border-color: ${borderColor};
       border-radius: ${config.borderRadius}px;
-      background-color: ${theme.colors.inputBg};
+      background-color: ${theme.colors.surfaceBg};
     `;
   }}
 `;
@@ -69,18 +69,12 @@ export const Input = ({ size = "md", value, ...props }: InputProps) => {
       />
 
       <RightActions $size={size}>
-        {!!value && !props.secureTextEntry && (
-          <Pressable onPress={() => props.onChangeText?.("")} hitSlop={20}>
-            <IconFont name="icon-eye-close-copy" size={theme.typography.size.md} color={theme.colors.bgPage} />
-          </Pressable>
-        )}
-
         {props.secureTextEntry && (
           <Pressable onPress={() => setPasswordVisible(!passwordVisible)} hitSlop={20}>
             <IconFont
               name={passwordVisible ? "icon-eye-open-copy" : "icon-eye-close-copy"}
               size={theme.typography.size.lg}
-              color={theme.colors.inputEyesColor}
+              color={theme.colors.secondaryWord}
             />
           </Pressable>
         )}

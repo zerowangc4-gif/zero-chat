@@ -27,7 +27,7 @@ export const Typography = styled.Text.attrs<AppTextProps>(
       font-weight: ${theme.typography.weight[weight]};
       color: ${color};
       line-height: ${lineHeight}px;
-      padding-bottom: 2px;
+      padding-bottom: 1px;
       ${style.letterSpacing ? `letter-spacing: ${style.letterSpacing}px;` : ""}
       ${style.fontVariant && style.fontVariant.length > 0 ? `font-variant: ${style.fontVariant.join(" ")};` : ""}
        flex-shrink: 1;

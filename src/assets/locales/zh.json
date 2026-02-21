@@ -20,7 +20,17 @@
     "backup_qr_helper": "身份恢复唯一凭证 · 请勿联网存储",
     "action_claim_identity": "领取数字身份"
   },
+  "tabs": {
+    "chats": "聊天",
+    "me": "我"
+  },
+  "chat": {
+    "Online": "在线",
+    "Offline": "离线",
+    "searchFriend": "搜索好友"
+  },
   "common": {
-    "loading": "加载中"
+    "loading": "加载中",
+    "server_error": "系统异常，请稍后再试"
   }
 }

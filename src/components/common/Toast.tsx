@@ -8,7 +8,7 @@ const ErrorToastContainer = styled.View`
     width: 90%;
     padding: ${theme.spacing.layout.navBarHeight}px;
     border-radius: ${theme.radii.scale.lg}px;
-    background-color: ${theme.colors.black};
+    background-color: ${theme.colors.baseInverse};
     align-self: center;
     ${theme.shadows.mid}
     elevation:6;

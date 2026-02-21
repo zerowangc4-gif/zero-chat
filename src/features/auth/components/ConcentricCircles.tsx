@@ -33,7 +33,7 @@ const OrbitRing = styled.View<{ size: number; color: string }>`
 const IconContainer = styled.View`
   width: ${CONFIG.iconBoxSize}px;
   height: ${CONFIG.iconBoxSize}px;
-  background-color: ${props => props.theme.colors.white};
+  background-color: ${props => props.theme.colors.base};
   border-radius: ${CONFIG.iconBoxRadius}px;
   justify-content: center;
   align-items: center;
@@ -42,9 +42,9 @@ const IconContainer = styled.View`
 `;
 
 export const ConcentricCircles = () => {
-  const { colors, typography } = useTheme();
+  const { palette, typography } = useTheme();
 
-  const ringPalette = [colors.ringDeep, colors.ringMedium, colors.ringLight, colors.ringFaint];
+  const ringPalette = [palette.gray["300"], palette.gray["200"], palette.gray["100"], palette.white];
 
   return (
     <Container>

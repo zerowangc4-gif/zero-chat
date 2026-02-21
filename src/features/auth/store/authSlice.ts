@@ -5,6 +5,7 @@ export interface User {
   address: string;
   publicKey: string;
   username: string;
+  avatarSeed: string;
 }
 
 export interface AuthData {
@@ -22,6 +23,7 @@ const authData = {
     address: "",
     publicKey: "",
     username: "",
+    avatarSeed: "",
   },
   accessToken: "",
   refreshToken: "",
@@ -44,6 +46,10 @@ const authSlice = createSlice({
       state.accessToken = action.payload.accessToken;
       state.refreshToken = action.payload.refreshToken;
     },
+    setAvatarSeed: (state, action: PayloadAction<string>) => {
+      state.user.avatarSeed = action.payload;
+      console.log(action.payload);
+    },
   },
 });
 
@@ -55,7 +61,8 @@ export interface RegistrationPayload {
 }
 
 export const loginApp = createAction<RegistrationPayload>("auth/loginApp");
+export const updateUserAvatar = createAction<string>("user/loginApp");
 
-export const { setAuthData, clearAuthData, setTokens } = authSlice.actions;
+export const { setAuthData, clearAuthData, setTokens, setAvatarSeed } = authSlice.actions;
 
 export default authSlice.reducer;
