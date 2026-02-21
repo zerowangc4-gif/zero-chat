@@ -1,7 +1,7 @@
 import styled, { css } from "styled-components/native";
 import { Avatar, Typography } from "@/components";
-import { useApp } from "@/hooks";
 import { size } from "./AccountInfo";
+import { useChars, Contacts } from "@/features/chat";
 const Container = styled.Pressable`
   ${({ theme }) => {
     return css`
@@ -42,20 +42,16 @@ const TitleRow = styled.View`
     `;
   }}
 `;
-export interface ChatItemProps {
-  username: string;
-  publicKey: string;
-  avatarSeed: string;
-  address: string;
+export interface ChatItemProps extends Contacts {
   lastMsg?: string;
   time?: string;
   onPress?: () => void;
 }
-export function ChatItem({ username, avatarSeed, lastMsg, time, onPress, ...props }: ChatItemProps) {
-  const { theme } = useApp();
+export function ChatItem({ username, avatarSeed, lastMsg, time, onPress }: ChatItemProps) {
+  const { theme } = useChars();
+
   return (
     <Container
-      {...props}
       onPress={onPress}
       style={({ pressed }) => ({
         backgroundColor: pressed ? theme.colors.fillSecondary : theme.colors.base,

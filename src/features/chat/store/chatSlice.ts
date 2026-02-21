@@ -1,50 +1,71 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createAction, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-export type MessageStatus = "pending" | "success" | "failed";
+export type MessageStatus = "pending" | "sent_to_server" | "delivered" | "read" | "failed";
 
 export type MessageType = "text" | "image" | "voice";
 
-export interface IMessage {
+export interface Contacts {
+  id: number;
+  username: string;
+  publicKey: string;
+  address: string;
+  avatarSeed: string;
+  createdAt: Date;
+}
+
+export interface Message {
   id: string;
-  senderId: string;
-  receiverId: string;
+  toId: string;
+  fromId: string;
   content: string;
   createdAt: number;
   type: MessageType;
   status: MessageStatus;
 }
-
-interface ChatState {
-  messagesByChatId: Record<string, IMessage[]>;
+export interface Messages {
+  chatMap: {
+    [key: string]: Message[];
+  };
+}
+export interface MessagePayload {
+  chatId: string;
+  message: Message;
 }
 
-const initialState: ChatState = {
-  messagesByChatId: {},
-};
+const initialState = { chatMap: {}, contacts: [] };
 
 const chatSlice = createSlice({
   name: "chat",
   initialState,
   reducers: {
-    setMessage: (state, action: PayloadAction<{ chatId: string; message: IMessage }>) => {
+    setContacts: (state, action: PayloadAction<Contacts[]>) => {
+      state.contacts = action.payload;
+    },
+    insertMessage: (state, action: PayloadAction<MessagePayload>) => {
       const { chatId, message } = action.payload;
-
-      if (!state.messagesByChatId[chatId]) {
-        state.messagesByChatId[chatId] = [];
+      if (!state.chatMap) {
+        state.chatMap = {};
       }
-
-      const currentMessages = state.messagesByChatId[chatId];
-
-      const existingIndex = currentMessages.findIndex(m => m.id === message.id);
-
-      if (existingIndex !== -1) {
-        currentMessages[existingIndex] = message;
-      } else {
-        currentMessages.push(message);
+      if (!state.chatMap[chatId]) {
+        state.chatMap[chatId] = [];
+      }
+      state.chatMap[chatId].unshift(message);
+    },
+    updateMessageStatus: (state, action: PayloadAction<{ chatId: string; id: string; status: MessageStatus }>) => {
+      const { chatId, id, status } = action.payload;
+      const messages = state.chatMap[chatId];
+      if (messages) {
+        const msg = messages.find((message: Message) => message.id === id);
+        if (msg) {
+          msg.status = status;
+        }
       }
     },
   },
 });
 
-export const { setMessage } = chatSlice.actions;
+export const { insertMessage, setContacts, updateMessageStatus } = chatSlice.actions;
+
+export const fetchContacts = createAction("chat/contacts");
+
 export default chatSlice.reducer;

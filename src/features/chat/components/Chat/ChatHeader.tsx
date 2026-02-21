@@ -6,9 +6,18 @@ export function ChatHeader() {
   const { username } = useChat();
   return (
     <Header
-      leftElement={<ActionIcon size={24} color={theme.colors.baseInverse} onPress={navigation.goBack} name="fanhui1" />}
+      leftElement={
+        <ActionIcon
+          size={theme.typography.size.lg}
+          color={theme.colors.baseInverse}
+          onPress={navigation.goBack}
+          name="fanhui1"
+        />
+      }
       title={username}
-      rightElement={<ActionIcon size={24} color={theme.colors.baseInverse} name="sangediandian" />}
+      rightElement={
+        <ActionIcon size={theme.typography.size.lg} color={theme.colors.baseInverse} name="sangediandian" />
+      }
     />
   );
 }

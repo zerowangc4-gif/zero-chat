@@ -16,7 +16,7 @@ function* handleLoginApp(action?: BaseAction): Generator {
   if (!action?.payload) {
     throw new Error(t("auth.error_generation_failed"));
   }
-  console.log(action);
+
   try {
     const { address, publicKey, username, uri } = action.payload;
 

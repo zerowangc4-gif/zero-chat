@@ -1,6 +1,5 @@
 import { ActionIcon, BaseInput } from "@/components";
-import { useApp } from "@/hooks";
-import { useState } from "react";
+import { useChat } from "@/features/chat";
 import styled, { css } from "styled-components/native";
 
 const Container = styled.View<{
@@ -53,9 +52,8 @@ const Right = styled.View`
 `;
 
 export function MessageInput() {
-  const { insets, theme } = useApp();
-  const [text, setText] = useState("");
-  const bottom = insets.bottom + theme.spacing.step.xs;
+  const { text, setText, bottom, theme, onSend } = useChat();
+
   return (
     <Container $bottom={bottom}>
       <Left>
@@ -73,7 +71,16 @@ export function MessageInput() {
       </Center>
       <Right>
         <ActionIcon name="xiaolian" size={theme.typography.size.lg} color={theme.colors.baseInverse} />
-        <ActionIcon name="jiahao" size={theme.typography.size.lg} color={theme.colors.baseInverse} />
+        {text.trim() ? (
+          <ActionIcon
+            name="fasongxiaoxi"
+            size={theme.typography.size.lg}
+            color={theme.palette.brand}
+            onPress={onSend}
+          />
+        ) : (
+          <ActionIcon name="jiahao" size={theme.typography.size.lg} color={theme.colors.baseInverse} />
+        )}
       </Right>
     </Container>
   );
