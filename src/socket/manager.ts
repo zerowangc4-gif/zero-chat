@@ -4,6 +4,7 @@ import { io, Socket } from "socket.io-client";
 import { setupSocketListeners } from "./listeners";
 import { authService } from "@/api";
 import { AT_EXPIRE } from "@/constants";
+import { startSync } from "./emitter";
 type SocketType = Socket | null;
 
 export class SocketManager {
@@ -76,6 +77,7 @@ export class SocketManager {
     this.socket.on("connect", () => {
       this.setStatus(true);
       this.startHeartbeat();
+      startSync();
     });
     this.socket.on("disconnect", () => {
       this.setStatus(false);

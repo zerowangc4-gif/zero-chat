@@ -1,8 +1,9 @@
+import { store } from "@/store";
 import { SocketManager } from "./manager";
-import { MessageStatus } from "@/features/chat";
+import { MessageStatus, Message, batchInsertMessages } from "@/features/chat";
 
 interface ChatMessagePayload {
-  to: string;
+  toId: string;
   content: string;
   clientMsgId: string;
 }
@@ -22,27 +23,30 @@ export function sendMessage(data: ChatMessagePayload): Promise<MessageAck> {
       return;
     }
 
-    socket.emit("send_message", data, (ack: MessageAck) => {
-      console.log(ack);
-      resolve(ack);
+    socket.timeout(5000).emit("send_message", data, (err: unknown, ack: MessageAck) => {
+      if (err) {
+        return resolve({ status: "failed", message: "timeout" });
+      } else {
+        resolve(ack);
+      }
     });
   });
 }
 
 // 发送已读回执
-export function sendReadReport(from: string, lastReadSeqId: number) {
+export function sendReadReport(fromId: string, lastReadSeqId: number) {
   const socket = SocketManager.getInstance().socket;
   if (socket?.connected) {
-    socket.emit("read_report", { from, lastReadSeqId });
+    socket.emit("read_report", { fromId, lastReadSeqId });
   }
 }
 
-//  同步离线消息
+// 离线同步消息
 export function syncOfflineMessages(lastSeqId: number): Promise<unknown> {
   return new Promise(resolve => {
     const socket = SocketManager.getInstance().socket;
     if (!socket?.connected) {
-      resolve({ status: "error", message: "Socket not connected" });
+      resolve({ status: "failed", message: "Socket not connected" });
       return;
     }
 
@@ -50,4 +54,33 @@ export function syncOfflineMessages(lastSeqId: number): Promise<unknown> {
       resolve(response);
     });
   });
+}
+
+export async function startSync() {
+  const state = store.getState();
+  const chatMap = state.chat.chatMap;
+
+  let maxSeqId = 0;
+
+  Object.values(chatMap).forEach((messages: Message[]) => {
+    messages.forEach(msg => {
+      if (msg.seqId && msg.seqId > maxSeqId) {
+        maxSeqId = msg.seqId;
+      }
+    });
+  });
+
+  const myLastNumber = maxSeqId;
+
+  const response = (await syncOfflineMessages(myLastNumber)) as {
+    status: MessageStatus;
+    data: Message[];
+  };
+
+  if (response.status === "delivered") {
+    const newMessages = response.data;
+    if (newMessages.length > 0) {
+      store.dispatch(batchInsertMessages(newMessages));
+    }
+  }
 }

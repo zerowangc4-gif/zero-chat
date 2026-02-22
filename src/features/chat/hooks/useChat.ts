@@ -1,10 +1,10 @@
 import { ROUTES } from "@/navigation";
 import { useApp } from "@/hooks";
-import { insertMessage, MessagePayload } from "@/features/chat";
+import { insertMessage, MessagePayload, updateMessageStatus, Message } from "@/features/chat";
 import { useAppSelector } from "@/store";
 import { generateId } from "@/utils";
-import { useCallback, useState } from "react";
-import { sendMessage } from "@/socket";
+import { useCallback, useEffect, useState } from "react";
+import { sendMessage, sendReadReport } from "@/socket";
 export function useChat() {
   const { route, dispatch, theme, insets } = useApp<typeof ROUTES.Chat>();
   const { user } = useAppSelector(state => state.auth);
@@ -13,6 +13,20 @@ export function useChat() {
   const [text, setText] = useState("");
 
   const bottom = insets.bottom + theme.spacing.step.xs;
+
+  useEffect(() => {
+    const opponentMessages = (messages ? messages : []).filter(
+      (msg: Message) => msg.fromId === address && typeof msg.seqId === "number",
+    );
+
+    if (opponentMessages.length > 0) {
+      const lastMsg = opponentMessages[opponentMessages.length - 1];
+
+      if (lastMsg.seqId) {
+        sendReadReport(address, lastMsg.seqId);
+      }
+    }
+  }, [messages, address]);
 
   const formatMessage = useCallback(
     (content: string): MessagePayload => {
@@ -23,7 +37,7 @@ export function useChat() {
           toId: address,
           fromId: user.address,
           content: content.trim(),
-          createdAt: Date.now(),
+          timestamp: Date.now(),
           type: "text",
           status: "pending",
         },
@@ -37,14 +51,27 @@ export function useChat() {
     dispatch(insertMessage(payload));
     setText("");
     const ack = await sendMessage({
-      to: address,
+      toId: address,
       content: text,
       clientMsgId: payload.message.id,
     });
-    if (ack.status === "sentToServer") {
-      // dispatch(updateMessageStatus({ id: newMessage.id, status: 'success' }));
+    if (ack.status === "delivered" || ack.status === "sentToServer") {
+      dispatch(
+        updateMessageStatus({
+          chatId: payload.chatId,
+          id: payload.message.id,
+          status: ack.status,
+          seqId: ack.seqId,
+        }),
+      );
     } else {
-      // 处理错误状态
+      dispatch(
+        updateMessageStatus({
+          chatId: payload.chatId,
+          id: payload.message.id,
+          status: "failed",
+        }),
+      );
     }
   };
 
