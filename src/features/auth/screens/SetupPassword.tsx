@@ -1,5 +1,5 @@
 import { BaseScreen, Header, Main, Typography, Input, Button } from "@/components";
-import { useSetupPassword } from "../hooks";
+import { useSetupPassword } from "@/features/auth";
 import styled from "styled-components/native";
 
 const MainContent = styled(Main)`
@@ -101,12 +101,11 @@ export function SetupPassword() {
       <Footer>
         <Button
           size="lg"
-          type="primary"
-          block={true}
-          loading={isGenerating}
           title={isGenerating ? t("common.loading") : t("auth.action_generate_and_backup")}
-          onPress={handleContinue}
+          loading={isGenerating}
           disabled={!isFormValid}
+          bgColor={theme.colors.baseInverse}
+          onPress={handleContinue}
         />
       </Footer>
     </BaseScreen>

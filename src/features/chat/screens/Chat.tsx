@@ -1,8 +1,13 @@
-import { Typography, BaseScreen } from "@/components";
-export function ChatScreen() {
+import { BaseScreen, Main } from "@/components";
+import { ChatHeader, MessageList } from "@/features/chat";
+
+export function Chat() {
   return (
     <BaseScreen>
-      <Typography type="main">你好啊世界</Typography>
+      <ChatHeader />
+      <Main hasHeader={true} enableKeyboardAvoiding={true}>
+        <MessageList />
+      </Main>
     </BaseScreen>
   );
 }

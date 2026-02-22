@@ -1,22 +1,50 @@
-import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
-import { useTranslation } from "react-i18next";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { useApp } from "@/hooks";
 import { ROUTES } from "./routes";
 import { MainTabParamList } from "./types";
-import { ChatListScreen } from "@/features/chat";
-import { MeScreen } from "@/features/profile";
-const Tab = createMaterialTopTabNavigator<MainTabParamList>();
+import { Chats } from "@/features/chat";
+import { Me } from "@/features/profile";
+import { TabIcon } from "./helpers";
+
+const Tab = createBottomTabNavigator<MainTabParamList>();
 
 function MainTab() {
-  const { t } = useTranslation();
+  const { t, theme, insets } = useApp();
+  const TAB_BAR_HEIGHT = theme.size.md + insets.bottom;
+
   return (
     <Tab.Navigator
-      tabBarPosition="bottom"
+      id="tabs"
       screenOptions={{
-        swipeEnabled: true,
-        lazy: true,
+        headerShown: false,
+        tabBarActiveTintColor: theme.colors.activeColor,
+        tabBarInactiveTintColor: theme.colors.baseInverse,
+        tabBarLabelStyle: { fontSize: theme.typography.size.xs },
+        tabBarStyle: {
+          height: TAB_BAR_HEIGHT,
+          paddingBottom: insets.bottom > 0 ? insets.bottom : theme.spacing.step.xs,
+          backgroundColor: theme.colors.base,
+          borderTopWidth: 0.5,
+          elevation: 0,
+          shadowOpacity: 0,
+        },
       }}>
-      <Tab.Screen name={ROUTES.ChatList} component={ChatListScreen} options={{ tabBarLabel: t("tabs.chats") }} />
-      <Tab.Screen name={ROUTES.Me} component={MeScreen} options={{ tabBarLabel: t("tabs.me") }} />
+      <Tab.Screen
+        name={ROUTES.Chats}
+        component={Chats}
+        options={{
+          tabBarLabel: t("tabs.chats"),
+          tabBarIcon: TabIcon("gl-bubble"),
+        }}
+      />
+      <Tab.Screen
+        name={ROUTES.Me}
+        component={Me}
+        options={{
+          tabBarLabel: t("tabs.me"),
+          tabBarIcon: TabIcon("wode"),
+        }}
+      />
     </Tab.Navigator>
   );
 }

@@ -1,41 +1,49 @@
 import React from "react";
-import { ViewProps, Platform } from "react-native";
+import { ViewProps } from "react-native";
 import styled, { useTheme } from "styled-components/native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-const MainContainer = styled.KeyboardAvoidingView`
+import { KeyboardAvoidingView } from "react-native-keyboard-controller";
+
+const Container = styled.View`
   flex: 1;
 `;
 
-const StyledScrollView = styled.ScrollView.attrs(() => ({
-  // 确保内容不满一屏时也能触发弹性（可选）
-  contentContainerStyle: { flexGrow: 1 },
-  // 点击空白处收起键盘，这是大厂 UI 体验的标配
-  keyboardShouldPersistTaps: "handled",
-}))`
+const Content = styled.View<{ $paddingTop: number }>`
   flex: 1;
+  padding-top: ${props => props.$paddingTop}px;
 `;
-
-const ScrollInner = styled.View<{ paddingTop: number }>`
+const StyledKeyboardAvoidingView = styled(KeyboardAvoidingView)`
   flex: 1;
-  padding-top: ${props => props.paddingTop}px;
 `;
 
 interface MainProps extends ViewProps {
   hasHeader?: boolean;
+  enableKeyboardAvoiding?: boolean;
 }
 
-export const Main: React.FC<MainProps> = ({ children, hasHeader = false, style }) => {
+export const Main: React.FC<MainProps> = ({ children, hasHeader = false, enableKeyboardAvoiding = false, style }) => {
   const theme = useTheme();
   const insets = useSafeAreaInsets();
-
   const paddingTop = hasHeader ? theme.spacing.layout.navBarHeight + insets.top : insets.top;
 
+  if (!enableKeyboardAvoiding) {
+    return (
+      <Container>
+        <Content $paddingTop={paddingTop} style={style}>
+          {children}
+        </Content>
+      </Container>
+    );
+  }
+
   return (
-    <MainContainer behavior={Platform.OS === "ios" ? "padding" : undefined} style={style}>
-      <StyledScrollView bounces={false} showsVerticalScrollIndicator={false}>
-        <ScrollInner paddingTop={paddingTop}>{children}</ScrollInner>
-      </StyledScrollView>
-    </MainContainer>
+    <Container>
+      <StyledKeyboardAvoidingView behavior="padding">
+        <Content $paddingTop={paddingTop} style={style}>
+          {children}
+        </Content>
+      </StyledKeyboardAvoidingView>
+    </Container>
   );
 };

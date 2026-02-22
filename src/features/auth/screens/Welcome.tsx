@@ -1,6 +1,6 @@
-import { useWelcome } from "../hooks";
-import { BaseScreen, Button, Typography, Main, ConcentricCircles } from "@/components";
 import styled from "styled-components/native";
+import { useWelcome, ConcentricCircles } from "@/features/auth";
+import { BaseScreen, Button, Typography, Main } from "@/components";
 
 const ContentContainer = styled(Main)`
   padding-top: ${props => props.theme.spacing.layout.homeTop}px;
@@ -8,7 +8,7 @@ const ContentContainer = styled(Main)`
 const WelcomeMessage = styled.View`
   align-items: center;
   margin-top: ${props => props.theme.spacing.step.md}px;
-  gap: ${props => props.theme.spacing.step.xs}px;
+  gap: ${props => props.theme.spacing.step.sm}px;
 `;
 const ButtonAction = styled.View`
   gap: ${props => props.theme.spacing.step.md}px;
@@ -35,13 +35,12 @@ export function Welcome() {
       <Footer>
         <ButtonAction>
           <Button
-            title={t("auth.button_create_account")}
-            block={true}
             size="lg"
-            type="primary"
+            title={t("auth.button_create_account")}
+            bgColor={theme.colors.baseInverse}
             onPress={handleSetupPassword}
           />
-          <Button title={t("auth.button_login_account")} block={true} size="lg" type="secondary" />
+          <Button size="lg" title={t("auth.button_login_account")} textColor={theme.colors.baseInverse} />
         </ButtonAction>
       </Footer>
     </BaseScreen>

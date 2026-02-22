@@ -1,7 +1,7 @@
 import styled from "styled-components/native";
 
 import { BaseScreen, Button, Header, Main, Typography } from "@/components";
-import { useBackupSecretQR } from "../hooks";
+import { useBackupSecretQR } from "@/features/auth";
 
 const MainContent = styled(Main)`
   padding-left: ${props => props.theme.spacing.step.xl}px;
@@ -29,12 +29,12 @@ const WordItem = styled.View`
   height: ${props => props.theme.size.sm}px;
   border-width: 1px;
   border-color: ${props => props.theme.colors.borderColor};
-  background-color: ${props => props.theme.colors.mnemonic_tile};
+  background-color: ${props => props.theme.colors.fillSecondary};
   border-radius: ${props => props.theme.radii.scale.md}px;
 `;
 
 const QrContanier = styled.View`
-  background-color: ${props => props.theme.colors.surface_bg};
+  background-color: ${props => props.theme.colors.surfaceBg};
   align-self: stretch;
   height: ${props => props.theme.size.xxl}px;
   align-items: center;
@@ -89,7 +89,12 @@ export function BackupSecretQR() {
       </MainContent>
 
       <Footer>
-        <Button type="primary" size="lg" block={true} title={t("auth.action_claim_identity")} onPress={handleBackup} />
+        <Button
+          size="lg"
+          title={t("auth.action_claim_identity")}
+          bgColor={theme.colors.baseInverse}
+          onPress={handleBackup}
+        />
       </Footer>
     </BaseScreen>
   );
