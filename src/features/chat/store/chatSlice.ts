@@ -77,7 +77,8 @@ const chatSlice = createSlice({
     updateMessagesReadStatus: (state, action: PayloadAction<{ readerId: string; lastReadSeqId: number }>) => {
       const { readerId, lastReadSeqId } = action.payload;
       const messages = state.chatMap[readerId];
-
+      console.log("Action Payload:", action.payload);
+      console.log("Current Messages List:", JSON.parse(JSON.stringify(messages)));
       if (messages) {
         messages.forEach((msg: Message) => {
           if (

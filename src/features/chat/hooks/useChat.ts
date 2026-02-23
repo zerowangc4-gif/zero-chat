@@ -3,7 +3,7 @@ import { useApp } from "@/hooks";
 import { insertMessage, MessagePayload, updateMessageStatus, Message } from "@/features/chat";
 import { useAppSelector } from "@/store";
 import { generateId } from "@/utils";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { sendMessage, sendReadReport } from "@/socket";
 export function useChat() {
   const { route, dispatch, theme, insets } = useApp<typeof ROUTES.Chat>();
@@ -13,17 +13,23 @@ export function useChat() {
   const [text, setText] = useState("");
 
   const bottom = insets.bottom + theme.spacing.step.xs;
+  const lastReportedId = useRef(0);
 
   useEffect(() => {
-    const opponentMessages = (messages ? messages : []).filter(
-      (msg: Message) => msg.fromId === address && typeof msg.seqId === "number",
+    const chatMessages = messages || [];
+
+    const opponentMessages = chatMessages.filter(
+      (m: Message) => m.fromId === address && typeof m.seqId === "number" && !isNaN(m.seqId),
     );
 
     if (opponentMessages.length > 0) {
-      const lastMsg = opponentMessages[opponentMessages.length - 1];
+      const maxSeqId = Math.max(...opponentMessages.map((m: Message) => m.seqId as number));
 
-      if (lastMsg.seqId) {
-        sendReadReport(address, lastMsg.seqId);
+      console.log("我读到对方的消息最大序号是:", maxSeqId);
+
+      if (!isNaN(maxSeqId) && maxSeqId > lastReportedId.current) {
+        sendReadReport(address, maxSeqId);
+        lastReportedId.current = maxSeqId;
       }
     }
   }, [messages, address]);
