@@ -2,9 +2,7 @@ import { FlatList, ListRenderItem, StyleSheet } from "react-native";
 import styled from "styled-components/native";
 import { MessageInput } from "./MessageInput";
 import { useChat, Message } from "@/features/chat";
-// 1. 定义单条消息的数据结构 (先写个简单的)
 
-// 这是一个临时的消息气泡组件，稍后我们会详细美化它
 const MessageItem = styled.View<{ isMe: boolean }>`
   padding: 12px;
   margin: 8px 16px;
@@ -25,6 +23,7 @@ export function MessageList() {
     const isMe = item.fromId === user.address;
     return (
       <MessageItem isMe={isMe}>
+        <MessageText isMe={isMe}>{item.status}</MessageText>
         <MessageText isMe={isMe}>{item.content}</MessageText>
       </MessageItem>
     );
