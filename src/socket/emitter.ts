@@ -66,7 +66,12 @@ export async function startSync() {
   const state = store.getState();
   const chatMap = state.chat.chatMap;
 
-  const lastSessionSeqNum = Math.max(...Object.values(chatMap).map((m: Message) => m.syncUserMsgSeqNum as number));
+  const lastSessionSeqNum = Math.max(
+    ...Object.values(chatMap)
+      .filter((m: Message) => m.toId === state.auth.user.address)
+      .map((m: Message) => m.syncUserMsgSeqNum ?? 0),
+    0,
+  );
 
   const response = (await syncOfflineMessages(lastSessionSeqNum)) as {
     status: MessageStatus;
