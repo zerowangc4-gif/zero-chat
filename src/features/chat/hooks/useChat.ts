@@ -1,6 +1,6 @@
 import { ROUTES } from "@/navigation";
 import { useApp } from "@/hooks";
-import { insertMessage, MessagePayload, updateMessageStatus, Message } from "@/features/chat";
+import { insertMessage, MessagePayload, updateMessage, Message } from "@/features/chat";
 import { useAppSelector } from "@/store";
 import { generateId } from "@/utils";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -13,23 +13,21 @@ export function useChat() {
   const [text, setText] = useState("");
 
   const bottom = insets.bottom + theme.spacing.step.xs;
-  const lastReportedId = useRef(0);
+  const lastChatReadNum = useRef(0);
 
   useEffect(() => {
     const chatMessages = messages || [];
 
     const opponentMessages = chatMessages.filter(
-      (m: Message) => m.fromId === address && typeof m.seqId === "number" && !isNaN(m.seqId),
+      (m: Message) => m.fromId === address && typeof m.sessionSeqNum === "number" && !isNaN(m.sessionSeqNum),
     );
 
     if (opponentMessages.length > 0) {
-      const maxSeqId = Math.max(...opponentMessages.map((m: Message) => m.seqId as number));
+      const lastSessionSeqNum = Math.max(...opponentMessages.map((m: Message) => m.sessionSeqNum as number));
 
-      console.log("我读到对方的消息最大序号是:", maxSeqId);
-
-      if (!isNaN(maxSeqId) && maxSeqId > lastReportedId.current) {
-        sendReadReport(address, maxSeqId);
-        lastReportedId.current = maxSeqId;
+      if (!isNaN(lastSessionSeqNum) && lastSessionSeqNum > lastChatReadNum.current) {
+        sendReadReport(address, lastSessionSeqNum);
+        lastChatReadNum.current = lastSessionSeqNum;
       }
     }
   }, [messages, address]);
@@ -63,16 +61,16 @@ export function useChat() {
     });
     if (ack.status === "delivered" || ack.status === "sentToServer") {
       dispatch(
-        updateMessageStatus({
+        updateMessage({
           chatId: payload.chatId,
           id: payload.message.id,
           status: ack.status,
-          seqId: ack.seqId,
+          sessionSeqNum: ack.sessionSeqNum,
         }),
       );
     } else {
       dispatch(
-        updateMessageStatus({
+        updateMessage({
           chatId: payload.chatId,
           id: payload.message.id,
           status: "failed",

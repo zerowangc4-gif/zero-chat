@@ -1,6 +1,6 @@
 import { store } from "@/store";
 import { SocketManager } from "./manager";
-import { MessageStatus, Message, batchInsertMessages } from "@/features/chat";
+import { MessageStatus, Message, batchInsertMessages, updateMessagesReadStatus } from "@/features/chat";
 
 interface ChatMessagePayload {
   toId: string;
@@ -10,7 +10,7 @@ interface ChatMessagePayload {
 
 interface MessageAck {
   status: MessageStatus;
-  seqId?: number;
+  sessionSeqNum?: number;
   message?: string;
 }
 
@@ -34,15 +34,21 @@ export function sendMessage(data: ChatMessagePayload): Promise<MessageAck> {
 }
 
 // 发送已读回执
-export function sendReadReport(fromId: string, lastReadSeqId: number) {
+export function sendReadReport(fromId: string, lastSessionSeqNum: number) {
   const socket = SocketManager.getInstance().socket;
+  store.dispatch(
+    updateMessagesReadStatus({
+      readerId: fromId,
+      lastSessionSeqNum: lastSessionSeqNum,
+    }),
+  );
   if (socket?.connected) {
-    socket.emit("read_report", { fromId, lastReadSeqId });
+    socket.emit("read_report", { fromId, lastSessionSeqNum });
   }
 }
 
 // 离线同步消息
-export function syncOfflineMessages(lastSeqId: number): Promise<unknown> {
+export function syncOfflineMessages(lastSyncUserMsgSeqNum: number): Promise<unknown> {
   return new Promise(resolve => {
     const socket = SocketManager.getInstance().socket;
     if (!socket?.connected) {
@@ -50,7 +56,7 @@ export function syncOfflineMessages(lastSeqId: number): Promise<unknown> {
       return;
     }
 
-    socket.emit("sync_offline_messages", { lastSeqId }, (response: unknown) => {
+    socket.emit("sync_offline_messages", { lastSyncUserMsgSeqNum }, (response: unknown) => {
       resolve(response);
     });
   });
@@ -60,19 +66,9 @@ export async function startSync() {
   const state = store.getState();
   const chatMap = state.chat.chatMap;
 
-  let maxSeqId = 0;
+  const lastSessionSeqNum = Math.max(...Object.values(chatMap).map((m: Message) => m.syncUserMsgSeqNum as number));
 
-  Object.values(chatMap).forEach((messages: Message[]) => {
-    messages.forEach(msg => {
-      if (msg.seqId && msg.seqId > maxSeqId) {
-        maxSeqId = msg.seqId;
-      }
-    });
-  });
-
-  const myLastNumber = maxSeqId;
-
-  const response = (await syncOfflineMessages(myLastNumber)) as {
+  const response = (await syncOfflineMessages(lastSessionSeqNum)) as {
     status: MessageStatus;
     data: Message[];
   };

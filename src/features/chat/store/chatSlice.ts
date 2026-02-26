@@ -15,7 +15,8 @@ export interface Contacts {
 
 export interface Message {
   id: string;
-  seqId?: number;
+  sessionSeqNum?: number;
+  syncUserMsgSeqNum?: number;
   fromId: string;
   toId: string;
   content: string;
@@ -23,6 +24,7 @@ export interface Message {
   type: MessageType;
   status: MessageStatus;
 }
+
 export interface Messages {
   chatMap: {
     [key: string]: Message[];
@@ -52,75 +54,50 @@ const chatSlice = createSlice({
       }
       state.chatMap[chatId].unshift(message);
     },
-    updateMessageStatus: (
+    updateMessage: (
       state,
       action: PayloadAction<{
         chatId: string;
         id: string;
         status: MessageStatus;
-        seqId?: number;
+        sessionSeqNum?: number;
       }>,
     ) => {
-      const { chatId, id, status, seqId } = action.payload;
+      const { chatId, id, status, sessionSeqNum } = action.payload;
       const messages = state.chatMap[chatId];
 
       if (messages) {
         const msg = messages.find((message: Message) => message.id === id);
         if (msg) {
           msg.status = status;
-          if (typeof seqId === "number") {
-            msg.seqId = seqId;
+          if (typeof sessionSeqNum === "number") {
+            msg.sessionSeqNum = sessionSeqNum;
           }
         }
       }
     },
-    updateMessagesReadStatus: (state, action: PayloadAction<{ readerId: string; lastReadSeqId: number }>) => {
-      const { readerId, lastReadSeqId } = action.payload;
+    updateMessagesReadStatus: (state, action: PayloadAction<{ readerId: string; lastSessionSeqNum: number }>) => {
+      const { readerId, lastSessionSeqNum } = action.payload;
       const messages = state.chatMap[readerId];
-      console.log("Action Payload:", action.payload);
-      console.log("Current Messages List:", JSON.parse(JSON.stringify(messages)));
       if (messages) {
         messages.forEach((msg: Message) => {
           if (
-            msg.toId === readerId &&
             msg.status !== "read" &&
-            typeof msg.seqId === "number" &&
-            msg.seqId <= lastReadSeqId
+            typeof msg.sessionSeqNum === "number" &&
+            msg.sessionSeqNum <= lastSessionSeqNum
           ) {
             msg.status = "read";
           }
         });
       }
     },
-    batchInsertMessages: (state, action: PayloadAction<Message[]>) => {
-      const newMessages = action.payload;
-
-      newMessages.forEach(msg => {
-        const chatId = msg.fromId;
-
-        if (!state.chatMap[chatId]) {
-          state.chatMap[chatId] = [];
-        }
-
-        const isExist = state.chatMap[chatId].some(m => m.seqId === msg.seqId);
-
-        if (!isExist) {
-          state.chatMap[chatId].push({
-            ...msg,
-            status: "delivered",
-          });
-        }
-      });
-
-      const affectedChatIds = Array.from(new Set(newMessages.map(m => m.fromId)));
-      affectedChatIds.forEach(id => {
-        state.chatMap[id]?.sort((a: Message, b: Message) => (a.seqId || 0) - (b.seqId || 0));
-      });
+    batchInsertMessages: (_state, action: PayloadAction<Message[]>) => {
+      console.log(action.payload);
     },
   },
 });
 
-export const { insertMessage, setContacts, updateMessageStatus, updateMessagesReadStatus, batchInsertMessages } =
+export const { insertMessage, setContacts, updateMessage, updateMessagesReadStatus, batchInsertMessages } =
   chatSlice.actions;
 
 export const fetchContacts = createAction("chat/contacts");

@@ -9,7 +9,8 @@ interface LogoutMessage {
 export interface ChatMessagePayload {
   fromId: string;
   toId: string;
-  seqId: number;
+  sessionSeqNum: number;
+  syncUserMsgSeqNum: number;
   content: string;
   clientMsgId: string;
   timestamp: number;
@@ -42,7 +43,8 @@ export const setupSocketListeners = (socket: Socket) => {
         toId: payload.toId,
         content: payload.content,
         timestamp: payload.timestamp,
-        seqId: payload.seqId,
+        sessionSeqNum: payload.sessionSeqNum,
+        syncUserMsgSeqNum: payload.syncUserMsgSeqNum,
         status: "delivered",
         type: "text",
       },
@@ -52,7 +54,6 @@ export const setupSocketListeners = (socket: Socket) => {
   });
 
   socket.on("message_read_update", (data: { readerId: string; lastReadSeqId: number }) => {
-    console.log(data);
     store.dispatch(updateMessagesReadStatus(data));
   });
 };
