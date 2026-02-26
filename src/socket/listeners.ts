@@ -53,7 +53,7 @@ export const setupSocketListeners = (socket: Socket) => {
     store.dispatch(insertMessage(messageForRedux));
   });
 
-  socket.on("message_read_update", (data: { readerId: string; lastReadSeqId: number }) => {
+  socket.on("message_read_update", (data: { readerId: string; lastsessionSeqNum: number }) => {
     store.dispatch(updateMessagesReadStatus(data));
   });
 };
