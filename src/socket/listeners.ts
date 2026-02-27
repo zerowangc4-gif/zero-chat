@@ -1,28 +1,13 @@
 import { Socket } from "socket.io-client";
 import { SocketManager } from "./manager";
 import { store } from "@/store";
-import { clearAuthData, insertMessage, MessagePayload, MessageStatus, updateMessagesReadStatus } from "@/features";
+import { clearAuthData, updateMessagesReadStatus } from "@/features";
+import { ChatMessagePayload, ReadReceipt } from "./types";
+
 interface LogoutMessage {
   reason: string;
   time: number;
 }
-export interface ChatMessagePayload {
-  fromId: string;
-  toId: string;
-  sessionSeqNum: number;
-  syncUserMsgSeqNum: number;
-  content: string;
-  clientMsgId: string;
-  timestamp: number;
-}
-
-export interface MessageAck {
-  status: MessageStatus;
-  message?: string;
-  seqId?: number;
-}
-
-export type AckCallback = (response: MessageAck) => void;
 
 export const setupSocketListeners = (socket: Socket) => {
   socket.on("force_logout", (data: LogoutMessage) => {
@@ -31,29 +16,11 @@ export const setupSocketListeners = (socket: Socket) => {
     store.dispatch(clearAuthData());
   });
 
-  socket.on("new_message", (payload: ChatMessagePayload, ack: AckCallback) => {
-    if (ack) {
-      ack({ status: "delivered" });
-    }
-    const messageForRedux: MessagePayload = {
-      chatId: payload.fromId,
-      message: {
-        id: payload.clientMsgId,
-        fromId: payload.fromId,
-        toId: payload.toId,
-        content: payload.content,
-        timestamp: payload.timestamp,
-        sessionSeqNum: payload.sessionSeqNum,
-        syncUserMsgSeqNum: payload.syncUserMsgSeqNum,
-        status: "delivered",
-        type: "text",
-      },
-    };
-
-    store.dispatch(insertMessage(messageForRedux));
+  socket.on("new_message", (payload: ChatMessagePayload, ack) => {
+    ack({ ...payload, status: "delivered" });
   });
 
-  socket.on("message_read_update", (data: { readerId: string; lastsessionSeqNum: number }) => {
+  socket.on("message_read_update", (data: ReadReceipt) => {
     store.dispatch(updateMessagesReadStatus(data));
   });
 };

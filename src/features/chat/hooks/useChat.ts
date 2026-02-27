@@ -13,19 +13,17 @@ export function useChat() {
   const [text, setText] = useState("");
 
   const bottom = insets.bottom + theme.spacing.step.xs;
+
   const lastChatReadNum = useRef(0);
 
   useEffect(() => {
     const chatMessages = messages || [];
 
-    const opponentMessages = chatMessages.filter(
-      (m: Message) => m.fromId === address && typeof m.sessionSeqNum === "number" && !isNaN(m.sessionSeqNum),
-    );
+    const msg: Message | undefined = chatMessages.find((item: Message) => item.fromId === address);
 
-    if (opponentMessages.length > 0) {
-      const lastSessionSeqNum = Math.max(...opponentMessages.map((m: Message) => m.sessionSeqNum as number));
-
-      if (!isNaN(lastSessionSeqNum) && lastSessionSeqNum > lastChatReadNum.current) {
+    if (msg) {
+      const lastSessionSeqNum = msg.sessionSeqNum;
+      if (lastSessionSeqNum > lastChatReadNum.current && msg.status !== "read") {
         sendReadReport(address, lastSessionSeqNum);
         lastChatReadNum.current = lastSessionSeqNum;
       }
@@ -59,24 +57,15 @@ export function useChat() {
       content: text,
       clientMsgId: payload.message.id,
     });
-    if (ack.status === "delivered" || ack.status === "sentToServer") {
-      dispatch(
-        updateMessage({
-          chatId: payload.chatId,
-          id: payload.message.id,
-          status: ack.status,
-          sessionSeqNum: ack.sessionSeqNum,
-        }),
-      );
-    } else {
-      dispatch(
-        updateMessage({
-          chatId: payload.chatId,
-          id: payload.message.id,
-          status: "failed",
-        }),
-      );
-    }
+    dispatch(
+      updateMessage({
+        chatId: ack.chatId,
+        id: ack.id,
+        status: ack.status,
+        sessionSeqNum: ack.sessionSeqNum,
+        timestamp: ack.timestamp,
+      }),
+    );
   };
 
   return {

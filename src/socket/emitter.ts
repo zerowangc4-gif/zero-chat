@@ -9,9 +9,11 @@ interface ChatMessagePayload {
 }
 
 interface MessageAck {
+  chatId: string;
+  id: string;
   status: MessageStatus;
   sessionSeqNum?: number;
-  message?: string;
+  timestamp: number;
 }
 
 // 发送私聊消息
@@ -19,16 +21,24 @@ export function sendMessage(data: ChatMessagePayload): Promise<MessageAck> {
   return new Promise(resolve => {
     const socket = SocketManager.getInstance().socket;
     if (!socket?.connected) {
-      resolve({ status: "failed", message: "Socket not connected" });
+      resolve({
+        chatId: data.toId,
+        id: data.clientMsgId,
+        status: "failed",
+        timestamp: Date.now(),
+      });
       return;
     }
-
     socket.timeout(5000).emit("send_message", data, (err: unknown, ack: MessageAck) => {
       if (err) {
-        return resolve({ status: "failed", message: "timeout" });
-      } else {
-        resolve(ack);
+        resolve({
+          chatId: data.toId,
+          id: data.clientMsgId,
+          status: "failed",
+          timestamp: Date.now(),
+        });
       }
+      resolve(ack);
     });
   });
 }
@@ -36,12 +46,6 @@ export function sendMessage(data: ChatMessagePayload): Promise<MessageAck> {
 // 发送已读回执
 export function sendReadReport(fromId: string, lastSessionSeqNum: number) {
   const socket = SocketManager.getInstance().socket;
-  store.dispatch(
-    updateMessagesReadStatus({
-      readerId: fromId,
-      lastSessionSeqNum: lastSessionSeqNum,
-    }),
-  );
   if (socket?.connected) {
     socket.emit("read_report", { fromId, lastSessionSeqNum });
   }

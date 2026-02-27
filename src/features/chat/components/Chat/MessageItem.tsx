@@ -29,7 +29,7 @@ export function MessageItem({ item, isMe }: Props) {
     <Container isMe={isMe}>
       <MessageText isMe={isMe}>{item.content}</MessageText>
       <TimeText>
-        {item.status === "read" ? "✓✓ " : "✓ "}
+        {item.status}
         {new Date(item.timestamp).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
       </TimeText>
     </Container>
