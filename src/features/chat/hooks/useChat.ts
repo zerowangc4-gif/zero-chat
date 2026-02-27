@@ -36,8 +36,8 @@ export function useChat() {
         chatId: address,
         message: {
           id: generateId(),
-          toId: address,
           fromId: user.address,
+          toId: address,
           content: content.trim(),
           timestamp: Date.now(),
           type: "text",
@@ -60,7 +60,9 @@ export function useChat() {
     dispatch(
       updateMessage({
         chatId: ack.chatId,
+        formId: user.address,
         id: ack.id,
+        content: text,
         status: ack.status,
         sessionSeqNum: ack.sessionSeqNum,
         timestamp: ack.timestamp,
