@@ -37,7 +37,6 @@ export const setupSocketListeners = (socket: Socket) => {
   });
 
   socket.on("message_read_update", (data: ReadReceipt) => {
-    console.log(data);
     store.dispatch(updateMessagesReadStatus(data));
   });
 };
