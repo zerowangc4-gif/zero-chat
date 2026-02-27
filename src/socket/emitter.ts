@@ -1,6 +1,6 @@
 import { store } from "@/store";
 import { SocketManager } from "./manager";
-import { MessageStatus, Message, batchInsertMessages, updateMessagesReadStatus } from "@/features/chat";
+import { MessageStatus, Message, batchInsertMessages } from "@/features/chat";
 
 interface ChatMessagePayload {
   toId: string;
@@ -46,6 +46,7 @@ export function sendMessage(data: ChatMessagePayload): Promise<MessageAck> {
 // 发送已读回执
 export function sendReadReport(fromId: string, lastSessionSeqNum: number) {
   const socket = SocketManager.getInstance().socket;
+
   if (socket?.connected) {
     socket.emit("read_report", { fromId, lastSessionSeqNum });
   }

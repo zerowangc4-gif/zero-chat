@@ -30,13 +30,14 @@ export const setupSocketListeners = (socket: Socket) => {
           sessionSeqNum: payload.sessionSeqNum,
           timestamp: payload.timestamp,
           type: "text",
-          status: "read",
+          status: "delivered",
         },
       }),
     );
   });
 
   socket.on("message_read_update", (data: ReadReceipt) => {
+    console.log(data);
     store.dispatch(updateMessagesReadStatus(data));
   });
 };
