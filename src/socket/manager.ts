@@ -24,6 +24,7 @@ export class SocketManager {
   }
   private startHeartbeat() {
     this.stopHeartbeat();
+    sendHeartbeat();
     this.heartbeatInterval = setInterval(() => {
       sendHeartbeat();
     }, 20000);
