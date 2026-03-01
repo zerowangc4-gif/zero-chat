@@ -1,5 +1,5 @@
 import { SocketManager } from "./manager";
-
+import { store } from "@/store";
 import { EVENT, MESSAGE_STATUS } from "@/constants";
 import { SendMessage, ChatMessage, SuccessChatMessage } from "./types";
 
@@ -7,7 +7,14 @@ import { SendMessage, ChatMessage, SuccessChatMessage } from "./types";
 export function sendHeartbeat() {
   const socket = SocketManager.getInstance().socket;
   if (socket?.connected) {
-    socket.emit(EVENT.SYSTEM.HEARTBEAT);
+    socket.timeout(5000).emit(EVENT.SYSTEM.HEARTBEAT, (err: unknown, LatestSyncUserMsgSeqNum: number) => {
+      const state = store.getState();
+      const isSync = LatestSyncUserMsgSeqNum > state.chat.syncUserMsgSeqNum;
+
+      if (!err && isSync) {
+        sendSyncMessage(state.chat.syncUserMsgSeqNum);
+      }
+    });
   }
 }
 
@@ -44,5 +51,14 @@ export function sendReadReport(fromId: string, lastSessionSeqNum: number) {
 
   if (socket?.connected) {
     socket.emit(EVENT.CHAT.READ_REPORT, { fromId, lastSessionSeqNum });
+  }
+}
+
+// 拉取离线消息
+export function sendSyncMessage(syncUserMsgSeqNum: number) {
+  const socket = SocketManager.getInstance().socket;
+
+  if (socket?.connected) {
+    socket.emit(EVENT.CHAT.SYNC_OFFINE_MESSAGES, syncUserMsgSeqNum);
   }
 }

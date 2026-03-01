@@ -86,7 +86,7 @@ export class SocketManager {
 
       if (err.message === AT_EXPIRE) {
         try {
-          await authService.refreshToken("at_expire");
+          await authService.refreshToken(AT_EXPIRE);
 
           this.disconnect();
           this.connect();

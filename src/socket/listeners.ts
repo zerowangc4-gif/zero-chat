@@ -3,7 +3,7 @@ import { store } from "@/store";
 import { EVENT, MESSAGE_STATUS, MESSAGE_TYPE } from "@/constants";
 import { SocketManager } from "./manager";
 
-import { clearAuthData, updateMessagesReadStatus, insertMessage } from "@/features";
+import { clearAuthData, updateMessagesReadStatus, insertMessage, updateSyncUserMsgSeqNum } from "@/features";
 import { SuccessChatMessage, ReadReceipt } from "./types";
 
 export const setupSocketListeners = (socket: Socket) => {
@@ -34,5 +34,15 @@ export const setupSocketListeners = (socket: Socket) => {
 
   socket.on(EVENT.CHAT.READ_UPDATE, (data: ReadReceipt) => {
     store.dispatch(updateMessagesReadStatus(data));
+  });
+
+  socket.on(EVENT.CHAT.SYNC_OFFINE_MESSAGES, (data: SuccessChatMessage[], ack) => {
+    if (data && data.length > 0) {
+      ack(data[data.length - 1]);
+    }
+  });
+
+  socket.on(EVENT.CHAT.UPDATE_SYNCUSERMSGSEQNUM, (data: number) => {
+    store.dispatch(updateSyncUserMsgSeqNum(data));
   });
 };

@@ -12,6 +12,9 @@ const chatSlice = createSlice({
     setContacts: (state, action: PayloadAction<Contacts[]>) => {
       state.contacts = action.payload;
     },
+    updateSyncUserMsgSeqNum: (state, action: PayloadAction<number>) => {
+      state.syncUserMsgSeqNum = action.payload;
+    },
     insertMessage: (state, action: PayloadAction<MessagePayload>) => {
       const { chatId, message } = action.payload;
 
@@ -42,10 +45,12 @@ const chatSlice = createSlice({
         }
       });
     },
+    batchInsertMessages: () => {},
   },
 });
 
-export const { insertMessage, setContacts, updateMessage, updateMessagesReadStatus } = chatSlice.actions;
+export const { insertMessage, setContacts, updateMessage, updateMessagesReadStatus, updateSyncUserMsgSeqNum } =
+  chatSlice.actions;
 
 export const fetchContacts = createAction("chat/contacts");
 
