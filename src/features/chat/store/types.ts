@@ -1,6 +1,4 @@
-export type MessageStatus = "pending" | "sentToServer" | "delivered" | "read" | "failed";
-
-export type MessageType = "text" | "image" | "voice";
+import { MessageStatus, MessageType } from "@/constants";
 
 export interface Contacts {
   id: number;
@@ -23,6 +21,7 @@ export interface Message {
 }
 
 export interface Messages {
+  syncUserMsgSeqNum: number;
   chatMap: {
     [key: string]: Message[];
   };

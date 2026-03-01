@@ -1,13 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { SocketManager } from "./manager";
+import { SocketContextType, SocketProviderType } from "./types";
 
-interface SocketContextType {
-  isConnected: boolean;
-}
-interface SocketProviderType {
-  token: string;
-  children: React.ReactNode;
-}
 const SocketContext = createContext<SocketContextType | null>(null);
 
 export function SocketProvider(props: SocketProviderType) {

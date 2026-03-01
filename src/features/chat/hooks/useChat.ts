@@ -4,7 +4,8 @@ import { insertMessage, MessagePayload, updateMessage, Message } from "@/feature
 import { useAppSelector } from "@/store";
 import { generateId } from "@/utils";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { sendMessage, sendReadReport } from "@/socket";
+import { sendMessage, sendReadReport, ChatMessage } from "@/socket";
+import { MESSAGE_STATUS, MESSAGE_TYPE } from "@/constants";
 export function useChat() {
   const { route, dispatch, theme, insets } = useApp<typeof ROUTES.Chat>();
   const { user } = useAppSelector(state => state.auth);
@@ -23,7 +24,7 @@ export function useChat() {
 
     if (msg) {
       const lastSessionSeqNum = msg.sessionSeqNum;
-      if (lastSessionSeqNum > lastChatReadNum.current && msg.status !== "read") {
+      if (lastSessionSeqNum > lastChatReadNum.current && msg.status !== MESSAGE_STATUS.READ) {
         sendReadReport(address, lastSessionSeqNum);
         lastChatReadNum.current = lastSessionSeqNum;
       }
@@ -40,8 +41,8 @@ export function useChat() {
           toId: address,
           content: content.trim(),
           timestamp: Date.now(),
-          type: "text",
-          status: "pending",
+          type: MESSAGE_TYPE.TEXT,
+          status: MESSAGE_STATUS.PENDING,
         },
       };
     },
@@ -52,20 +53,20 @@ export function useChat() {
     const payload = formatMessage(text);
     dispatch(insertMessage(payload));
     setText("");
-    const ack = await sendMessage({
+    const result: ChatMessage = await sendMessage({
       toId: address,
       content: text,
       clientMsgId: payload.message.id,
     });
     dispatch(
       updateMessage({
-        chatId: ack.chatId,
-        formId: user.address,
-        id: ack.id,
+        chatId: result.chatId,
+        fromId: user.address,
+        id: result.id,
         content: text,
-        status: ack.status,
-        sessionSeqNum: ack.sessionSeqNum,
-        timestamp: ack.timestamp,
+        status: result.status,
+        sessionSeqNum: result.sessionSeqNum,
+        timestamp: result.timestamp,
       }),
     );
   };

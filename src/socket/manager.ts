@@ -1,10 +1,9 @@
 import { store } from "@/store";
-import { url } from "@/constants";
 import { io, Socket } from "socket.io-client";
 import { setupSocketListeners } from "./listeners";
 import { authService } from "@/api";
-import { AT_EXPIRE } from "@/constants";
-import { startSync } from "./emitter";
+import { AT_EXPIRE, EVENT, url } from "@/constants";
+import { sendHeartbeat } from "./emitter";
 type SocketType = Socket | null;
 
 export class SocketManager {
@@ -25,9 +24,7 @@ export class SocketManager {
   private startHeartbeat() {
     this.stopHeartbeat();
     this.heartbeatInterval = setInterval(() => {
-      if (this.socket?.connected) {
-        this.socket.emit("client_heartbeat");
-      }
+      sendHeartbeat();
     }, 20000);
   }
   private stopHeartbeat() {
@@ -74,17 +71,16 @@ export class SocketManager {
 
     this.socket.removeAllListeners();
 
-    this.socket.on("connect", () => {
+    this.socket.on(EVENT.SYSTEM.CONNECT, () => {
       this.setStatus(true);
       this.startHeartbeat();
-      startSync();
     });
-    this.socket.on("disconnect", () => {
+    this.socket.on(EVENT.SYSTEM.DISCONNECT, () => {
       this.setStatus(false);
       this.stopHeartbeat();
     });
 
-    this.socket.on("connect_error", async (err: Error) => {
+    this.socket.on(EVENT.SYSTEM.CONNECT_ERROR, async (err: Error) => {
       this.setStatus(false);
       this.stopHeartbeat();
 

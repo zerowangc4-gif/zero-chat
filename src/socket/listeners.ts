@@ -1,42 +1,38 @@
 import { Socket } from "socket.io-client";
-import { SocketManager } from "./manager";
 import { store } from "@/store";
-import { clearAuthData, updateMessagesReadStatus, insertMessage } from "@/features";
-import { ChatMessagePayload, ReadReceipt } from "./types";
+import { EVENT, MESSAGE_STATUS, MESSAGE_TYPE } from "@/constants";
+import { SocketManager } from "./manager";
 
-interface LogoutMessage {
-  reason: string;
-  time: number;
-}
+import { clearAuthData, updateMessagesReadStatus, insertMessage } from "@/features";
+import { SuccessChatMessage, ReadReceipt } from "./types";
 
 export const setupSocketListeners = (socket: Socket) => {
-  socket.on("force_logout", (data: LogoutMessage) => {
-    console.error(data.reason);
+  socket.on(EVENT.SYSTEM.FORCE_LOGOUT, () => {
     SocketManager.getInstance().disconnect();
     store.dispatch(clearAuthData());
   });
 
-  socket.on("new_message", (payload: ChatMessagePayload, ack) => {
-    ack({ ...payload, status: "delivered" });
+  socket.on(EVENT.CHAT.NEW_MESSAGE, (payload: SuccessChatMessage, ack) => {
+    ack({ ...payload, status: MESSAGE_STATUS.DELIVERED });
 
     store.dispatch(
       insertMessage({
-        chatId: payload.formId,
+        chatId: payload.fromId,
         message: {
           id: payload.id,
-          fromId: payload.formId,
+          fromId: payload.fromId,
           toId: payload.chatId,
           content: payload.content,
           sessionSeqNum: payload.sessionSeqNum,
           timestamp: payload.timestamp,
-          type: "text",
-          status: "delivered",
+          type: MESSAGE_TYPE.TEXT,
+          status: MESSAGE_STATUS.DELIVERED,
         },
       }),
     );
   });
 
-  socket.on("message_read_update", (data: ReadReceipt) => {
+  socket.on(EVENT.CHAT.READ_UPDATE, (data: ReadReceipt) => {
     store.dispatch(updateMessagesReadStatus(data));
   });
 };

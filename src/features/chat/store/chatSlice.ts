@@ -1,8 +1,9 @@
 import { createAction, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { ChatMessage, ReadReceipt } from "@/socket";
 import { Contacts, MessagePayload, Message } from "./types";
-import { ChatMessagePayload, ReadReceipt } from "@/socket";
+import { MESSAGE_STATUS } from "@/constants";
 
-const initialState = { chatMap: {}, contacts: [] };
+const initialState = { syncUserMsgSeqNum: 0, chatMap: {}, contacts: [] };
 
 const chatSlice = createSlice({
   name: "chat",
@@ -13,15 +14,13 @@ const chatSlice = createSlice({
     },
     insertMessage: (state, action: PayloadAction<MessagePayload>) => {
       const { chatId, message } = action.payload;
-      if (!state.chatMap) {
-        state.chatMap = {};
-      }
+
       if (!state.chatMap[chatId]) {
         state.chatMap[chatId] = [];
       }
       state.chatMap[chatId].unshift(message);
     },
-    updateMessage: (state, action: PayloadAction<ChatMessagePayload>) => {
+    updateMessage: (state, action: PayloadAction<ChatMessage>) => {
       const { chatId, id, status, sessionSeqNum, timestamp } = action.payload;
 
       const message = state.chatMap[chatId].find((item: Message) => item.id === id);
@@ -37,20 +36,16 @@ const chatSlice = createSlice({
         if (
           typeof item.sessionSeqNum === "number" &&
           item.sessionSeqNum <= lastSessionSeqNum &&
-          item.status !== "read"
+          item.status !== MESSAGE_STATUS.READ
         ) {
-          item.status = "read";
+          item.status = MESSAGE_STATUS.READ;
         }
       });
-    },
-    batchInsertMessages: (_state, action: PayloadAction<Message[]>) => {
-      console.log(action.payload);
     },
   },
 });
 
-export const { insertMessage, setContacts, updateMessage, updateMessagesReadStatus, batchInsertMessages } =
-  chatSlice.actions;
+export const { insertMessage, setContacts, updateMessage, updateMessagesReadStatus } = chatSlice.actions;
 
 export const fetchContacts = createAction("chat/contacts");
 
