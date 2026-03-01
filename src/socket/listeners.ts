@@ -1,58 +1,52 @@
 import { Socket } from "socket.io-client";
-import { SocketManager } from "./manager";
 import { store } from "@/store";
-import { clearAuthData, insertMessage, MessagePayload, MessageStatus, updateMessagesReadStatus } from "@/features";
-interface LogoutMessage {
-  reason: string;
-  time: number;
-}
-export interface ChatMessagePayload {
-  fromId: string;
-  toId: string;
-  seqId: number;
-  content: string;
-  clientMsgId: string;
-  timestamp: number;
-}
+import { EVENT, MESSAGE_STATUS, MESSAGE_TYPE } from "@/constants";
+import { SocketManager } from "./manager";
 
-export interface MessageAck {
-  status: MessageStatus;
-  message?: string;
-  seqId?: number;
-}
-
-export type AckCallback = (response: MessageAck) => void;
+import { clearAuthData, updateMessagesReadStatus, insertMessage, updateSyncUserMsgSeqNum } from "@/features";
+import { SuccessChatMessage, ReadReceipt } from "./types";
 
 export const setupSocketListeners = (socket: Socket) => {
-  socket.on("force_logout", (data: LogoutMessage) => {
-    console.error(data.reason);
+  socket.on(EVENT.SYSTEM.FORCE_LOGOUT, () => {
     SocketManager.getInstance().disconnect();
     store.dispatch(clearAuthData());
   });
 
-  socket.on("new_message", (payload: ChatMessagePayload, ack: AckCallback) => {
-    if (ack) {
-      ack({ status: "delivered" });
-    }
-    const messageForRedux: MessagePayload = {
-      chatId: payload.fromId,
-      message: {
-        id: payload.clientMsgId,
-        fromId: payload.fromId,
-        toId: payload.toId,
-        content: payload.content,
-        timestamp: payload.timestamp,
-        seqId: payload.seqId,
-        status: "delivered",
-        type: "text",
-      },
-    };
+  socket.on(EVENT.CHAT.NEW_MESSAGE, (payload: SuccessChatMessage, ack) => {
+    ack({ ...payload, status: MESSAGE_STATUS.DELIVERED });
 
-    store.dispatch(insertMessage(messageForRedux));
+    store.dispatch(
+      insertMessage({
+        chatId: payload.fromId,
+        message: {
+          id: payload.id,
+          fromId: payload.fromId,
+          toId: payload.chatId,
+          content: payload.content,
+          sessionSeqNum: payload.sessionSeqNum,
+          timestamp: payload.timestamp,
+          type: MESSAGE_TYPE.TEXT,
+          status: MESSAGE_STATUS.DELIVERED,
+        },
+      }),
+    );
   });
 
-  socket.on("message_read_update", (data: { readerId: string; lastReadSeqId: number }) => {
-    console.log(data);
+  socket.on(EVENT.CHAT.READ_UPDATE, (data: ReadReceipt) => {
     store.dispatch(updateMessagesReadStatus(data));
+  });
+
+  socket.on(EVENT.CHAT.SYNC_OFFINE_MESSAGES, (data: SuccessChatMessage[], ack) => {
+    try {
+      if (data && data.length > 0) {
+        ack(data[data.length - 1]);
+      }
+    } finally {
+      SocketManager.getInstance().isSyncing = false;
+    }
+  });
+
+  socket.on(EVENT.CHAT.UPDATE_SYNCUSERMSGSEQNUM, (data: number) => {
+    store.dispatch(updateSyncUserMsgSeqNum(data));
   });
 };

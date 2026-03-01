@@ -1,22 +1,6 @@
 import { createAction, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { AuthData, TokensType, RegistrationPayload } from "./types";
 
-export interface User {
-  id: string;
-  address: string;
-  publicKey: string;
-  username: string;
-  avatarSeed: string;
-}
-
-export interface AuthData {
-  user: User;
-  accessToken: string;
-  refreshToken: string;
-}
-export interface TokensType {
-  accessToken: string;
-  refreshToken: string;
-}
 const authData = {
   user: {
     id: "",
@@ -53,14 +37,8 @@ const authSlice = createSlice({
   },
 });
 
-export interface RegistrationPayload {
-  address: string;
-  publicKey: string;
-  username: string;
-  uri: string;
-}
-
 export const loginApp = createAction<RegistrationPayload>("auth/loginApp");
+
 export const updateUserAvatar = createAction<string>("user/loginApp");
 
 export const { setAuthData, clearAuthData, setTokens, setAvatarSeed } = authSlice.actions;
