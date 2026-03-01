@@ -1,14 +1,14 @@
 import { store } from "@/store";
-import { url } from "@/constants";
 import { io, Socket } from "socket.io-client";
 import { setupSocketListeners } from "./listeners";
 import { authService } from "@/api";
-import { AT_EXPIRE } from "@/constants";
-import { startSync } from "./emitter";
+import { AT_EXPIRE, EVENT, url } from "@/constants";
+import { sendHeartbeat } from "./emitter";
 type SocketType = Socket | null;
 
 export class SocketManager {
   private static instance: SocketManager;
+  public isSyncing = false;
   public socket: SocketType = null;
   public isConnected: boolean = false;
   private currentToken: string | null = null;
@@ -25,9 +25,7 @@ export class SocketManager {
   private startHeartbeat() {
     this.stopHeartbeat();
     this.heartbeatInterval = setInterval(() => {
-      if (this.socket?.connected) {
-        this.socket.emit("client_heartbeat");
-      }
+      sendHeartbeat();
     }, 20000);
   }
   private stopHeartbeat() {
@@ -35,6 +33,7 @@ export class SocketManager {
       clearInterval(this.heartbeatInterval);
       this.heartbeatInterval = null;
     }
+    this.isSyncing = false;
   }
   public subscribeStatus(callback: ((status: boolean) => void) | null) {
     this.onStatusChange = callback;
@@ -74,23 +73,23 @@ export class SocketManager {
 
     this.socket.removeAllListeners();
 
-    this.socket.on("connect", () => {
+    this.socket.on(EVENT.SYSTEM.CONNECT, () => {
       this.setStatus(true);
+      this.isSyncing = false;
       this.startHeartbeat();
-      startSync();
     });
-    this.socket.on("disconnect", () => {
+    this.socket.on(EVENT.SYSTEM.DISCONNECT, () => {
       this.setStatus(false);
       this.stopHeartbeat();
     });
 
-    this.socket.on("connect_error", async (err: Error) => {
+    this.socket.on(EVENT.SYSTEM.CONNECT_ERROR, async (err: Error) => {
       this.setStatus(false);
       this.stopHeartbeat();
 
       if (err.message === AT_EXPIRE) {
         try {
-          await authService.refreshToken("at_expire");
+          await authService.refreshToken(AT_EXPIRE);
 
           this.disconnect();
           this.connect();

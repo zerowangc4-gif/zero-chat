@@ -1,10 +1,11 @@
 import { ROUTES } from "@/navigation";
 import { useApp } from "@/hooks";
-import { insertMessage, MessagePayload, updateMessageStatus, Message } from "@/features/chat";
+import { insertMessage, MessagePayload, updateMessage, Message } from "@/features/chat";
 import { useAppSelector } from "@/store";
 import { generateId } from "@/utils";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { sendMessage, sendReadReport } from "@/socket";
+import { sendMessage, sendReadReport, ChatMessage } from "@/socket";
+import { MESSAGE_STATUS, MESSAGE_TYPE } from "@/constants";
 export function useChat() {
   const { route, dispatch, theme, insets } = useApp<typeof ROUTES.Chat>();
   const { user } = useAppSelector(state => state.auth);
@@ -13,23 +14,19 @@ export function useChat() {
   const [text, setText] = useState("");
 
   const bottom = insets.bottom + theme.spacing.step.xs;
-  const lastReportedId = useRef(0);
+
+  const lastChatReadNum = useRef(0);
 
   useEffect(() => {
     const chatMessages = messages || [];
 
-    const opponentMessages = chatMessages.filter(
-      (m: Message) => m.fromId === address && typeof m.seqId === "number" && !isNaN(m.seqId),
-    );
+    const msg: Message | undefined = chatMessages.find((item: Message) => item.fromId === address);
 
-    if (opponentMessages.length > 0) {
-      const maxSeqId = Math.max(...opponentMessages.map((m: Message) => m.seqId as number));
-
-      console.log("我读到对方的消息最大序号是:", maxSeqId);
-
-      if (!isNaN(maxSeqId) && maxSeqId > lastReportedId.current) {
-        sendReadReport(address, maxSeqId);
-        lastReportedId.current = maxSeqId;
+    if (msg) {
+      const lastSessionSeqNum = msg.sessionSeqNum;
+      if (lastSessionSeqNum > lastChatReadNum.current && msg.status !== MESSAGE_STATUS.READ) {
+        sendReadReport(address, lastSessionSeqNum);
+        lastChatReadNum.current = lastSessionSeqNum;
       }
     }
   }, [messages, address]);
@@ -40,12 +37,12 @@ export function useChat() {
         chatId: address,
         message: {
           id: generateId(),
-          toId: address,
           fromId: user.address,
+          toId: address,
           content: content.trim(),
           timestamp: Date.now(),
-          type: "text",
-          status: "pending",
+          type: MESSAGE_TYPE.TEXT,
+          status: MESSAGE_STATUS.PENDING,
         },
       };
     },
@@ -56,29 +53,22 @@ export function useChat() {
     const payload = formatMessage(text);
     dispatch(insertMessage(payload));
     setText("");
-    const ack = await sendMessage({
+    const result: ChatMessage = await sendMessage({
       toId: address,
       content: text,
       clientMsgId: payload.message.id,
     });
-    if (ack.status === "delivered" || ack.status === "sentToServer") {
-      dispatch(
-        updateMessageStatus({
-          chatId: payload.chatId,
-          id: payload.message.id,
-          status: ack.status,
-          seqId: ack.seqId,
-        }),
-      );
-    } else {
-      dispatch(
-        updateMessageStatus({
-          chatId: payload.chatId,
-          id: payload.message.id,
-          status: "failed",
-        }),
-      );
-    }
+    dispatch(
+      updateMessage({
+        chatId: result.chatId,
+        fromId: user.address,
+        id: result.id,
+        content: text,
+        status: result.status,
+        sessionSeqNum: result.sessionSeqNum,
+        timestamp: result.timestamp,
+      }),
+    );
   };
 
   return {
