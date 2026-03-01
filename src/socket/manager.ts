@@ -33,6 +33,7 @@ export class SocketManager {
       clearInterval(this.heartbeatInterval);
       this.heartbeatInterval = null;
     }
+    this.isSyncing = false;
   }
   public subscribeStatus(callback: ((status: boolean) => void) | null) {
     this.onStatusChange = callback;
