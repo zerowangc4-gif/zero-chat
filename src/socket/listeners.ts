@@ -37,8 +37,12 @@ export const setupSocketListeners = (socket: Socket) => {
   });
 
   socket.on(EVENT.CHAT.SYNC_OFFINE_MESSAGES, (data: SuccessChatMessage[], ack) => {
-    if (data && data.length > 0) {
-      ack(data[data.length - 1]);
+    try {
+      if (data && data.length > 0) {
+        ack(data[data.length - 1]);
+      }
+    } finally {
+      SocketManager.getInstance().isSyncing = false;
     }
   });
 

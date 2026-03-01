@@ -5,13 +5,15 @@ import { SendMessage, ChatMessage, SuccessChatMessage } from "./types";
 
 // 发送心跳包
 export function sendHeartbeat() {
-  const socket = SocketManager.getInstance().socket;
-  if (socket?.connected) {
+  const manager = SocketManager.getInstance();
+  const socket = manager.socket;
+  if (socket?.connected && !manager.isSyncing) {
     socket.timeout(5000).emit(EVENT.SYSTEM.HEARTBEAT, (err: unknown, LatestSyncUserMsgSeqNum: number) => {
       const state = store.getState();
       const isSync = LatestSyncUserMsgSeqNum > state.chat.syncUserMsgSeqNum;
 
       if (!err && isSync) {
+        manager.isSyncing = true;
         sendSyncMessage(state.chat.syncUserMsgSeqNum);
       }
     });

@@ -8,6 +8,7 @@ type SocketType = Socket | null;
 
 export class SocketManager {
   private static instance: SocketManager;
+  public isSyncing = false;
   public socket: SocketType = null;
   public isConnected: boolean = false;
   private currentToken: string | null = null;
@@ -73,6 +74,7 @@ export class SocketManager {
 
     this.socket.on(EVENT.SYSTEM.CONNECT, () => {
       this.setStatus(true);
+      this.isSyncing = false;
       this.startHeartbeat();
     });
     this.socket.on(EVENT.SYSTEM.DISCONNECT, () => {
