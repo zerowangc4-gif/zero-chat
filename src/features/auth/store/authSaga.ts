@@ -7,6 +7,7 @@ import { Toast } from "@/components";
 import { CameraRoll } from "@react-native-camera-roll/camera-roll";
 import { getErrorMessage } from "@/utils";
 import { getPrivateKey, signMessage } from "@/features/wallet";
+import { setUserId } from "@/features/chat";
 
 export function* watchAuthSaga() {
   yield onActions({ [loginApp.type]: handleLoginApp });
@@ -35,6 +36,8 @@ function* handleLoginApp(action?: BaseAction): Generator {
     yield call(CameraRoll.saveAsset, uri, { type: "photo", album: "ZeroTrace" });
 
     yield put(setAuthData(result));
+
+    yield put(setUserId(result.user.address));
   } catch (e: unknown) {
     const message = getErrorMessage(e);
     Toast.error(message);

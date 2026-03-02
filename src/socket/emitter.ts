@@ -1,7 +1,7 @@
 import { SocketManager } from "./manager";
 import { store } from "@/store";
 import { EVENT, MESSAGE_STATUS } from "@/constants";
-import { SendMessage, ChatMessage, SuccessChatMessage } from "./types";
+import { Message } from "@/features/chat";
 
 // 发送心跳包
 export function sendHeartbeat() {
@@ -21,25 +21,21 @@ export function sendHeartbeat() {
 }
 
 // 发送私聊消息
-export function sendMessage(data: SendMessage): Promise<ChatMessage> {
+export function sendMessage(data: Message): Promise<Message> {
   return new Promise(resolve => {
     const socket = SocketManager.getInstance().socket;
     if (!socket?.connected) {
       resolve({
-        chatId: data.toId,
-        id: data.clientMsgId,
+        ...data,
         status: MESSAGE_STATUS.FAILED,
-        timestamp: Date.now(),
       });
       return;
     }
-    socket.timeout(5000).emit(EVENT.CHAT.SEND_MESSAGE, data, (err: unknown, result: SuccessChatMessage) => {
+    socket.timeout(5000).emit(EVENT.CHAT.SEND_MESSAGE, data, (err: unknown, result: Message) => {
       if (err) {
         resolve({
-          chatId: data.toId,
-          id: data.clientMsgId,
+          ...data,
           status: MESSAGE_STATUS.FAILED,
-          timestamp: Date.now(),
         });
       }
       resolve(result);

@@ -1,10 +1,10 @@
 import { ROUTES } from "@/navigation";
 import { useApp } from "@/hooks";
-import { insertMessage, MessagePayload, updateMessage, Message } from "@/features/chat";
+import { updateMessage, Message, insertMessages } from "@/features/chat";
 import { useAppSelector } from "@/store";
 import { generateId } from "@/utils";
-import { useCallback, useEffect, useRef, useState } from "react";
-import { sendMessage, sendReadReport, ChatMessage } from "@/socket";
+import { useEffect, useRef, useState } from "react";
+import { sendMessage, sendReadReport } from "@/socket";
 import { MESSAGE_STATUS, MESSAGE_TYPE } from "@/constants";
 export function useChat() {
   const { route, dispatch, theme, insets } = useApp<typeof ROUTES.Chat>();
@@ -31,44 +31,25 @@ export function useChat() {
     }
   }, [messages, address]);
 
-  const formatMessage = useCallback(
-    (content: string): MessagePayload => {
-      return {
-        chatId: address,
-        message: {
-          id: generateId(),
-          fromId: user.address,
-          toId: address,
-          content: content.trim(),
-          timestamp: Date.now(),
-          type: MESSAGE_TYPE.TEXT,
-          status: MESSAGE_STATUS.PENDING,
-        },
-      };
-    },
-    [address, user.address],
-  );
-
   const onSend = async () => {
-    const payload = formatMessage(text);
-    dispatch(insertMessage(payload));
-    setText("");
-    const result: ChatMessage = await sendMessage({
+    const message: Message = {
+      id: generateId(),
+      fromId: user.address,
       toId: address,
-      content: text,
-      clientMsgId: payload.message.id,
-    });
-    dispatch(
-      updateMessage({
-        chatId: result.chatId,
-        fromId: user.address,
-        id: result.id,
-        content: text,
-        status: result.status,
-        sessionSeqNum: result.sessionSeqNum,
-        timestamp: result.timestamp,
-      }),
-    );
+      sessionSeqNum: undefined,
+      content: text.trim(),
+      timestamp: Date.now(),
+      type: MESSAGE_TYPE.TEXT,
+      status: MESSAGE_STATUS.PENDING,
+    };
+
+    dispatch(insertMessages([message]));
+
+    setText("");
+
+    const result: Message = await sendMessage(message);
+
+    dispatch(updateMessage(result));
   };
 
   return {
@@ -76,7 +57,6 @@ export function useChat() {
     username,
     address,
     user,
-    formatMessage,
     onSend,
     setText,
     text,
