@@ -60,7 +60,6 @@ const chatSlice = createSlice({
         }
       });
     },
-    batchInsertMessages: () => {},
   },
 });
 
