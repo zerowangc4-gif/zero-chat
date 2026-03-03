@@ -2,6 +2,7 @@ import { createAction, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { ReadReceipt } from "@/socket";
 import { Contacts, Message } from "./types";
 import { MESSAGE_STATUS } from "@/constants";
+import { sortMessages } from "@/utils";
 
 const initialState = { userId: "", syncUserMsgSeqNum: 0, chatMap: {}, contacts: [] };
 
@@ -19,9 +20,10 @@ const chatSlice = createSlice({
       state.syncUserMsgSeqNum = action.payload;
     },
     insertMessages: (state, action: PayloadAction<Message[]>) => {
+      const chatIds = new Set<string>();
       action.payload.forEach((item: Message) => {
         const chatId = item.fromId === state.userId ? item.toId : item.fromId;
-
+        chatIds.add(chatId);
         if (!state.chatMap[chatId]) {
           state.chatMap[chatId] = [];
         }
@@ -31,6 +33,11 @@ const chatSlice = createSlice({
 
         if (!isDuplicate) {
           currentChat.push(item);
+        }
+      });
+      chatIds.forEach(chatId => {
+        if (state.chatMap[chatId]) {
+          state.chatMap[chatId] = sortMessages(state.chatMap[chatId]);
         }
       });
     },
@@ -45,6 +52,7 @@ const chatSlice = createSlice({
         const index = currentChat.findIndex((item: Message) => item.id === message.id);
         if (index !== -1) {
           currentChat[index] = message;
+          state.chatMap[chatId] = sortMessages(currentChat);
         }
       }
     },
@@ -56,7 +64,8 @@ const chatSlice = createSlice({
           if (
             typeof item.sessionSeqNum === "number" &&
             item.sessionSeqNum <= lastSessionSeqNum &&
-            item.status !== MESSAGE_STATUS.READ
+            item.status !== MESSAGE_STATUS.READ &&
+            item.status !== MESSAGE_STATUS.FAILED
           ) {
             item.status = MESSAGE_STATUS.READ;
           }

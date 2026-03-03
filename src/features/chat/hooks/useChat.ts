@@ -2,7 +2,7 @@ import { ROUTES } from "@/navigation";
 import { useApp } from "@/hooks";
 import { updateMessage, Message, insertMessages } from "@/features/chat";
 import { useAppSelector } from "@/store";
-import { generateId } from "@/utils";
+import { generateId, generateSessionSeqNum } from "@/utils";
 import { useEffect, useRef, useState } from "react";
 import { sendMessage, sendReadReport } from "@/socket";
 import { MESSAGE_STATUS, MESSAGE_TYPE } from "@/constants";
@@ -23,7 +23,7 @@ export function useChat() {
     const msg: Message | undefined = chatMessages.find((item: Message) => item.fromId === address);
 
     if (msg) {
-      const lastSessionSeqNum = msg.sessionSeqNum;
+      const lastSessionSeqNum = parseInt(String(msg.sessionSeqNum), 10);
       if (lastSessionSeqNum > lastChatReadNum.current && msg.status !== MESSAGE_STATUS.READ) {
         sendReadReport(address, lastSessionSeqNum);
         lastChatReadNum.current = lastSessionSeqNum;
@@ -36,7 +36,7 @@ export function useChat() {
       id: generateId(),
       fromId: user.address,
       toId: address,
-      sessionSeqNum: undefined,
+      sessionSeqNum: generateSessionSeqNum(address),
       content: text.trim(),
       timestamp: Date.now(),
       type: MESSAGE_TYPE.TEXT,

@@ -32,7 +32,6 @@ const authSlice = createSlice({
     },
     setAvatarSeed: (state, action: PayloadAction<string>) => {
       state.user.avatarSeed = action.payload;
-      console.log(action.payload);
     },
   },
 });
