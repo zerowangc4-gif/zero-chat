@@ -25,8 +25,11 @@ export const setupSocketListeners = (socket: Socket) => {
   socket.on(EVENT.CHAT.SYNC_OFFINE_MESSAGES, (data: Message[], ack) => {
     try {
       if (data && data.length > 0) {
-        ack(data[data.length - 1]);
         store.dispatch(insertMessages(data));
+
+        if (typeof ack === "function") {
+          ack(data[data.length - 1]);
+        }
       }
     } finally {
       SocketManager.getInstance().isSyncing = false;
