@@ -26,6 +26,7 @@ export const setupSocketListeners = (socket: Socket) => {
     try {
       if (data && data.length > 0) {
         ack(data[data.length - 1]);
+        store.dispatch(insertMessages(data));
       }
     } finally {
       SocketManager.getInstance().isSyncing = false;
