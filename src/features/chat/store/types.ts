@@ -11,9 +11,9 @@ export interface Contacts {
 
 export interface Message {
   id: string;
-  sessionSeqNum?: number;
   fromId: string;
   toId: string;
+  sessionSeqNum: number | string;
   content: string;
   timestamp: number;
   type: MessageType;
@@ -25,8 +25,4 @@ export interface Messages {
   chatMap: {
     [key: string]: Message[];
   };
-}
-export interface MessagePayload {
-  chatId: string;
-  message: Message;
 }

@@ -12,8 +12,6 @@ export function Me() {
     const newSeed = `${avatarSeed}_${randomSuffix}`;
 
     dispatch(updateUserAvatar(newSeed));
-
-    console.log("🚀 基于原种子更新:", newSeed);
   };
   return (
     <BaseScreen>
