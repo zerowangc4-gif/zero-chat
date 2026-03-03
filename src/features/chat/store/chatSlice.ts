@@ -50,15 +50,18 @@ const chatSlice = createSlice({
     },
     updateMessagesReadStatus: (state, action: PayloadAction<ReadReceipt>) => {
       const { chatId, lastSessionSeqNum } = action.payload;
-      state.chatMap[chatId].forEach((item: Message) => {
-        if (
-          typeof item.sessionSeqNum === "number" &&
-          item.sessionSeqNum <= lastSessionSeqNum &&
-          item.status !== MESSAGE_STATUS.READ
-        ) {
-          item.status = MESSAGE_STATUS.READ;
-        }
-      });
+      const currentChat = state.chatMap[chatId];
+      if (currentChat) {
+        currentChat.forEach((item: Message) => {
+          if (
+            typeof item.sessionSeqNum === "number" &&
+            item.sessionSeqNum <= lastSessionSeqNum &&
+            item.status !== MESSAGE_STATUS.READ
+          ) {
+            item.status = MESSAGE_STATUS.READ;
+          }
+        });
+      }
     },
   },
 });
