@@ -3,8 +3,14 @@ import { store } from "@/store";
 import { EVENT, MESSAGE_STATUS } from "@/constants";
 import { SocketManager } from "./manager";
 
-import { clearAuthData, insertMessages, Message, updateMessagesReadStatus, updateSyncUserMsgSeqNum } from "@/features";
-import { ReadReceipt } from "./types";
+import {
+  clearAuthData,
+  insertMessages,
+  Message,
+  updateMessagesReadStatus,
+  updateSyncUserMsgSeqNum,
+  ReadReceipt,
+} from "@/features";
 
 export const setupSocketListeners = (socket: Socket) => {
   socket.on(EVENT.SYSTEM.FORCE_LOGOUT, () => {

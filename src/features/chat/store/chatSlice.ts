@@ -1,6 +1,5 @@
 import { createAction, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { ReadReceipt } from "@/socket";
-import { Contacts, Message } from "./types";
+import { Contacts, Message, ReadReceipt } from "./types";
 import { MESSAGE_STATUS } from "@/constants";
 import { sortMessages } from "@/utils";
 
