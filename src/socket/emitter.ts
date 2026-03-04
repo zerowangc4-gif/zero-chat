@@ -12,7 +12,7 @@ export function sendHeartbeat() {
       const state = store.getState();
       const isSync = LatestSyncUserMsgSeqNum > state.chat.syncUserMsgSeqNum;
 
-      if (!err && isSync) {
+      if ((!err && isSync) || LatestSyncUserMsgSeqNum > 0) {
         manager.isSyncing = true;
         sendSyncMessage(state.chat.syncUserMsgSeqNum);
       }
