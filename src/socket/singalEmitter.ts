@@ -26,28 +26,6 @@ export function sendHeartbeat() {
   });
 }
 
-//同步好友离线消息
-export function sendSyncMessage(syncUserMsgSeqNum: number) {
-  const socket = getSocket();
-  if (!socket || !socket.connected) {
-    return;
-  }
-
-  socket.timeout(10000).emit(EVENT.chat.syncOffineMessages, syncUserMsgSeqNum, (err: unknown, data: Message[]) => {
-    const service = MessageService.getInstance();
-
-    if (err) {
-      const messageService = getMessageService();
-      messageService.isSyncing = false;
-      return;
-    }
-    if (data && data.length > 0) {
-      service.handleIncomingMessages(data);
-      removeReadOfflineMessages(data[data.length - 1]);
-    }
-  });
-}
-
 // 删除已读离线信息
 
 export function removeReadOfflineMessages(message: Message) {

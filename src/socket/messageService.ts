@@ -1,6 +1,6 @@
 import { store } from "@/store";
 import { SocketClient } from "./socketClient";
-import { sendHeartbeat, sendSyncMessage } from "./singalEmitter";
+import { sendHeartbeat, removeReadOfflineMessages } from "./singalEmitter";
 import { authService } from "@/api";
 import { AT_EXPIRE } from "@/constants";
 import {
@@ -10,8 +10,11 @@ import {
   updateSyncUserMsgSeqNum,
   ReadReceipt,
   updateMessagesReadStatus,
+  getOffineChatMessages,
 } from "@/features";
 import { url } from "./events";
+import { getErrorMessage } from "@/utils";
+import { Toast } from "@/components";
 
 export class MessageService {
   private static instance: MessageService;
@@ -64,15 +67,25 @@ export class MessageService {
     store.dispatch(clearAuthData());
   }
 
-  public handleHeartbeatAck(LatestSyncUserMsgSeqNum: number) {
-    const state = store.getState();
-    const currentUserMsgSeqNum = state.chat.syncUserMsgSeqNum;
+  public async handleHeartbeatAck(LatestSyncUserMsgSeqNum: number) {
+    try {
+      const state = store.getState();
+      const currentUserMsgSeqNum = state.chat.syncUserMsgSeqNum;
 
-    const isSync = LatestSyncUserMsgSeqNum > currentUserMsgSeqNum || LatestSyncUserMsgSeqNum > 0;
+      const isSync = LatestSyncUserMsgSeqNum > currentUserMsgSeqNum || LatestSyncUserMsgSeqNum > 0;
+      console.log(LatestSyncUserMsgSeqNum, currentUserMsgSeqNum);
+      if (isSync) {
+        this.isSyncing = true;
+        const messages: Message[] = await getOffineChatMessages(currentUserMsgSeqNum);
 
-    if (isSync) {
-      this.isSyncing = true;
-      sendSyncMessage(currentUserMsgSeqNum);
+        if (messages && messages.length > 0) {
+          this.handleIncomingMessages(messages);
+          removeReadOfflineMessages(messages[messages.length - 1]);
+        }
+      }
+    } catch (e: unknown) {
+      const message = getErrorMessage(e);
+      Toast.error(message);
     }
   }
 
