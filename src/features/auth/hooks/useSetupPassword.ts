@@ -2,7 +2,7 @@ import { useCallback } from "react"; // 必须导入
 import { Toast } from "@/components";
 import { useGenerateWallet, WalletType } from "@/features/wallet";
 import { useApp, useInput } from "@/hooks";
-import { ROUTES } from "@/navigation";
+import { ROUTES } from "@/navigation2";
 import { getErrorMessage } from "@/utils";
 export function useSetupPassword() {
   const { theme, t, navigation } = useApp();
