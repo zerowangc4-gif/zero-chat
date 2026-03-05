@@ -18,8 +18,8 @@ export function sendMessage(data: Message): Promise<Message> {
       });
       return;
     }
-    console.log(data);
-    socket.timeout(5000).emit(EVENT.chat.chatMessage, data, (err: unknown, result: Message) => {
+
+    socket.timeout(2000).emit(EVENT.chat.chatMessage, data, (err: unknown, result: Message) => {
       if (err) {
         resolve({
           ...data,
@@ -38,11 +38,5 @@ export function sendReadReport(toId: string, lastSessionSeqNum: number) {
     return;
   }
   console.log(toId, lastSessionSeqNum);
-  socket.timeout(5000).emit(EVENT.chat.readReport, { toId, lastSessionSeqNum }, (err: unknown, data) => {
-    if (err) {
-      console.log(err);
-    } else {
-      console.log(data);
-    }
-  });
+  socket.emit(EVENT.chat.readReport, { toId, lastSessionSeqNum });
 }

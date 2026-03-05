@@ -33,7 +33,7 @@ export class MessageService {
       sendHeartbeat();
     };
     tick();
-    this.heartbeatTimer = setInterval(tick, 20000);
+    this.heartbeatTimer = setInterval(tick, 5000);
   }
 
   public stopHeartbeat() {
@@ -69,7 +69,7 @@ export class MessageService {
       const { chat } = store.getState();
 
       const isSyncChatMessage = LatestSyncUserMsgSeqNum > chat.syncUserMsgSeqNum || LatestSyncUserMsgSeqNum > 0;
-      console.log(LatestSyncUserMsgSeqNum, chat.syncUserMsgSeqNum);
+
       if (isSyncChatMessage) {
         await syncOfflineMessages(chat.syncUserMsgSeqNum);
       }
