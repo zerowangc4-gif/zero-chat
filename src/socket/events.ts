@@ -12,5 +12,6 @@ export const EVENT = {
     readReport: "read_report",
     updateSyncUserChatMessageNum: "update_sync_user_chat_message_num",
     readUpdate: "read_update",
+    removeOffineMessages: "remove_offine_messages",
   },
 };

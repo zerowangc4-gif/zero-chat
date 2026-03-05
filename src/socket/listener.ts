@@ -23,16 +23,7 @@ export const setupSocketListeners = (socket: Socket) => {
     service.handleupdateMessagesReadStatus(data);
   });
 
-  // 同步离线信息
-  socket.on(EVENT.chat.syncOffineMessages, (data: Message[], ack) => {
-    if (data && data.length > 0) {
-      service.handleIncomingMessages(data);
-
-      ack(data[data.length - 1]);
-    }
-  });
-
-  // 同步离线私人消息序号
+  // 更新同步过的离线私人信息的最大序号
   socket.on(EVENT.chat.updateSyncUserChatMessageNum, (SyncUserChatMessageNum: number) => {
     service.handleUpdateSyncUserChatMessageNum(SyncUserChatMessageNum);
   });

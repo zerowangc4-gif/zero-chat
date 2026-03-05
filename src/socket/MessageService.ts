@@ -1,6 +1,6 @@
 import { store } from "@/store";
 import { SocketClient } from "./SocketClient";
-import * as emitter from "./emitter";
+import { sendHeartbeat, sendSyncMessage } from "./singalEmitter";
 import { authService } from "@/api";
 import { AT_EXPIRE } from "@/constants";
 import {
@@ -29,7 +29,7 @@ export class MessageService {
     this.stopHeartbeat();
     const tick = () => {
       if (!this.isSyncing && SocketClient.getInstance().isConnected) {
-        emitter.sendHeartbeat();
+        sendHeartbeat();
       }
     };
     tick();
@@ -71,7 +71,7 @@ export class MessageService {
     const isSync = LatestSyncUserMsgSeqNum > currentUserMsgSeqNum || LatestSyncUserMsgSeqNum > 0;
     if (isSync) {
       this.isSyncing = true;
-      emitter.sendSyncMessage(currentUserMsgSeqNum);
+      sendSyncMessage(currentUserMsgSeqNum);
     }
   }
 

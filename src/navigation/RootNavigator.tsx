@@ -15,7 +15,7 @@ export function RootNavigator() {
   return (
     <SocketProvider token={token}>
       <NavigationContainer>
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Navigator id="root" screenOptions={{ headerShown: false }}>
           {isLoggedIn ? (
             <>
               <Stack.Screen name={ROUTES.MainTab} component={MainTab} />

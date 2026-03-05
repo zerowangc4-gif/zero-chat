@@ -1,36 +1,46 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
-import { SocketManager } from "./manager";
-import { SocketContextType, SocketProviderType } from "./types";
+import { createContext, useContext, useEffect, useState, useMemo } from "react";
+import { SocketClient } from "./SocketClient";
+import { MessageService } from "./MessageService";
+import { url } from "./events";
 
-const SocketContext = createContext<SocketContextType | null>(null);
+const SocketContext = createContext(null);
 
-export function SocketProvider(props: SocketProviderType) {
-  const { children, token } = props;
-  const manager = SocketManager.getInstance();
-  const [isConnected, setIsConnected] = useState(manager.isConnected);
+interface Props {
+  token: string;
+  children: React.ReactNode;
+}
+
+export function SocketProvider({ children, token }: Props) {
+  const client = useMemo(() => SocketClient.getInstance(), []);
+  const [isConnected, setIsConnected] = useState(() => client.isConnected);
 
   useEffect(() => {
-    manager.subscribeStatus(status => {
+    client.subscribeStatus(status => {
       setIsConnected(status);
+      const service = MessageService.getInstance();
+      if (status) {
+        service.startHeartbeat();
+      } else {
+        service.stopHeartbeat();
+      }
     });
 
     if (token) {
-      manager.connect();
+      client.connect(token, url);
     } else {
-      manager.disconnect();
+      client.disconnect();
     }
     return () => {
-      manager.subscribeStatus(null);
+      client.subscribeStatus(null);
     };
-  }, [manager, token]);
+  }, [client, token]);
 
-  return <SocketContext.Provider value={{ isConnected }}>{children}</SocketContext.Provider>;
+  const value = useMemo(() => ({ isConnected }), [isConnected]);
+
+  return <SocketContext.Provider value={value}>{children}</SocketContext.Provider>;
 }
 
 export const useSocket = () => {
   const context = useContext(SocketContext);
-  if (!context) {
-    throw new Error("useSocket must be used within a SocketProvider");
-  }
   return context;
 };
