@@ -1,37 +1,25 @@
-import { SocketManager } from "./manager";
-import { store } from "@/store";
-import { EVENT, MESSAGE_STATUS } from "@/constants";
+import { SocketClient } from "./socketClient";
+import { MESSAGE_STATUS } from "@/constants";
 import { Message } from "@/features/chat";
+import { EVENT } from "./events";
 
-// 发送心跳包
-export function sendHeartbeat() {
-  const manager = SocketManager.getInstance();
-  const socket = manager.socket;
-  if (socket?.connected && !manager.isSyncing) {
-    socket.timeout(5000).emit(EVENT.SYSTEM.HEARTBEAT, (err: unknown, LatestSyncUserMsgSeqNum: number) => {
-      const state = store.getState();
-      const isSync = LatestSyncUserMsgSeqNum > state.chat.syncUserMsgSeqNum;
+const getSocket = () => {
+  return SocketClient.getInstance().socket;
+};
 
-      if ((!err && isSync) || LatestSyncUserMsgSeqNum > 0) {
-        manager.isSyncing = true;
-        sendSyncMessage(state.chat.syncUserMsgSeqNum);
-      }
-    });
-  }
-}
-
-// 发送私聊消息
+// 发送信息
 export function sendMessage(data: Message): Promise<Message> {
   return new Promise(resolve => {
-    const socket = SocketManager.getInstance().socket;
-    if (!socket?.connected) {
+    const socket = getSocket();
+    if (!socket || !socket.connected) {
       resolve({
         ...data,
         status: MESSAGE_STATUS.FAILED,
       });
       return;
     }
-    socket.timeout(5000).emit(EVENT.CHAT.SEND_MESSAGE, data, (err: unknown, result: Message) => {
+
+    socket.timeout(2000).emit(EVENT.chat.chatMessage, data, (err: unknown, result: Message) => {
       if (err) {
         resolve({
           ...data,
@@ -44,19 +32,11 @@ export function sendMessage(data: Message): Promise<Message> {
 }
 
 // 发送已读回执
-export function sendReadReport(fromId: string, lastSessionSeqNum: number) {
-  const socket = SocketManager.getInstance().socket;
-
-  if (socket?.connected) {
-    socket.emit(EVENT.CHAT.READ_REPORT, { fromId, lastSessionSeqNum });
+export function sendReadReport(toId: string, lastSessionSeqNum: number) {
+  const socket = getSocket();
+  if (!socket || !socket.connected) {
+    return;
   }
-}
-
-// 拉取离线消息
-export function sendSyncMessage(syncUserMsgSeqNum: number) {
-  const socket = SocketManager.getInstance().socket;
-
-  if (socket?.connected) {
-    socket.emit(EVENT.CHAT.SYNC_OFFINE_MESSAGES, syncUserMsgSeqNum);
-  }
+  console.log(toId, lastSessionSeqNum);
+  socket.emit(EVENT.chat.readReport, { toId, lastSessionSeqNum });
 }

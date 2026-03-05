@@ -1,1 +1,1 @@
-export * from "./getContacts";
+export * from "./chatService";

@@ -1,8 +1,8 @@
 import { ROUTES } from "@/navigation";
 import { useApp } from "@/hooks";
-import { updateMessage, Message, insertMessages } from "@/features/chat";
+import { updateMessage, Message, insertMessages, generateId, generateSessionSeqNum } from "@/features/chat";
 import { useAppSelector } from "@/store";
-import { generateId, generateSessionSeqNum } from "@/utils";
+
 import { useEffect, useRef, useState } from "react";
 import { sendMessage, sendReadReport } from "@/socket";
 import { MESSAGE_STATUS, MESSAGE_TYPE } from "@/constants";
