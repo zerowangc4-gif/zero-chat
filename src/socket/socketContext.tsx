@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState, useMemo } from "react";
-import { SocketClient } from "./SocketClient";
-import { MessageService } from "./MessageService";
+import { SocketClient } from "./socketClient";
+import { MessageService } from "./messageService";
 import { url } from "./events";
 
 const SocketContext = createContext(null);

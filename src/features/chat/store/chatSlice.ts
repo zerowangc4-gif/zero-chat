@@ -1,7 +1,7 @@
 import { createAction, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Contacts, Message, ReadReceipt } from "./types";
 import { MESSAGE_STATUS } from "@/constants";
-import { sortMessages } from "@/utils";
+import { sortMessages } from "@/features/chat";
 
 const initialState = { userId: "", syncUserMsgSeqNum: 0, chatMap: {}, contacts: [] };
 

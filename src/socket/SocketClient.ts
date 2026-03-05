@@ -1,6 +1,6 @@
 import { io, Socket } from "socket.io-client";
-import { setupSocketListeners } from "./listeners";
-import { MessageService } from "./MessageService";
+import { setupSocketListeners } from "./listener";
+import { MessageService } from "./messageService";
 
 export class SocketClient {
   private static instance: SocketClient;

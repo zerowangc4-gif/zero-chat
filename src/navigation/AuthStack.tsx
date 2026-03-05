@@ -6,7 +6,7 @@ const Stack = createNativeStackNavigator<AuthStackParamList>();
 
 function AuthStack() {
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Navigator id="auth" screenOptions={{ headerShown: false }}>
       <Stack.Screen name={ROUTES.Welcome} component={Welcome} />
       <Stack.Screen name={ROUTES.SetupPassword} component={SetupPassword} />
       <Stack.Screen name={ROUTES.BackupSecretQR} component={BackupSecretQR} />

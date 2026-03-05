@@ -1,5 +1,5 @@
 import { store } from "@/store";
-import { SocketClient } from "./SocketClient";
+import { SocketClient } from "./socketClient";
 import { sendHeartbeat, sendSyncMessage } from "./singalEmitter";
 import { authService } from "@/api";
 import { AT_EXPIRE } from "@/constants";

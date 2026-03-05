@@ -1,6 +1,6 @@
 import { Message } from "@/features/chat";
-import { SocketClient } from "./SocketClient";
-import { MessageService } from "./MessageService";
+import { SocketClient } from "./socketClient";
+import { MessageService } from "./messageService";
 import { EVENT } from "./events";
 
 const getSocket = () => {

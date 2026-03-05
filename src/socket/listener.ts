@@ -1,6 +1,6 @@
 import { Socket } from "socket.io-client";
 import { MESSAGE_STATUS } from "@/constants";
-import { MessageService } from "./MessageService";
+import { MessageService } from "./messageService";
 import { EVENT } from "./events";
 import { Message, ReadReceipt } from "@/features/chat";
 

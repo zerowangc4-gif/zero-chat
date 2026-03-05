@@ -1,4 +1,4 @@
-import { SocketClient } from "./SocketClient";
+import { SocketClient } from "./socketClient";
 import { MESSAGE_STATUS } from "@/constants";
 import { Message } from "@/features/chat";
 import { EVENT } from "./events";

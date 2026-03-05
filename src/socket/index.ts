@@ -1,3 +1,3 @@
 export * from "./emitter";
 export * from "./singalEmitter";
-export * from "./SocketContext";
+export * from "./socketContext";
