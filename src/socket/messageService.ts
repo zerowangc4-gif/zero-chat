@@ -1,6 +1,6 @@
 import { store } from "@/store";
 import { SocketClient } from "./socketClient";
-import { sendHeartbeat, removeReadOfflineMessages } from "./singalEmitter";
+import { sendHeartbeat } from "./singalEmitter";
 import { authService } from "@/api";
 import { AT_EXPIRE } from "@/constants";
 import {
@@ -10,11 +10,10 @@ import {
   updateSyncUserMsgSeqNum,
   ReadReceipt,
   updateMessagesReadStatus,
-  getOffineChatMessages,
 } from "@/features";
 import { url } from "./events";
-import { getErrorMessage } from "@/utils";
-import { Toast } from "@/components";
+
+import { syncOfflineMessages } from "./SyncService";
 
 export class MessageService {
   private static instance: MessageService;
@@ -31,9 +30,7 @@ export class MessageService {
   public startHeartbeat() {
     this.stopHeartbeat();
     const tick = () => {
-      if (!this.isSyncing && SocketClient.getInstance().isConnected) {
-        sendHeartbeat();
-      }
+      sendHeartbeat();
     };
     tick();
     this.heartbeatTimer = setInterval(tick, 20000);
@@ -69,32 +66,21 @@ export class MessageService {
 
   public async handleHeartbeatAck(LatestSyncUserMsgSeqNum: number) {
     try {
-      const state = store.getState();
-      const currentUserMsgSeqNum = state.chat.syncUserMsgSeqNum;
+      const { chat } = store.getState();
 
-      const isSync = LatestSyncUserMsgSeqNum > currentUserMsgSeqNum || LatestSyncUserMsgSeqNum > 0;
-      console.log(LatestSyncUserMsgSeqNum, currentUserMsgSeqNum);
-      if (isSync) {
-        this.isSyncing = true;
-        const messages: Message[] = await getOffineChatMessages(currentUserMsgSeqNum);
-
-        if (messages && messages.length > 0) {
-          this.handleIncomingMessages(messages);
-          removeReadOfflineMessages(messages[messages.length - 1]);
-        }
+      const isSyncChatMessage = LatestSyncUserMsgSeqNum > chat.syncUserMsgSeqNum || LatestSyncUserMsgSeqNum > 0;
+      console.log(LatestSyncUserMsgSeqNum, chat.syncUserMsgSeqNum);
+      if (isSyncChatMessage) {
+        await syncOfflineMessages(chat.syncUserMsgSeqNum);
       }
     } catch (e: unknown) {
-      const message = getErrorMessage(e);
-      Toast.error(message);
+      console.error(e);
+      this.isSyncing = false;
     }
   }
 
-  public handleIncomingMessages(messages: Message[], isSync = false) {
+  public handleIncomingMessages(messages: Message[]) {
     store.dispatch(insertMessages(messages));
-
-    if (isSync) {
-      this.isSyncing = false;
-    }
   }
 
   public handleUpdateSyncUserChatMessageNum(SyncUserChatMessageNum: number) {
