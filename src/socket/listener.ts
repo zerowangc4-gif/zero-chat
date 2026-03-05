@@ -19,7 +19,8 @@ export const setupSocketListeners = (socket: Socket) => {
   });
 
   //   已读更新
-  socket.on(EVENT.chat.readUpdate, (data: ReadReceipt) => {
+  socket.on(EVENT.chat.readReport, (data: ReadReceipt) => {
+    console.log("触发一度更新");
     service.handleupdateMessagesReadStatus(data);
   });
 

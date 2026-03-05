@@ -17,6 +17,7 @@ export function sendHeartbeat() {
   if (!socket || !socket.connected) {
     return;
   }
+
   socket.timeout(5000).emit(EVENT.system.heartBeat, (err: unknown, LatestSyncUserMsgSeqNum: number) => {
     const messageService = getMessageService();
     if (!err) {
@@ -31,9 +32,16 @@ export function sendSyncMessage(syncUserMsgSeqNum: number) {
   if (!socket || !socket.connected) {
     return;
   }
-  socket.emit(EVENT.chat.syncOffineMessages, syncUserMsgSeqNum, (err: unknown, data: Message[]) => {
+
+  socket.timeout(10000).emit(EVENT.chat.syncOffineMessages, syncUserMsgSeqNum, (err: unknown, data: Message[]) => {
     const service = MessageService.getInstance();
-    if (!err && data && data.length > 0) {
+
+    if (err) {
+      const messageService = getMessageService();
+      messageService.isSyncing = false;
+      return;
+    }
+    if (data && data.length > 0) {
       service.handleIncomingMessages(data);
       removeReadOfflineMessages(data[data.length - 1]);
     }

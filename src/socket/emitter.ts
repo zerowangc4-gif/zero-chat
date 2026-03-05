@@ -18,6 +18,7 @@ export function sendMessage(data: Message): Promise<Message> {
       });
       return;
     }
+    console.log(data);
     socket.timeout(5000).emit(EVENT.chat.chatMessage, data, (err: unknown, result: Message) => {
       if (err) {
         resolve({
@@ -31,10 +32,17 @@ export function sendMessage(data: Message): Promise<Message> {
 }
 
 // 发送已读回执
-export function sendReadReport(fromId: string, lastSessionSeqNum: number) {
+export function sendReadReport(toId: string, lastSessionSeqNum: number) {
   const socket = getSocket();
   if (!socket || !socket.connected) {
     return;
   }
-  socket.emit(EVENT.chat.readReport, { fromId, lastSessionSeqNum });
+  console.log(toId, lastSessionSeqNum);
+  socket.timeout(5000).emit(EVENT.chat.readReport, { toId, lastSessionSeqNum }, (err: unknown, data) => {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log(data);
+    }
+  });
 }

@@ -69,6 +69,7 @@ export class MessageService {
     const currentUserMsgSeqNum = state.chat.syncUserMsgSeqNum;
 
     const isSync = LatestSyncUserMsgSeqNum > currentUserMsgSeqNum || LatestSyncUserMsgSeqNum > 0;
+
     if (isSync) {
       this.isSyncing = true;
       sendSyncMessage(currentUserMsgSeqNum);
