@@ -2,7 +2,7 @@ import React from "react";
 import styled, { css } from "styled-components/native";
 import { Avatar, Typography } from "@/components";
 import { useChars } from "@/features/chat";
-import { useSocket } from "@/socket2";
+import { useSocket } from "@/socket";
 import { useApp } from "@/hooks";
 
 const STATUS_DOT_SIZE = 12;

@@ -1,10 +1,10 @@
-import { ROUTES } from "@/navigation2";
+import { ROUTES } from "@/navigation";
 import { useApp } from "@/hooks";
 import { updateMessage, Message, insertMessages, generateId, generateSessionSeqNum } from "@/features/chat";
 import { useAppSelector } from "@/store";
 
 import { useEffect, useRef, useState } from "react";
-import { sendMessage, sendReadReport } from "@/socket2";
+import { sendMessage, sendReadReport } from "@/socket";
 import { MESSAGE_STATUS, MESSAGE_TYPE } from "@/constants";
 export function useChat() {
   const { route, dispatch, theme, insets } = useApp<typeof ROUTES.Chat>();

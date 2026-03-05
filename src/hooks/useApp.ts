@@ -1,4 +1,4 @@
-import { useAppNavigation, useAppRoute, ROUTES, AllParamList } from "@/navigation2";
+import { useAppNavigation, useAppRoute, ROUTES, AllParamList } from "@/navigation";
 import { useTranslation } from "react-i18next";
 import { useTheme } from "styled-components/native";
 import { useAppDispatch } from "@/store";

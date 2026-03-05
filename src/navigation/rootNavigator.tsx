@@ -6,7 +6,7 @@ import AuthStack from "./authStack";
 import MainTab from "./mainTab";
 import renderPublicRoutes from "./publicRoutes";
 import { useAppSelector } from "@/store";
-import { SocketProvider } from "@/socket2";
+import { SocketProvider } from "@/socket";
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export function RootNavigator() {
