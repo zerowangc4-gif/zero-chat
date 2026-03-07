@@ -70,7 +70,6 @@ const chatSlice = createSlice({
           if (
             typeof item.sessionSeqNum === "number" &&
             item.sessionSeqNum <= lastSessionSeqNum &&
-            item.status !== MESSAGE_STATUS.READ &&
             item.status !== MESSAGE_STATUS.FAILED &&
             item.status !== MESSAGE_STATUS.DELIVERED
           ) {

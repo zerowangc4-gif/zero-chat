@@ -8,17 +8,10 @@ import {
   insertMessages,
   updateMessage,
   InsertChatMessages,
-  SyncMessagesStatus,
   updateSyncUserMsgSeqNum,
 } from "@/features/chat/store";
 import { call, put, select } from "redux-saga/effects";
-import {
-  sendMessage,
-  syncChatMessages,
-  deleteHavedSyncMessages,
-  syncMessagesStatus,
-  getContacts,
-} from "@/features/chat/services";
+import { sendMessage, syncChatMessages, deleteHavedSyncMessages, getContacts } from "@/features/chat/services";
 import { MESSAGE_STATUS } from "@/constants";
 
 export function* watchChatSaga() {
@@ -26,7 +19,6 @@ export function* watchChatSaga() {
     [fetchContacts.type]: handleGetContacts,
     [SendChatMessage.type]: handleSendChatMessage,
     [InsertChatMessages.type]: handleInsertChatMessage,
-    [SyncMessagesStatus.type]: handleSyncMessagesStatus,
   });
 }
 
@@ -67,15 +59,6 @@ function* handleInsertChatMessage() {
 
     const latestSyncUserMsgSeqNum = yield call(deleteHavedSyncMessages, result[result.length - 1]);
     yield put(updateSyncUserMsgSeqNum(latestSyncUserMsgSeqNum));
-  } catch (error: unknown) {
-    console.error(error);
-  }
-}
-
-// 同步已发信息状态
-function* handleSyncMessagesStatus() {
-  try {
-    const result: Message = yield call(syncMessagesStatus);
   } catch (error: unknown) {
     console.error(error);
   }

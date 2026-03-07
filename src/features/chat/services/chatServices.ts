@@ -24,9 +24,3 @@ export async function deleteHavedSyncMessages(message: Message): Promise<number>
   const result: number = await apiClient.post("/api/chat/deleteHavedSyncMessages", message);
   return result;
 }
-
-// 同步已发信息状态
-export async function syncMessagesStatus(): Promise<Message> {
-  const result: Message = await apiClient.get("/api/chat/syncMessagesStatus");
-  return result;
-}
