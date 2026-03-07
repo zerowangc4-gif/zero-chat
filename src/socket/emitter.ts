@@ -1,42 +1,20 @@
 import { SocketClient } from "./socketClient";
-import { MESSAGE_STATUS } from "@/constants";
-import { Message } from "@/features/chat";
-import { EVENT } from "./events";
+import { MessageService } from "./messageService";
 
 const getSocket = () => {
   return SocketClient.getInstance().socket;
 };
 
-// 发送信息
-export function sendMessage(data: Message): Promise<Message> {
-  return new Promise(resolve => {
-    const socket = getSocket();
-    if (!socket || !socket.connected) {
-      resolve({
-        ...data,
-        status: MESSAGE_STATUS.FAILED,
-      });
-      return;
-    }
+const getMessageService = () => {
+  return MessageService.getInstance();
+};
 
-    socket.timeout(2000).emit(EVENT.chat.chatMessage, data, (err: unknown, result: Message) => {
-      if (err) {
-        resolve({
-          ...data,
-          status: MESSAGE_STATUS.FAILED,
-        });
-      }
-      resolve(result);
-    });
-  });
-}
-
-// 发送已读回执
-export function sendReadReport(toId: string, lastSessionSeqNum: number) {
+// 发送心跳包
+export function sendHeartbeat() {
   const socket = getSocket();
   if (!socket || !socket.connected) {
     return;
   }
-  console.log(toId, lastSessionSeqNum);
-  socket.emit(EVENT.chat.readReport, { toId, lastSessionSeqNum });
+  const messageService = getMessageService();
+  messageService.handleHeartbeatAck();
 }

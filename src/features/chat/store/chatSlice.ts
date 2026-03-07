@@ -1,5 +1,5 @@
 import { createAction, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Contacts, Message, ReadReceipt } from "./types";
+import { Contacts, Message, TargetMsg } from "./types";
 import { MESSAGE_STATUS } from "@/constants";
 import { sortMessages } from "@/features/chat";
 
@@ -55,19 +55,24 @@ const chatSlice = createSlice({
         }
       }
     },
-    updateMessagesReadStatus: (state, action: PayloadAction<ReadReceipt>) => {
-      const { chatId, lastSessionSeqNum } = action.payload;
+
+    updateMessagesStatus: (state, action: PayloadAction<TargetMsg>) => {
+      const { chatId, id } = action.payload;
 
       const currentChat = state.chatMap[chatId];
-      if (currentChat) {
+      const message: Message | undefined = currentChat?.find((item: Message) => item.id === id);
+
+      if (currentChat && message) {
+        const lastSessionSeqNum = parseInt(String(message.sessionSeqNum), 10);
+
         currentChat.forEach((item: Message) => {
           if (
             typeof item.sessionSeqNum === "number" &&
             item.sessionSeqNum <= lastSessionSeqNum &&
-            item.status !== MESSAGE_STATUS.READ &&
-            item.status !== MESSAGE_STATUS.FAILED
+            item.status !== MESSAGE_STATUS.FAILED &&
+            item.status !== MESSAGE_STATUS.DELIVERED
           ) {
-            item.status = MESSAGE_STATUS.READ;
+            item.status = MESSAGE_STATUS.DELIVERED;
           }
         });
       }
@@ -75,15 +80,15 @@ const chatSlice = createSlice({
   },
 });
 
-export const {
-  setUserId,
-  insertMessages,
-  setContacts,
-  updateMessage,
-  updateMessagesReadStatus,
-  updateSyncUserMsgSeqNum,
-} = chatSlice.actions;
+export const { setUserId, insertMessages, setContacts, updateMessage, updateMessagesStatus, updateSyncUserMsgSeqNum } =
+  chatSlice.actions;
 
 export const fetchContacts = createAction("chat/contacts");
+
+export const SendChatMessage = createAction<Message>("chat/SendMessage");
+
+export const InsertChatMessages = createAction("chat/insertChatMessage");
+
+export const SyncMessagesStatus = createAction("chat/SyncMessagesStatus");
 
 export default chatSlice.reducer;

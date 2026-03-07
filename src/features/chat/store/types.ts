@@ -19,11 +19,10 @@ export interface Message {
   type: MessageType;
   status: MessageStatus;
 }
-export interface ReadReceipt {
+export interface MsgTarget {
   chatId: string;
-  lastSessionSeqNum: number;
+  id: string;
 }
-
 export interface Messages {
   syncUserMsgSeqNum: number;
   chatMap: {

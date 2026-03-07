@@ -1,10 +1,10 @@
 import { ROUTES } from "@/navigation";
 import { useApp } from "@/hooks";
-import { updateMessage, Message, insertMessages, generateId, generateSessionSeqNum } from "@/features/chat";
+import { Message, generateId, generateSessionSeqNum, SendChatMessage } from "@/features/chat";
 import { useAppSelector } from "@/store";
 
 import { useEffect, useRef, useState } from "react";
-import { sendMessage, sendReadReport } from "@/socket";
+
 import { MESSAGE_STATUS, MESSAGE_TYPE } from "@/constants";
 export function useChat() {
   const { route, dispatch, theme, insets } = useApp<typeof ROUTES.Chat>();
@@ -25,7 +25,6 @@ export function useChat() {
     if (msg) {
       const lastSessionSeqNum = parseInt(String(msg.sessionSeqNum), 10);
       if (lastSessionSeqNum > lastChatReadNum.current && msg.status !== MESSAGE_STATUS.READ) {
-        sendReadReport(address, lastSessionSeqNum);
         lastChatReadNum.current = lastSessionSeqNum;
       }
     }
@@ -43,13 +42,9 @@ export function useChat() {
       status: MESSAGE_STATUS.PENDING,
     };
 
-    dispatch(insertMessages([message]));
+    dispatch(SendChatMessage(message));
 
     setText("");
-
-    const result: Message = await sendMessage(message);
-
-    dispatch(updateMessage(result));
   };
 
   return {
