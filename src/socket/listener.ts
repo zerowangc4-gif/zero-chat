@@ -1,8 +1,8 @@
 import { Socket } from "socket.io-client";
-import { MESSAGE_STATUS } from "@/constants";
+import { store } from "@/store";
 import { MessageService } from "./messageService";
+import { InsertChatMessages, updateMessagesStatus, TargetMsg } from "@/features/chat";
 import { EVENT } from "./events";
-import { Message, ReadReceipt } from "@/features/chat";
 
 export const setupSocketListeners = (socket: Socket) => {
   const service = MessageService.getInstance();
@@ -12,20 +12,12 @@ export const setupSocketListeners = (socket: Socket) => {
     service.forceLogout();
   });
 
-  // 新私聊消息
-  socket.on(EVENT.chat.chatMessage, (message: Message, ack) => {
-    ack({ ...message, status: MESSAGE_STATUS.DELIVERED });
-    service.handleIncomingMessages([message]);
+  // 监听新消息
+  socket.on(EVENT.chat.chatMessage, () => {
+    store.dispatch(InsertChatMessages());
   });
-
-  //   已读更新
-  socket.on(EVENT.chat.readReport, (data: ReadReceipt) => {
-    console.log("触发一度更新");
-    service.handleupdateMessagesReadStatus(data);
-  });
-
-  // 更新同步过的离线私人信息的最大序号
-  socket.on(EVENT.chat.updateSyncUserChatMessageNum, (SyncUserChatMessageNum: number) => {
-    service.handleUpdateSyncUserChatMessageNum(SyncUserChatMessageNum);
+  //同步信息状态
+  socket.on(EVENT.chat.syncMessageStatus, (data: TargetMsg) => {
+    store.dispatch(updateMessagesStatus(data));
   });
 };
