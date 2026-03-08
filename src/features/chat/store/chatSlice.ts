@@ -16,6 +16,9 @@ const chatSlice = createSlice({
       state.userId = action.payload;
     },
     setActiveChatId: (state, action: PayloadAction<string>) => {
+      if (state.activeChatId === action.payload) {
+        return;
+      }
       state.activeChatId = action.payload;
     },
     insertMessages: (state, action: PayloadAction<Message[]>) => {

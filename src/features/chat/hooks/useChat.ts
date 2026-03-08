@@ -45,13 +45,11 @@ export function useChat() {
   }, [messages, address, dispatch, haveReadlatestMessage, activeChatId]);
 
   useEffect(() => {
-    if (activeChatId !== address) {
-      dispatch(setActiveChatId(address));
-    }
+    dispatch(setActiveChatId(address));
     return () => {
       dispatch(setActiveChatId(""));
     };
-  }, [activeChatId, address, dispatch]);
+  }, [address, dispatch]);
 
   const onSend = async () => {
     const message: Message = {
