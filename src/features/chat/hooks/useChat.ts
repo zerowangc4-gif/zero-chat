@@ -7,6 +7,7 @@ import {
   SendChatMessage,
   updateMessagesStatus,
   SyncHavedReadLatestMessage,
+  setActiveChatId,
 } from "@/features/chat";
 import { useAppSelector } from "@/store";
 
@@ -17,7 +18,7 @@ export function useChat() {
   const { route, dispatch, theme, insets } = useApp<typeof ROUTES.Chat>();
   const { user } = useAppSelector(state => state.auth);
   const { avatarSeed, username, address } = route.params;
-  const { chatMap, haveReadUserMap } = useAppSelector(state => state.chat);
+  const { chatMap, haveReadUserMap, activeChatId } = useAppSelector(state => state.chat);
 
   const messages = useMemo(() => chatMap[address] || [], [address, chatMap]);
   const haveReadlatestMessage = useMemo(() => haveReadUserMap[address] || [], [address, haveReadUserMap]);
@@ -41,7 +42,16 @@ export function useChat() {
     if (JSON.stringify(latestMessage) !== JSON.stringify(haveReadlatestMessage)) {
       dispatch(SyncHavedReadLatestMessage(latestMessage));
     }
-  }, [messages, address, dispatch, haveReadlatestMessage]);
+  }, [messages, address, dispatch, haveReadlatestMessage, activeChatId]);
+
+  useEffect(() => {
+    if (activeChatId !== address) {
+      dispatch(setActiveChatId(address));
+    }
+    return () => {
+      dispatch(setActiveChatId(""));
+    };
+  }, [activeChatId, address, dispatch]);
 
   const onSend = async () => {
     const message: Message = {

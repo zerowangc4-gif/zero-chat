@@ -12,8 +12,10 @@ export async function sendMessage(message: Message): Promise<Message> {
 }
 
 // 接收消息
-export async function syncChatMessages(): Promise<Message[]> {
-  const result: Message[] = await apiClient.post("/api/chat/syncChatMessages");
+export async function syncChatMessages(activeChatId: string): Promise<Message[]> {
+  const result: Message[] = await apiClient.post("/api/chat/syncChatMessages", {
+    activeChatId: activeChatId,
+  });
   return result;
 }
 

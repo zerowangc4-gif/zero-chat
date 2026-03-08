@@ -11,7 +11,7 @@ import {
   SyncHavedReadLatestMessage,
   updateHaveReadUserLatestMessage,
 } from "@/features/chat/store";
-import { call, put } from "redux-saga/effects";
+import { call, put, select } from "redux-saga/effects";
 import {
   sendMessage,
   syncChatMessages,
@@ -58,7 +58,8 @@ function* handleSendChatMessage(action: PayloadAction<Message>) {
 // 同步信息
 function* handleInsertChatMessage() {
   try {
-    const result: Message[] = yield call(syncChatMessages);
+    const { activeChatId } = yield select(state => state.chat);
+    const result: Message[] = yield call(syncChatMessages, activeChatId);
     if (!result || result.length === 0) {
       return;
     }

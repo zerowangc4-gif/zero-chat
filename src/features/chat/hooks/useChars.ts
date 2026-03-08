@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useAppSelector } from "@/store";
 import { useApp } from "@/hooks";
-import { fetchContacts, Message } from "@/features/chat";
+import { fetchContacts, Message, setActiveChatId } from "@/features/chat";
 
 export function useChars() {
   const { dispatch, navigation, ROUTES, theme } = useApp();
@@ -19,6 +19,7 @@ export function useChars() {
   });
 
   useEffect(() => {
+    dispatch(setActiveChatId(""));
     dispatch(fetchContacts());
   }, [dispatch]);
 
