@@ -3,7 +3,7 @@ import { Contacts, Message, TargetMsg } from "./types";
 import { MESSAGE_STATUS } from "@/constants";
 import { sortMessages } from "@/features/chat";
 
-const initialState = { userId: "", chatMap: {}, haveReadUserMap: {}, contacts: [] };
+const initialState = { userId: "", activeChatId: "", chatMap: {}, haveReadUserMap: {}, contacts: [] };
 
 const chatSlice = createSlice({
   name: "chat",
@@ -14,6 +14,12 @@ const chatSlice = createSlice({
     },
     setUserId: (state, action: PayloadAction<string>) => {
       state.userId = action.payload;
+    },
+    setActiveChatId: (state, action: PayloadAction<string>) => {
+      if (state.activeChatId === action.payload) {
+        return;
+      }
+      state.activeChatId = action.payload;
     },
     insertMessages: (state, action: PayloadAction<Message[]>) => {
       const chatIds = new Set<string>();
@@ -85,6 +91,7 @@ const chatSlice = createSlice({
 
 export const {
   setUserId,
+  setActiveChatId,
   insertMessages,
   setContacts,
   updateMessage,

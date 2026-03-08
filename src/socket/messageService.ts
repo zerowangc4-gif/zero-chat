@@ -3,7 +3,7 @@ import { SocketClient } from "./socketClient";
 import { sendHeartbeat } from "./emitter";
 import { authService } from "@/api";
 import { AT_EXPIRE } from "@/constants";
-import { clearAuthData } from "@/features";
+import { clearAuthData, InsertChatMessages } from "@/features";
 import { url } from "./events";
 
 export class MessageService {
@@ -24,7 +24,7 @@ export class MessageService {
       sendHeartbeat();
     };
     tick();
-    this.heartbeatTimer = setInterval(tick, 5000);
+    this.heartbeatTimer = setInterval(tick, 30000);
   }
 
   public stopHeartbeat() {
@@ -49,6 +49,7 @@ export class MessageService {
   }
   public async handleHeartbeatAck() {
     console.log("我在这时执行心跳");
+    store.dispatch(InsertChatMessages());
   }
 
   public forceLogout() {
