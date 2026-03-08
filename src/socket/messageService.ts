@@ -1,19 +1,10 @@
 import { store } from "@/store";
 import { SocketClient } from "./socketClient";
-import { sendHeartbeat } from "./singalEmitter";
+import { sendHeartbeat } from "./emitter";
 import { authService } from "@/api";
 import { AT_EXPIRE } from "@/constants";
-import {
-  insertMessages,
-  clearAuthData,
-  Message,
-  updateSyncUserMsgSeqNum,
-  ReadReceipt,
-  updateMessagesReadStatus,
-} from "@/features";
+import { clearAuthData } from "@/features";
 import { url } from "./events";
-
-import { syncOfflineMessages } from "./SyncService";
 
 export class MessageService {
   private static instance: MessageService;
@@ -43,7 +34,6 @@ export class MessageService {
     this.heartbeatTimer = null;
     this.isSyncing = false;
   }
-
   public async handleConnectError(err: Error) {
     if (err.message === AT_EXPIRE) {
       try {
@@ -57,36 +47,13 @@ export class MessageService {
       }
     }
   }
+  public async handleHeartbeatAck() {
+    console.log("我在这时执行心跳");
+  }
 
   public forceLogout() {
     this.stopHeartbeat();
     SocketClient.getInstance().disconnect();
     store.dispatch(clearAuthData());
-  }
-
-  public async handleHeartbeatAck(LatestSyncUserMsgSeqNum: number) {
-    try {
-      const { chat } = store.getState();
-
-      const isSyncChatMessage = LatestSyncUserMsgSeqNum > chat.syncUserMsgSeqNum || LatestSyncUserMsgSeqNum > 0;
-
-      if (isSyncChatMessage) {
-        await syncOfflineMessages(chat.syncUserMsgSeqNum);
-      }
-    } catch (e: unknown) {
-      console.error(e);
-      this.isSyncing = false;
-    }
-  }
-
-  public handleIncomingMessages(messages: Message[]) {
-    store.dispatch(insertMessages(messages));
-  }
-
-  public handleUpdateSyncUserChatMessageNum(SyncUserChatMessageNum: number) {
-    store.dispatch(updateSyncUserMsgSeqNum(SyncUserChatMessageNum));
-  }
-  public handleupdateMessagesReadStatus(data: ReadReceipt) {
-    store.dispatch(updateMessagesReadStatus(data));
   }
 }

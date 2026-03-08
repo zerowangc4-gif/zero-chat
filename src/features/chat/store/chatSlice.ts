@@ -1,9 +1,9 @@
 import { createAction, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Contacts, Message, ReadReceipt } from "./types";
+import { Contacts, Message, TargetMsg } from "./types";
 import { MESSAGE_STATUS } from "@/constants";
 import { sortMessages } from "@/features/chat";
 
-const initialState = { userId: "", syncUserMsgSeqNum: 0, chatMap: {}, contacts: [] };
+const initialState = { userId: "", chatMap: {}, haveReadUserMap: {}, contacts: [] };
 
 const chatSlice = createSlice({
   name: "chat",
@@ -14,9 +14,6 @@ const chatSlice = createSlice({
     },
     setUserId: (state, action: PayloadAction<string>) => {
       state.userId = action.payload;
-    },
-    updateSyncUserMsgSeqNum: (state, action: PayloadAction<number>) => {
-      state.syncUserMsgSeqNum = action.payload;
     },
     insertMessages: (state, action: PayloadAction<Message[]>) => {
       const chatIds = new Set<string>();
@@ -55,22 +52,33 @@ const chatSlice = createSlice({
         }
       }
     },
-    updateMessagesReadStatus: (state, action: PayloadAction<ReadReceipt>) => {
-      const { chatId, lastSessionSeqNum } = action.payload;
+
+    updateMessagesStatus: (state, action: PayloadAction<TargetMsg>) => {
+      const { chatId, id, sessionSeqNum, status } = action.payload;
 
       const currentChat = state.chatMap[chatId];
+      const message: Message | undefined = currentChat?.find((item: Message) => item.id === id);
+      if (!message) {
+        console.log("词条信息不在触发对账逻辑");
+      }
+
       if (currentChat) {
+        const lastSessionSeqNum = parseInt(String(sessionSeqNum), 10);
+
         currentChat.forEach((item: Message) => {
           if (
             typeof item.sessionSeqNum === "number" &&
             item.sessionSeqNum <= lastSessionSeqNum &&
-            item.status !== MESSAGE_STATUS.READ &&
             item.status !== MESSAGE_STATUS.FAILED
           ) {
-            item.status = MESSAGE_STATUS.READ;
+            item.status = status;
           }
         });
       }
+    },
+    updateHaveReadUserLatestMessage: (state, action: PayloadAction<Message>) => {
+      const message: Message = action.payload;
+      state.haveReadUserMap[message.fromId] = message;
     },
   },
 });
@@ -80,10 +88,16 @@ export const {
   insertMessages,
   setContacts,
   updateMessage,
-  updateMessagesReadStatus,
-  updateSyncUserMsgSeqNum,
+  updateMessagesStatus,
+  updateHaveReadUserLatestMessage,
 } = chatSlice.actions;
 
 export const fetchContacts = createAction("chat/contacts");
+
+export const SendChatMessage = createAction<Message>("chat/SendMessage");
+
+export const InsertChatMessages = createAction("chat/InsertChatMessage");
+
+export const SyncHavedReadLatestMessage = createAction<Message>("chat/syncHavedReadLatestMessage");
 
 export default chatSlice.reducer;
