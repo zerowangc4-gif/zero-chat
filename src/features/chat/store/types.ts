@@ -19,10 +19,13 @@ export interface Message {
   type: MessageType;
   status: MessageStatus;
 }
-export interface MsgTarget {
+export interface TargetMsg {
   chatId: string;
   id: string;
+  sessionSeqNum: number;
+  status: MessageStatus;
 }
+
 export interface Messages {
   syncUserMsgSeqNum: number;
   chatMap: {

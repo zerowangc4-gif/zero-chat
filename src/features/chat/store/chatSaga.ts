@@ -8,10 +8,17 @@ import {
   insertMessages,
   updateMessage,
   InsertChatMessages,
-  updateSyncUserMsgSeqNum,
+  SyncHavedReadLatestMessage,
+  updateHaveReadUserLatestMessage,
 } from "@/features/chat/store";
-import { call, put, select } from "redux-saga/effects";
-import { sendMessage, syncChatMessages, deleteHavedSyncMessages, getContacts } from "@/features/chat/services";
+import { call, put } from "redux-saga/effects";
+import {
+  sendMessage,
+  syncChatMessages,
+  deleteHavedSyncMessages,
+  syncHavedReadLatestMessage,
+  getContacts,
+} from "@/features/chat/services";
 import { MESSAGE_STATUS } from "@/constants";
 
 export function* watchChatSaga() {
@@ -19,6 +26,7 @@ export function* watchChatSaga() {
     [fetchContacts.type]: handleGetContacts,
     [SendChatMessage.type]: handleSendChatMessage,
     [InsertChatMessages.type]: handleInsertChatMessage,
+    [SyncHavedReadLatestMessage.type]: handleSyncHavedReadLatestMessage,
   });
 }
 
@@ -50,15 +58,27 @@ function* handleSendChatMessage(action: PayloadAction<Message>) {
 // 同步信息
 function* handleInsertChatMessage() {
   try {
-    const { syncUserMsgSeqNum } = yield select(state => state.chat);
-    const result: Message[] = yield call(syncChatMessages, syncUserMsgSeqNum);
+    const result: Message[] = yield call(syncChatMessages);
     if (!result || result.length === 0) {
       return;
     }
     yield put(insertMessages(result));
 
-    const latestSyncUserMsgSeqNum = yield call(deleteHavedSyncMessages, result[result.length - 1]);
-    yield put(updateSyncUserMsgSeqNum(latestSyncUserMsgSeqNum));
+    yield call(deleteHavedSyncMessages, result[result.length - 1]);
+  } catch (error: unknown) {
+    console.error(error);
+  }
+}
+
+// 同步已经读过的最新信息
+function* handleSyncHavedReadLatestMessage(action: PayloadAction<Message>) {
+  try {
+    if (!action.payload) {
+      return;
+    }
+    const message: Message = action.payload;
+    const latestMessage: Message = yield call(syncHavedReadLatestMessage, message);
+    yield put(updateHaveReadUserLatestMessage(latestMessage));
   } catch (error: unknown) {
     console.error(error);
   }

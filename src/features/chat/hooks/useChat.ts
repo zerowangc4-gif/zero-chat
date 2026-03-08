@@ -1,34 +1,47 @@
 import { ROUTES } from "@/navigation";
 import { useApp } from "@/hooks";
-import { Message, generateId, generateSessionSeqNum, SendChatMessage } from "@/features/chat";
+import {
+  Message,
+  generateId,
+  generateSessionSeqNum,
+  SendChatMessage,
+  updateMessagesStatus,
+  SyncHavedReadLatestMessage,
+} from "@/features/chat";
 import { useAppSelector } from "@/store";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { MESSAGE_STATUS, MESSAGE_TYPE } from "@/constants";
 export function useChat() {
   const { route, dispatch, theme, insets } = useApp<typeof ROUTES.Chat>();
   const { user } = useAppSelector(state => state.auth);
   const { avatarSeed, username, address } = route.params;
-  const messages = useAppSelector(state => state.chat.chatMap[address]);
+  const { chatMap, haveReadUserMap } = useAppSelector(state => state.chat);
+
+  const messages = useMemo(() => chatMap[address] || [], [address, chatMap]);
+  const haveReadlatestMessage = useMemo(() => haveReadUserMap[address] || [], [address, haveReadUserMap]);
+
   const [text, setText] = useState("");
 
   const bottom = insets.bottom + theme.spacing.step.xs;
 
-  const lastChatReadNum = useRef(0);
-
   useEffect(() => {
-    const chatMessages = messages || [];
-
-    const msg: Message | undefined = chatMessages.find((item: Message) => item.fromId === address);
-
-    if (msg) {
-      const lastSessionSeqNum = parseInt(String(msg.sessionSeqNum), 10);
-      if (lastSessionSeqNum > lastChatReadNum.current && msg.status !== MESSAGE_STATUS.READ) {
-        lastChatReadNum.current = lastSessionSeqNum;
-      }
+    const latestMessage: Message | undefined = messages.find((item: Message) => item.fromId === address);
+    if (latestMessage && latestMessage.status !== MESSAGE_STATUS.READ) {
+      dispatch(
+        updateMessagesStatus({
+          chatId: address,
+          id: latestMessage.id,
+          sessionSeqNum: parseInt(String(latestMessage.sessionSeqNum), 10),
+          status: MESSAGE_STATUS.READ,
+        }),
+      );
     }
-  }, [messages, address]);
+    if (JSON.stringify(latestMessage) !== JSON.stringify(haveReadlatestMessage)) {
+      dispatch(SyncHavedReadLatestMessage(latestMessage));
+    }
+  }, [messages, address, dispatch, haveReadlatestMessage]);
 
   const onSend = async () => {
     const message: Message = {
