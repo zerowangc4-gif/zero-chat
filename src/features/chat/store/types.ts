@@ -1,12 +1,10 @@
 import { MessageStatus, MessageType } from "@/constants";
 
 export interface Contacts {
-  id: number;
   username: string;
   publicKey: string;
   address: string;
   avatarSeed: string;
-  createdAt: Date;
 }
 
 export interface Message {
