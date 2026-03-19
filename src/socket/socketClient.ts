@@ -36,7 +36,7 @@ export class SocketClient {
 
     this.socket = io(url, {
       auth: { token },
-      transports: ["websocket", "polling"],
+      transports: ["websocket"],
       autoConnect: false,
       reconnection: true,
       reconnectionAttempts: Infinity,
