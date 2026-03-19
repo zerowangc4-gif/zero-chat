@@ -3,7 +3,6 @@ import { AuthData, TokensType, RegistrationPayload } from "./types";
 
 const authData = {
   user: {
-    id: "",
     address: "",
     publicKey: "",
     username: "",

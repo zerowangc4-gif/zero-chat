@@ -36,10 +36,13 @@ export class SocketClient {
 
     this.socket = io(url, {
       auth: { token },
-      transports: ["websocket", "polling"],
+      transports: ["websocket"],
       autoConnect: false,
       reconnection: true,
-      reconnectionAttempts: 5,
+      reconnectionAttempts: Infinity,
+      reconnectionDelay: 1000,
+      reconnectionDelayMax: 5000,
+      timeout: 20000,
     });
 
     this.socket.on("connect", () => this.setStatus(true));
@@ -57,7 +60,6 @@ export class SocketClient {
 
   public disconnect() {
     if (this.socket) {
-      this.socket.removeAllListeners();
       this.socket.disconnect();
       this.socket = null;
     }
