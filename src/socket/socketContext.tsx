@@ -1,8 +1,9 @@
+import { store } from "@/store";
 import { createContext, useContext, useEffect, useState, useMemo } from "react";
 import { SocketClient } from "./socketClient";
-import { MessageService } from "./messageService";
-import { url } from "./events";
+import { InsertChatMessages } from "@/features";
 
+import { url } from "./events";
 const SocketContext = createContext(null);
 
 interface Props {
@@ -17,11 +18,8 @@ export function SocketProvider({ children, token }: Props) {
   useEffect(() => {
     client.subscribeStatus(status => {
       setIsConnected(status);
-      const service = MessageService.getInstance();
       if (status) {
-        service.startHeartbeat();
-      } else {
-        service.stopHeartbeat();
+        store.dispatch(InsertChatMessages());
       }
     });
 
