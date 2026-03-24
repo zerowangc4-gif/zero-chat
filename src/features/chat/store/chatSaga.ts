@@ -9,7 +9,7 @@ import {
   updateMessage,
   InsertChatMessages,
   SyncHavedReadLatestMessage,
-  SyncMessageStatus,
+  InitChatData,
   updateHaveReadUserLatestMessage,
   TargetMsg,
   updateMessagesStatus,
@@ -31,7 +31,7 @@ export function* watchChatSaga() {
     [SendChatMessage.type]: handleSendChatMessage,
     [InsertChatMessages.type]: handleInsertChatMessage,
     [SyncHavedReadLatestMessage.type]: handleSyncHavedReadLatestMessage,
-    [SyncMessageStatus.type]: handleSyncMessageStatus,
+    [InitChatData.type]: handleInitChatData,
   });
 }
 
@@ -42,6 +42,12 @@ function* handleGetContacts(): Generator {
   } catch (error: unknown) {
     console.error(error);
   }
+}
+
+// 上线时初始化状态
+function* handleInitChatData() {
+  yield call(handleInsertChatMessage);
+  yield call(handleSyncMessageStatus);
 }
 
 // 发送信息

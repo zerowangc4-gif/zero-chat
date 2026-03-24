@@ -104,6 +104,6 @@ export const InsertChatMessages = createAction("chat/InsertChatMessage");
 
 export const SyncHavedReadLatestMessage = createAction<Message>("chat/syncHavedReadLatestMessage");
 
-export const SyncMessageStatus = createAction("chat/syncMessageStatus");
+export const InitChatData = createAction("chat/initChatData");
 
 export default chatSlice.reducer;
