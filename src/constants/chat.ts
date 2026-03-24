@@ -6,6 +6,14 @@ export const MESSAGE_STATUS = {
   FAILED: "failed",
 } as const;
 
+export const STATUS_WEIGHT = {
+  [MESSAGE_STATUS.FAILED]: -1,
+  [MESSAGE_STATUS.PENDING]: 0,
+  [MESSAGE_STATUS.SENT_TO_SERVER]: 1,
+  [MESSAGE_STATUS.DELIVERED]: 2,
+  [MESSAGE_STATUS.READ]: 3,
+};
+
 export const MESSAGE_TYPE = {
   TEXT: "text",
   IMAGE: "image",

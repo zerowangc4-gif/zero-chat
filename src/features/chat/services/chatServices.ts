@@ -1,5 +1,5 @@
 import { apiClient } from "@/api";
-import { Message } from "@/features/chat";
+import { Message, TargetMsg } from "@/features/chat";
 export async function getContacts() {
   const result = await apiClient.get("/api/user/getContacts");
   return result;
@@ -27,5 +27,11 @@ export async function deleteHavedSyncMessages(message: Message): Promise<void> {
 // 同步已经读过的最新信息
 export async function syncHavedReadLatestMessage(message: Message): Promise<Message> {
   const result: Message = await apiClient.post("/api/chat/syncHavedReadLatestMessage", message);
+  return result;
+}
+
+// 同步离线时的信息状态
+export async function syncMessageStatus(): Promise<TargetMsg[]> {
+  const result: TargetMsg[] = await apiClient.post("/api/chat/syncMessageStatus");
   return result;
 }

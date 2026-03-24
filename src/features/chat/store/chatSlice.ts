@@ -1,6 +1,6 @@
 import { createAction, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Contacts, Message, TargetMsg } from "./types";
-import { MESSAGE_STATUS } from "@/constants";
+import { MESSAGE_STATUS, STATUS_WEIGHT } from "@/constants";
 import { sortMessages } from "@/features/chat";
 
 const initialState = { userId: "", activeChatId: "", chatMap: {}, haveReadUserMap: {}, contacts: [] };
@@ -60,27 +60,24 @@ const chatSlice = createSlice({
     },
 
     updateMessagesStatus: (state, action: PayloadAction<TargetMsg>) => {
-      const { chatId, id, sessionSeqNum, status } = action.payload;
+      const { chatId, sessionSeqNum, status } = action.payload;
 
       const currentChat = state.chatMap[chatId];
-      const message: Message | undefined = currentChat?.find((item: Message) => item.id === id);
-      if (!message) {
-        console.log("词条信息不在触发对账逻辑");
-      }
 
-      if (currentChat) {
-        const lastSessionSeqNum = parseInt(String(sessionSeqNum), 10);
+      if (!currentChat) return;
 
-        currentChat.forEach((item: Message) => {
-          if (
-            typeof item.sessionSeqNum === "number" &&
-            item.sessionSeqNum <= lastSessionSeqNum &&
-            item.status !== MESSAGE_STATUS.FAILED
-          ) {
-            item.status = status;
-          }
-        });
-      }
+      const lastSessionSeqNum = Number(sessionSeqNum);
+      const newStatusWeight = STATUS_WEIGHT[status] || 0;
+      currentChat.forEach((item: Message) => {
+        const currentWeight = STATUS_WEIGHT[item.status] || 0;
+        if (
+          Number(item.sessionSeqNum) <= lastSessionSeqNum &&
+          newStatusWeight > currentWeight &&
+          item.status !== MESSAGE_STATUS.FAILED
+        ) {
+          item.status = status;
+        }
+      });
     },
     updateHaveReadUserLatestMessage: (state, action: PayloadAction<Message>) => {
       const message: Message = action.payload;
@@ -106,5 +103,7 @@ export const SendChatMessage = createAction<Message>("chat/SendMessage");
 export const InsertChatMessages = createAction("chat/InsertChatMessage");
 
 export const SyncHavedReadLatestMessage = createAction<Message>("chat/syncHavedReadLatestMessage");
+
+export const InitChatData = createAction("chat/initChatData");
 
 export default chatSlice.reducer;
