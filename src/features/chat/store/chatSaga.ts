@@ -9,15 +9,19 @@ import {
   updateMessage,
   InsertChatMessages,
   SyncHavedReadLatestMessage,
+  SyncMessageStatus,
   updateHaveReadUserLatestMessage,
+  TargetMsg,
+  updateMessagesStatus,
 } from "@/features/chat/store";
-import { call, put, select } from "redux-saga/effects";
+import { all, call, put, select } from "redux-saga/effects";
 import {
   sendMessage,
   syncChatMessages,
   deleteHavedSyncMessages,
   syncHavedReadLatestMessage,
   getContacts,
+  syncMessageStatus,
 } from "@/features/chat/services";
 import { MESSAGE_STATUS } from "@/constants";
 
@@ -27,6 +31,7 @@ export function* watchChatSaga() {
     [SendChatMessage.type]: handleSendChatMessage,
     [InsertChatMessages.type]: handleInsertChatMessage,
     [SyncHavedReadLatestMessage.type]: handleSyncHavedReadLatestMessage,
+    [SyncMessageStatus.type]: handleSyncMessageStatus,
   });
 }
 
@@ -80,6 +85,19 @@ function* handleSyncHavedReadLatestMessage(action: PayloadAction<Message>) {
     const message: Message = action.payload;
     const latestMessage: Message = yield call(syncHavedReadLatestMessage, message);
     yield put(updateHaveReadUserLatestMessage(latestMessage));
+  } catch (error: unknown) {
+    console.error(error);
+  }
+}
+
+// 同步离线时的信息状态
+function* handleSyncMessageStatus() {
+  try {
+    const targetMsgs: TargetMsg[] = yield call(syncMessageStatus);
+
+    if (targetMsgs?.length > 0) {
+      yield all(targetMsgs.map(item => put(updateMessagesStatus(item))));
+    }
   } catch (error: unknown) {
     console.error(error);
   }

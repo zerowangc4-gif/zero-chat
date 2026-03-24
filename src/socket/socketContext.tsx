@@ -1,7 +1,7 @@
 import { store } from "@/store";
 import { createContext, useContext, useEffect, useState, useMemo } from "react";
 import { SocketClient } from "./socketClient";
-import { InsertChatMessages } from "@/features";
+import { InsertChatMessages, SyncMessageStatus } from "@/features";
 
 import { url } from "./events";
 const SocketContext = createContext(null);
@@ -20,6 +20,7 @@ export function SocketProvider({ children, token }: Props) {
       setIsConnected(status);
       if (status) {
         store.dispatch(InsertChatMessages());
+        store.dispatch(SyncMessageStatus());
       }
     });
 
