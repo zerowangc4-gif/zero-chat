@@ -10,7 +10,7 @@ const Container = styled.View`
 `;
 
 export function ChatList() {
-  const { navigation, ROUTES, recentChats } = useChars();
+  const { navigation, ROUTES } = useChars();
 
   const handlePressItem = (item: ChatItemProps) => () => {
     navigation.navigate(ROUTES.Chat, {
@@ -23,7 +23,16 @@ export function ChatList() {
   return (
     <Container>
       <FlatList
-        data={recentChats}
+        data={[
+          {
+            username: "wangC4",
+            avatarSeed: "vcdsafvasdvsa",
+            lastMsg: "你好",
+            time: "12:52",
+            address: "csd",
+            publicKey: "dd",
+          },
+        ]}
         ListHeaderComponent={SearchEntry}
         renderItem={({ item }) => <ChatItem {...item} onPress={handlePressItem(item)} />}
         keyExtractor={item => item.publicKey}

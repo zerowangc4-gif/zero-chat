@@ -1,5 +1,5 @@
 import { createAction, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { AuthData, TokensType, RegistrationPayload } from "./types";
+import { AuthData, TokensType, LoginInfo } from "./types";
 
 const authData = {
   user: {
@@ -29,16 +29,11 @@ const authSlice = createSlice({
       state.accessToken = action.payload.accessToken;
       state.refreshToken = action.payload.refreshToken;
     },
-    setAvatarSeed: (state, action: PayloadAction<string>) => {
-      state.user.avatarSeed = action.payload;
-    },
   },
 });
 
-export const loginApp = createAction<RegistrationPayload>("auth/loginApp");
+export const loginApp = createAction<LoginInfo>("auth/loginApp");
 
-export const updateUserAvatar = createAction<string>("user/loginApp");
-
-export const { setAuthData, clearAuthData, setTokens, setAvatarSeed } = authSlice.actions;
+export const { setAuthData, clearAuthData, setTokens } = authSlice.actions;
 
 export default authSlice.reducer;

@@ -2,7 +2,7 @@ import { t } from "i18next";
 import { onActions, BaseAction } from "@/store/actions";
 import { setAvatarSeed, updateUserAvatar } from "@/features/auth";
 import { call, put } from "redux-saga/effects";
-import { updateAvatar } from "@/features/profile";
+import { updateAvatar } from "@/features/user";
 import { Toast } from "@/components";
 
 import { getErrorMessage } from "@/utils";
