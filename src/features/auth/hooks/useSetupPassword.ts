@@ -18,6 +18,8 @@ export function useSetupPassword() {
 
   const isFormValid = isPasswordValid && isPasswordMatch && !isGenerating;
 
+  const buttonText = isGenerating ? t("common.loading") : t("auth.action_generate_and_backup");
+
   function isWalletComplete(wallet: WalletType | undefined | null): wallet is WalletType {
     return !!(wallet && wallet.mnemonic && wallet.address && wallet.privateKey && wallet.publicKey);
   }
@@ -57,6 +59,7 @@ export function useSetupPassword() {
     confirmPassword,
     showPasswordMismatchError,
     isFormValid,
+    buttonText,
     isGenerating,
     handleContinue,
   };

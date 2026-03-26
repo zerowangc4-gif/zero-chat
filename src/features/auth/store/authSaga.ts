@@ -1,6 +1,6 @@
 import { t } from "i18next";
-
-import { onActions, BaseAction } from "@/store/actions";
+import { PayloadAction } from "@reduxjs/toolkit";
+import { onActions } from "@/store/actions";
 import { loginApp, setAuthData } from "./authSlice";
 import { call, put } from "redux-saga/effects";
 import { registerAndLogin, getNonce } from "../services";
@@ -9,12 +9,13 @@ import { CameraRoll } from "@react-native-camera-roll/camera-roll";
 import { getErrorMessage } from "@/utils";
 import { getPrivateKey, signMessage } from "@/features/wallet";
 import { setUserId } from "@/features/chat";
+import { LoginInfo } from "./types";
 
 export function* watchAuthSaga() {
   yield onActions({ [loginApp.type]: handleLoginApp });
 }
 
-function* handleLoginApp(action?: BaseAction): Generator {
+function* handleLoginApp(action: PayloadAction<LoginInfo>): Generator {
   if (!action?.payload) {
     throw new Error(t("auth.error_generation_failed"));
   }

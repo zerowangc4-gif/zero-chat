@@ -1,5 +1,4 @@
 export interface User {
-  id: string;
   address: string;
   publicKey: string;
   username: string;
@@ -17,7 +16,7 @@ export interface TokensType {
   refreshToken: string;
 }
 
-export interface RegistrationPayload {
+export interface LoginInfo {
   address: string;
   publicKey: string;
   username: string;

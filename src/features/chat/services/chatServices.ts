@@ -1,9 +1,5 @@
 import { apiClient } from "@/api";
 import { Message, TargetMsg } from "@/features/chat";
-export async function getContacts() {
-  const result = await apiClient.get("/api/user/getContacts");
-  return result;
-}
 
 // 发送消息
 export async function sendMessage(message: Message): Promise<Message> {

@@ -3,7 +3,7 @@ import { useApp } from "@/hooks";
 import { ROUTES } from "./routes";
 import { MainTabParamList } from "./types";
 import { Chats } from "@/features/chat";
-import { Me } from "@/features/profile";
+import { Me } from "@/features/user";
 import { TabIcon } from "./helpers";
 
 const Tab = createBottomTabNavigator<MainTabParamList>();
