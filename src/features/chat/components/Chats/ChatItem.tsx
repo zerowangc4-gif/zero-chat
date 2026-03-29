@@ -1,7 +1,7 @@
 import styled, { css } from "styled-components/native";
 import { Avatar, Typography } from "@/components";
 import { size } from "./AccountInfo";
-import { useChars, Contacts } from "@/features/chat";
+
 const Container = styled.Pressable`
   ${({ theme }) => {
     return css`
@@ -42,14 +42,8 @@ const TitleRow = styled.View`
     `;
   }}
 `;
-export interface ChatItemProps extends Contacts {
-  lastMsg?: string;
-  time?: string;
-  onPress?: () => void;
-}
-export function ChatItem({ username, avatarSeed, lastMsg, time, onPress }: ChatItemProps) {
-  const { theme } = useChars();
 
+export function ChatItem({ username, avatarSeed, lastMsg, time, onPress, theme }) {
   return (
     <Container
       onPress={onPress}

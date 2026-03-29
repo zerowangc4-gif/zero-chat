@@ -1,7 +1,7 @@
 import { store } from "@/store";
 import { authClient } from "./authClient";
-import { setTokens, TokensType } from "@/features/auth";
-import { getPrivateKey, signMessage } from "@/features/wallet";
+import { setTokens, Tokens } from "@/features/auth";
+import { signWithStoredWallet } from "@/features/wallet";
 import { AT_EXPIRE, RT_EXPIRE } from "@/constants";
 import { getErrorMessage } from "@/utils";
 
@@ -20,12 +20,13 @@ async function getNonce(address: string): Promise<string> {
   return result;
 }
 
-async function getTokens(params: TokenRotateParams): Promise<TokensType> {
-  const result: TokensType = await authClient.post("/api/auth/tokenRotate", params);
+async function getTokens(params: TokenRotateParams): Promise<Tokens> {
+  const result: Tokens = await authClient.post("/api/auth/tokenRotate", params);
   return result;
 }
-async function getToken(refreshToken: string): Promise<TokensType> {
-  const result: TokensType = await authClient.post("/api/auth/refreshToken", { refreshToken });
+
+async function getToken(refreshToken: string): Promise<Tokens> {
+  const result: Tokens = await authClient.post("/api/auth/refreshToken", { refreshToken });
   return result;
 }
 
@@ -51,17 +52,18 @@ class AuthService {
   private async executeRefresh(type: TokenExpireType): Promise<string> {
     const state = store.getState();
     const refreshToken = state.auth.refreshToken;
-    const address = state.auth.user?.address;
 
-    let result: TokensType;
+    const address = state.chat.user?.address;
+
+    let result: Tokens;
 
     try {
       if (type === AT_EXPIRE) {
         result = await getToken(refreshToken);
       } else {
         const authSlogan = await getNonce(address);
-        const privateKey = await getPrivateKey();
-        const signature = await signMessage(privateKey, authSlogan);
+
+        const signature = await signWithStoredWallet(authSlogan);
 
         result = await getTokens({
           refreshToken,
@@ -71,6 +73,7 @@ class AuthService {
       }
 
       store.dispatch(setTokens(result));
+
       return result.accessToken;
     } catch (error: unknown) {
       const message = getErrorMessage(error);

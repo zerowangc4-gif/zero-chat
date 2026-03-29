@@ -1,6 +1,6 @@
 import { MessageStatus, MessageType } from "@/constants";
 
-export interface Contacts {
+export interface UserInfo {
   username: string;
   publicKey: string;
   address: string;

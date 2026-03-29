@@ -7,7 +7,6 @@ export function Welcome() {
   return (
     <BaseScreen>
       <HeroSection brand={t("auth.brand_name")} color={theme.colors.secondaryWord} slogan={t("auth.brand_tagline")} />
-
       <Footer
         data={[
           {

@@ -1,7 +1,7 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { ROUTES } from "./routes";
 
-import { Chat } from "@/features/chat";
+import { Chat, AddFriend } from "@/features/chat";
 
 const Stack = createNativeStackNavigator();
 
@@ -11,6 +11,13 @@ function renderPublicRoutes() {
       <Stack.Screen
         name={ROUTES.Chat}
         component={Chat}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name={ROUTES.AddFriend}
+        component={AddFriend}
         options={{
           headerShown: false,
         }}

@@ -25,7 +25,7 @@ export const HeroSection = (props: HeroSectionProps) => {
         <Typography type="brand" weight="bold">
           {props.brand}
         </Typography>
-        <Typography color={props.color}>{props.color}</Typography>
+        <Typography color={props.color}>{props.slogan}</Typography>
       </WelcomeMessage>
     </HeroSectionContainer>
   );

@@ -1,16 +1,27 @@
 import { createAction, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Message, TargetMsg } from "./types";
+import { Message, TargetMsg, UserInfo } from "./types";
 import { MESSAGE_STATUS, STATUS_WEIGHT } from "@/constants";
-import { sortMessages } from "@/features/chat";
+import { sortMessages } from "../utils";
 
-const initialState = { userId: "", activeChatId: "", chatMap: {}, haveReadUserMap: {} };
+const initialState = {
+  userId: "",
+  user: {
+    address: "",
+    publicKey: "",
+    username: "",
+    avatarSeed: "",
+  },
+  activeChatId: "",
+  chatMap: {},
+  haveReadUserMap: {},
+};
 
 const chatSlice = createSlice({
   name: "chat",
   initialState,
   reducers: {
-    setUserId: (state, action: PayloadAction<string>) => {
-      state.userId = action.payload;
+    setUserInfo: (state, action: PayloadAction<UserInfo>) => {
+      state.user = action.payload;
     },
     setActiveChatId: (state, action: PayloadAction<string>) => {
       if (state.activeChatId === action.payload) {
@@ -21,7 +32,7 @@ const chatSlice = createSlice({
     insertMessages: (state, action: PayloadAction<Message[]>) => {
       const chatIds = new Set<string>();
       action.payload.forEach((item: Message) => {
-        const chatId = item.fromId === state.userId ? item.toId : item.fromId;
+        const chatId = item.fromId === state.user.address ? item.toId : item.fromId;
         chatIds.add(chatId);
         if (!state.chatMap[chatId]) {
           state.chatMap[chatId] = [];
@@ -43,7 +54,7 @@ const chatSlice = createSlice({
     updateMessage: (state, action: PayloadAction<Message>) => {
       const message: Message = action.payload;
 
-      const chatId = message.fromId === state.userId ? message.toId : message.fromId;
+      const chatId = message.fromId === state.user.address ? message.toId : message.fromId;
 
       const currentChat = state.chatMap[chatId];
 
@@ -84,7 +95,7 @@ const chatSlice = createSlice({
 });
 
 export const {
-  setUserId,
+  setUserInfo,
   setActiveChatId,
   insertMessages,
   updateMessage,

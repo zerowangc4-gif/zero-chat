@@ -1,6 +1,6 @@
 import { ActionIcon, Header } from "@/components";
 
-export function ChatHeader({ theme, navigation, username }) {
+export function AddFriendHeader({ theme, navigation, title }) {
   return (
     <Header
       leftElement={
@@ -11,10 +11,7 @@ export function ChatHeader({ theme, navigation, username }) {
           name="fanhui1"
         />
       }
-      title={username}
-      rightElement={
-        <ActionIcon size={theme.typography.size.lg} color={theme.colors.baseInverse} name="sangediandian" />
-      }
+      title={title}
     />
   );
 }

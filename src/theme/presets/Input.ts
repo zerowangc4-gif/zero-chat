@@ -7,10 +7,10 @@ export const Input = {
   },
 
   md: {
-    height: 32,
+    height: 48,
     fontSize: 16,
-    borderWidth: 2,
-    borderRadius: 6,
+    borderWidth: 1,
+    borderRadius: 8,
   },
 
   sm: {

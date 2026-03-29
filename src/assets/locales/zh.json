@@ -27,7 +27,8 @@
   "chat": {
     "Online": "在线",
     "Offline": "离线",
-    "searchFriend": "搜索好友"
+    "placeholder_search_address": "请输入对方地址",
+    "add_friend": "添加朋友"
   },
   "common": {
     "loading": "加载中",
