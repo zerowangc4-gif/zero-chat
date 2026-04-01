@@ -1,9 +1,9 @@
 import { createAction, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Message, TargetMsg, UserInfo } from "./types";
+import { Message, TargetMsg, UserInfo, State } from "./types";
 import { MESSAGE_STATUS, STATUS_WEIGHT } from "@/constants";
 import { sortMessages } from "../utils";
 
-const initialState = {
+const initialState: State = {
   userId: "",
   user: {
     address: "",
@@ -11,6 +11,7 @@ const initialState = {
     username: "",
     avatarSeed: "",
   },
+  friends: {},
   activeChatId: "",
   chatMap: {},
   haveReadUserMap: {},
@@ -22,6 +23,12 @@ const chatSlice = createSlice({
   reducers: {
     setUserInfo: (state, action: PayloadAction<UserInfo>) => {
       state.user = action.payload;
+    },
+    addFriend: (state, action: PayloadAction<UserInfo>) => {
+      const user = action.payload;
+      state.friends = state.friends || {};
+
+      state.friends[user.address] = user;
     },
     setActiveChatId: (state, action: PayloadAction<string>) => {
       if (state.activeChatId === action.payload) {
@@ -101,6 +108,7 @@ export const {
   updateMessage,
   updateMessagesStatus,
   updateHaveReadUserLatestMessage,
+  addFriend,
 } = chatSlice.actions;
 
 export const SendChatMessage = createAction<Message>("chat/SendMessage");

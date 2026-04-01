@@ -11,7 +11,7 @@ const MainContent = styled(Main)`
 `;
 
 export function AddFriend() {
-  const { theme, navigation, t, friendAddress } = useAddFriend();
+  const { theme, navigation, t, friendAddress, userInfo, handleAddFriend } = useAddFriend();
   return (
     <BaseScreen>
       <AddFriendHeader theme={theme} navigation={navigation} title={t("chat.add_friend")} />
@@ -21,7 +21,7 @@ export function AddFriend() {
           onChange={friendAddress.onChange}
           placeholder={t("chat.placeholder_search_address")}
         />
-        <SearchResultCard />
+        <SearchResultCard userInfo={userInfo} theme={theme} title={t("chat.add_friend")} onPress={handleAddFriend} />
       </MainContent>
     </BaseScreen>
   );

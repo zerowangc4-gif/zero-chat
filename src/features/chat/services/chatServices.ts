@@ -1,5 +1,5 @@
 import { apiClient } from "@/api";
-import { Message, TargetMsg } from "@/features/chat";
+import { Message, TargetMsg, UserInfo } from "@/features/chat";
 
 // 发送消息
 export async function sendMessage(message: Message): Promise<Message> {
@@ -29,5 +29,13 @@ export async function syncHavedReadLatestMessage(message: Message): Promise<Mess
 // 同步离线时的信息状态
 export async function syncMessageStatus(): Promise<TargetMsg[]> {
   const result: TargetMsg[] = await apiClient.post("/api/chat/syncMessageStatus");
+  return result;
+}
+
+// 添加好友时，搜索用户信息
+export async function searchUserResult(value: string): Promise<UserInfo> {
+  const result: UserInfo = await apiClient.post("/api/chat/searchUserResult", {
+    address: value,
+  });
   return result;
 }

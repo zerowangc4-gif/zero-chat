@@ -8,20 +8,11 @@ const Container = styled.View`
   flex: 1;
 `;
 
-export function ChatList({ theme, handlePressItem, searchContactPlaceholder, handleAddFriend }) {
+export function ChatList({ theme, chatSessions, handlePressItem, searchContactPlaceholder, handleAddFriend }) {
   return (
     <Container>
       <FlatList
-        data={[
-          {
-            username: "wangC4",
-            avatarSeed: "vcdsafvasdvsa",
-            lastMsg: "你好",
-            time: "12:52",
-            address: "csd",
-            publicKey: "dd",
-          },
-        ]}
+        data={chatSessions}
         ListHeaderComponent={
           <SearchEntry theme={theme} searchContactPlaceholder={searchContactPlaceholder} onPress={handleAddFriend} />
         }

@@ -23,10 +23,15 @@ export interface TargetMsg {
   sessionSeqNum: number;
   status: MessageStatus;
 }
-
-export interface Messages {
-  syncUserMsgSeqNum: number;
-  chatMap: {
-    [key: string]: Message[];
-  };
+export interface ChatSession extends UserInfo {
+  time: number;
+  lastMsg: string;
+}
+export interface State {
+  userId: string;
+  user: UserInfo;
+  friends: Record<string, UserInfo>;
+  activeChatId: string;
+  chatMap: Record<string, Message[]>;
+  haveReadUserMap: Record<string, Message>;
 }

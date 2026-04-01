@@ -60,7 +60,7 @@ export function ChatItem({ username, avatarSeed, lastMsg, time, onPress, theme }
             {username}
           </Typography>
           <Typography type="caption" color={theme.colors.secondaryWord}>
-            {time}
+            {new Date(time).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
           </Typography>
         </TitleRow>
         <Typography type="caption" color={theme.colors.secondaryWord}>

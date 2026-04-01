@@ -1,12 +1,26 @@
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useAppSelector } from "@/store";
 import { useApp } from "@/hooks";
-import { setActiveChatId, UserInfo } from "@/features/chat";
+import { setActiveChatId, UserInfo, Message, ChatSession } from "@/features/chat";
 
 export function useChars() {
   const { dispatch, navigation, ROUTES, theme, t } = useApp();
-  const { avatarSeed, username, address } = useAppSelector(state => state.chat.user);
-  console.log(address);
+  const { user, friends, chatMap } = useAppSelector(state => state.chat);
+
+  // 好友列表
+  const chatSessions: ChatSession[] = useMemo(() => {
+    return Object.values(friends || {})
+      .map((item: UserInfo) => {
+        const messages: Message[] = chatMap[item.address];
+        if (messages && messages.length) {
+          const message = messages[0];
+          return { ...item, lastMsg: message.content, time: message.timestamp };
+        }
+        return { ...item, lastMsg: "", time: 0 };
+      })
+      .sort((sessionA, sessionB) => sessionB.time - sessionA.time);
+  }, [friends, chatMap]);
+
   //  跳转到聊天页面
   const handlePressItem = (item: UserInfo) => () => {
     navigation.navigate(ROUTES.Chat, {
@@ -26,5 +40,5 @@ export function useChars() {
     dispatch(setActiveChatId(""));
   }, [dispatch]);
 
-  return { avatarSeed, username, navigation, ROUTES, theme, t, handlePressItem, handleAddFriend };
+  return { user, navigation, ROUTES, theme, t, handlePressItem, handleAddFriend, chatSessions };
 }

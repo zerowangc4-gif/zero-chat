@@ -48,18 +48,18 @@ const InfoContent = styled.View`
 
 export function AccountInfo(props: AccountInfoProps) {
   const { theme, t } = useApp();
-  const { avatarSeed, username } = useChars();
+  const { user } = useChars();
   const { isConnected } = useSocket();
 
   return (
     <AccountInfoContainer>
       <AvatarContent>
-        <Avatar avatarSeed={avatarSeed} size={size[props.type]} />
+        <Avatar avatarSeed={user.avatarSeed} size={size[props.type]} />
         <StatusDot $isConnected={isConnected} />
       </AvatarContent>
       <InfoContent>
         <Typography type="main" weight="bold">
-          {username}
+          {user.username}
         </Typography>
         <Typography type="caption" color={isConnected ? theme.palette.brand : theme.colors.secondaryWord}>
           {isConnected ? t("chat.Online") : t("chat.Offline")}

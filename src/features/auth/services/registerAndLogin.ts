@@ -10,6 +10,8 @@ export async function registerAndLogin(address: string, publicKey: string, usern
   const result = await apiClient.post("/api/auth/registerAndLogin", {
     address,
     signature,
+    publicKey,
+    username,
   });
   return result;
 }
