@@ -7,11 +7,11 @@ export async function getNonce(address: string): Promise<string> {
   return result;
 }
 export async function registerAndLogin(address: string, publicKey: string, username: string, signature: string) {
-  const result = await apiClient.post("/api/auth/login", {
+  const result = await apiClient.post("/api/auth/registerAndLogin", {
     address,
+    signature,
     publicKey,
     username,
-    signature,
   });
   return result;
 }

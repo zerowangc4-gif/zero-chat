@@ -15,12 +15,14 @@ import { useEffect, useMemo, useState } from "react";
 
 import { MESSAGE_STATUS, MESSAGE_TYPE } from "@/constants";
 export function useChat() {
-  const { route, dispatch, theme, insets } = useApp<typeof ROUTES.Chat>();
-  const { user } = useAppSelector(state => state.auth);
+  const { route, dispatch, theme, insets, navigation } = useApp<typeof ROUTES.Chat>();
+
   const { avatarSeed, username, address } = route.params;
-  const { chatMap, haveReadUserMap, activeChatId } = useAppSelector(state => state.chat);
+
+  const { chatMap, haveReadUserMap, activeChatId, user } = useAppSelector(state => state.chat);
 
   const messages = useMemo(() => chatMap[address] || [], [address, chatMap]);
+
   const haveReadlatestMessage = useMemo(() => haveReadUserMap[address] || [], [address, haveReadUserMap]);
 
   const [text, setText] = useState("");
@@ -51,6 +53,7 @@ export function useChat() {
     };
   }, [address, dispatch]);
 
+  // 发送信息
   const onSend = async () => {
     const message: Message = {
       id: generateId(),
@@ -79,5 +82,6 @@ export function useChat() {
     bottom,
     theme,
     messages,
+    navigation,
   };
 }

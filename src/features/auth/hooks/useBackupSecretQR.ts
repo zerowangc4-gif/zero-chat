@@ -4,13 +4,13 @@ import { Toast } from "@/components";
 import ViewShot from "react-native-view-shot";
 import QRCode from "react-native-qrcode-svg";
 import { useApp, useAndroidPermission } from "@/hooks";
-import { loginApp } from "@/features/auth";
-import { getErrorMessage, getFormatEncryptedMnemonic } from "@/utils";
+import { Login } from "@/features/auth";
+import { getFormatEncryptedMnemonic } from "@/utils";
 
 export function useBackupSecretQR() {
   const { t, theme, route, dispatch } = useApp();
 
-  const { mnemonic, address, publicKey, username, password } = route.params || {};
+  const { mnemonic, password } = route.params || {};
 
   const { requestPermission } = useAndroidPermission();
 
@@ -19,13 +19,11 @@ export function useBackupSecretQR() {
   const viewShotRef = useRef<ViewShot>(null);
 
   const encryptedMnemonic = useMemo(() => {
-    if (!password) {
-      return mnemonic;
-    }
+    if (!password || !mnemonic) return mnemonic;
 
     const ciphertext = CryptoJS.AES.encrypt(mnemonic, password).toString();
-    const formatEncryptedMnemonic = getFormatEncryptedMnemonic(ciphertext);
-    return formatEncryptedMnemonic;
+
+    return getFormatEncryptedMnemonic(ciphertext);
   }, [mnemonic, password]);
 
   async function handleBackup() {
@@ -33,17 +31,16 @@ export function useBackupSecretQR() {
     if (!isAllowed) return false;
 
     try {
-      const uri = await viewShotRef.current?.capture?.();
+      const url = await viewShotRef.current?.capture?.();
 
-      if (!uri || !address || !username || !publicKey) {
-        const message = t("auth.error_generation_failed");
-        throw new Error(message);
+      if (!url) {
+        throw new Error(t("auth.error_generation_failed"));
       }
 
-      dispatch(loginApp({ address, username, publicKey, uri }));
+      dispatch(Login(url));
     } catch (e: unknown) {
-      const message = getErrorMessage(e);
-      Toast.error(message);
+      console.error(e);
+      Toast.error(t("auth.error_generation_failed"));
     }
   }
 

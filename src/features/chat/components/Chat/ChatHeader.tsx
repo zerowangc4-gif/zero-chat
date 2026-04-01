@@ -1,9 +1,6 @@
 import { ActionIcon, Header } from "@/components";
-import { useChat } from "@/features/chat";
-import { useApp } from "@/hooks";
-export function ChatHeader() {
-  const { theme, navigation } = useApp();
-  const { username } = useChat();
+
+export function ChatHeader({ theme, navigation, username }) {
   return (
     <Header
       leftElement={

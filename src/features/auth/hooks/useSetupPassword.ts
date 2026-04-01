@@ -1,52 +1,46 @@
-import { useCallback } from "react"; // 必须导入
+import { useCallback, useState } from "react";
 import { Toast } from "@/components";
-import { useGenerateWallet, WalletType } from "@/features/wallet";
+import { createWallet } from "@/features/wallet";
 import { useApp, useInput } from "@/hooks";
 import { ROUTES } from "@/navigation";
-import { getErrorMessage } from "@/utils";
+
 export function useSetupPassword() {
+  const [isGenerating, setIsGenerating] = useState(false);
   const { theme, t, navigation } = useApp();
-  const { generate, isGenerating } = useGenerateWallet();
 
   const password = useInput("");
   const confirmPassword = useInput("");
 
   const isPasswordValid = password.value.length >= 8;
-  const showPasswordTagline = !isPasswordValid && !!password.value;
+
   const isPasswordMatch = password.value === confirmPassword.value;
+
+  const showPasswordTagline = !isPasswordValid && !!password.value;
   const showPasswordMismatchError = confirmPassword.value.length > 0 && !isPasswordMatch;
 
   const isFormValid = isPasswordValid && isPasswordMatch && !isGenerating;
 
-  function isWalletComplete(wallet: WalletType | undefined | null): wallet is WalletType {
-    return !!(wallet && wallet.mnemonic && wallet.address && wallet.privateKey && wallet.publicKey);
-  }
+  const buttonText = isGenerating ? t("common.loading") : t("auth.action_generate_and_backup");
 
   const handleContinue = useCallback(async () => {
-    if (!isFormValid || isGenerating) return;
+    if (!isFormValid) return;
 
     try {
-      const wallet = await generate();
-      const isWallet = isWalletComplete(wallet);
+      setIsGenerating(true);
 
-      if (!isWallet) {
-        const message = t("auth.error_generation_failed");
-        Toast.error(message);
-        return;
-      }
+      const mnemonic = await createWallet();
 
       navigation.replace(ROUTES.BackupSecretQR, {
-        mnemonic: wallet.mnemonic,
-        address: wallet.address,
-        publicKey: wallet.publicKey,
-        username: `User_${wallet.address.slice(-4).toUpperCase()}`,
+        mnemonic,
         password: password.value,
       });
     } catch (e: unknown) {
-      const message = getErrorMessage(e);
-      Toast.error(message);
+      console.error(e);
+      Toast.error(t("error_generation_failed"));
+    } finally {
+      setIsGenerating(false);
     }
-  }, [isFormValid, isGenerating, generate, t, navigation, password.value]);
+  }, [isFormValid, navigation, password.value, t]);
 
   return {
     theme,
@@ -57,6 +51,7 @@ export function useSetupPassword() {
     confirmPassword,
     showPasswordMismatchError,
     isFormValid,
+    buttonText,
     isGenerating,
     handleContinue,
   };

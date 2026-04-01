@@ -2,8 +2,6 @@ import { onActions } from "@/store/actions";
 import { PayloadAction } from "@reduxjs/toolkit";
 import {
   Message,
-  fetchContacts,
-  setContacts,
   SendChatMessage,
   insertMessages,
   updateMessage,
@@ -20,28 +18,17 @@ import {
   syncChatMessages,
   deleteHavedSyncMessages,
   syncHavedReadLatestMessage,
-  getContacts,
   syncMessageStatus,
 } from "@/features/chat/services";
 import { MESSAGE_STATUS } from "@/constants";
 
 export function* watchChatSaga() {
   yield onActions({
-    [fetchContacts.type]: handleGetContacts,
     [SendChatMessage.type]: handleSendChatMessage,
     [InsertChatMessages.type]: handleInsertChatMessage,
     [SyncHavedReadLatestMessage.type]: handleSyncHavedReadLatestMessage,
     [InitChatData.type]: handleInitChatData,
   });
-}
-
-function* handleGetContacts(): Generator {
-  try {
-    const contacts = yield call(getContacts);
-    yield put(setContacts(contacts));
-  } catch (error: unknown) {
-    console.error(error);
-  }
 }
 
 // 上线时初始化状态

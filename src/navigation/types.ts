@@ -6,7 +6,7 @@ import { ROUTES } from "./routes";
 export type AuthStackParamList = {
   [ROUTES.Welcome]: undefined;
   [ROUTES.SetupPassword]: undefined;
-  [ROUTES.BackupSecretQR]: { mnemonic: string; address: string; publicKey: string; username: string; password: string };
+  [ROUTES.BackupSecretQR]: { mnemonic: string; password: string };
 };
 
 export type MainTabParamList = {
@@ -18,6 +18,7 @@ export type RootStackParamList = {
   [ROUTES.AuthStack]: NavigatorScreenParams<AuthStackParamList>;
   [ROUTES.MainTab]: NavigatorScreenParams<MainTabParamList>;
   [ROUTES.Chat]: { avatarSeed: string; username: string; address: string; publicKey: string };
+  [ROUTES.AddFriend]: undefined;
 };
 
 // 平铺所有路由，用于全局导航提示

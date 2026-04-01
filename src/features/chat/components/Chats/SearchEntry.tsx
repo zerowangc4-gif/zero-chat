@@ -1,7 +1,6 @@
 import styled, { css } from "styled-components/native";
 import IconFont from "@/assets/font/iconfont";
 import { Typography } from "@/components";
-import { useApp } from "@/hooks";
 
 const Container = styled.Pressable`
   ${({ theme }) => {
@@ -35,16 +34,15 @@ const IconBox = styled.View`
   }}
 `;
 
-export function SearchEntry() {
-  const { theme, t } = useApp();
+export function SearchEntry({ theme, searchContactPlaceholder, onPress }) {
   return (
-    <Container>
+    <Container onPress={onPress}>
       <SearchContent>
         <IconBox>
           <IconFont name="sousuo" size={theme.typography.size.md} color={theme.colors.secondaryWord} />
         </IconBox>
-        <Typography type="caption" color={theme.colors.secondaryWord}>
-          {t("chat.searchFriend")}
+        <Typography type="main" color={theme.colors.secondaryWord}>
+          {searchContactPlaceholder}
         </Typography>
       </SearchContent>
     </Container>

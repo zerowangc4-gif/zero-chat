@@ -1,19 +1,34 @@
 import { createAction, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Contacts, Message, TargetMsg } from "./types";
+import { Message, TargetMsg, UserInfo, State } from "./types";
 import { MESSAGE_STATUS, STATUS_WEIGHT } from "@/constants";
-import { sortMessages } from "@/features/chat";
+import { sortMessages } from "../utils";
 
-const initialState = { userId: "", activeChatId: "", chatMap: {}, haveReadUserMap: {}, contacts: [] };
+const initialState: State = {
+  userId: "",
+  user: {
+    address: "",
+    publicKey: "",
+    username: "",
+    avatarSeed: "",
+  },
+  friends: {},
+  activeChatId: "",
+  chatMap: {},
+  haveReadUserMap: {},
+};
 
 const chatSlice = createSlice({
   name: "chat",
   initialState,
   reducers: {
-    setContacts: (state, action: PayloadAction<Contacts[]>) => {
-      state.contacts = action.payload;
+    setUserInfo: (state, action: PayloadAction<UserInfo>) => {
+      state.user = action.payload;
     },
-    setUserId: (state, action: PayloadAction<string>) => {
-      state.userId = action.payload;
+    addFriend: (state, action: PayloadAction<UserInfo>) => {
+      const user = action.payload;
+      state.friends = state.friends || {};
+
+      state.friends[user.address] = user;
     },
     setActiveChatId: (state, action: PayloadAction<string>) => {
       if (state.activeChatId === action.payload) {
@@ -24,7 +39,7 @@ const chatSlice = createSlice({
     insertMessages: (state, action: PayloadAction<Message[]>) => {
       const chatIds = new Set<string>();
       action.payload.forEach((item: Message) => {
-        const chatId = item.fromId === state.userId ? item.toId : item.fromId;
+        const chatId = item.fromId === state.user.address ? item.toId : item.fromId;
         chatIds.add(chatId);
         if (!state.chatMap[chatId]) {
           state.chatMap[chatId] = [];
@@ -46,7 +61,7 @@ const chatSlice = createSlice({
     updateMessage: (state, action: PayloadAction<Message>) => {
       const message: Message = action.payload;
 
-      const chatId = message.fromId === state.userId ? message.toId : message.fromId;
+      const chatId = message.fromId === state.user.address ? message.toId : message.fromId;
 
       const currentChat = state.chatMap[chatId];
 
@@ -87,16 +102,14 @@ const chatSlice = createSlice({
 });
 
 export const {
-  setUserId,
+  setUserInfo,
   setActiveChatId,
   insertMessages,
-  setContacts,
   updateMessage,
   updateMessagesStatus,
   updateHaveReadUserLatestMessage,
+  addFriend,
 } = chatSlice.actions;
-
-export const fetchContacts = createAction("chat/contacts");
 
 export const SendChatMessage = createAction<Message>("chat/SendMessage");
 

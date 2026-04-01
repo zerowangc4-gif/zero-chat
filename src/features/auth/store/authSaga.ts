@@ -1,46 +1,38 @@
 import { t } from "i18next";
-
-import { onActions, BaseAction } from "@/store/actions";
-import { loginApp, setAuthData } from "./authSlice";
-import { call, put } from "redux-saga/effects";
+import { PayloadAction } from "@reduxjs/toolkit";
+import { onActions } from "@/store/actions";
+import { Login, setTokens } from "./authSlice";
+import { call, put, select } from "redux-saga/effects";
 import { registerAndLogin, getNonce } from "../services";
 import { Toast } from "@/components";
 import { CameraRoll } from "@react-native-camera-roll/camera-roll";
-import { getErrorMessage } from "@/utils";
-import { getPrivateKey, signMessage } from "@/features/wallet";
-import { setUserId } from "@/features/chat";
+import { signWithStoredWallet } from "@/features/wallet";
 
 export function* watchAuthSaga() {
-  yield onActions({ [loginApp.type]: handleLoginApp });
+  yield onActions({ [Login.type]: handleLogin });
 }
 
-function* handleLoginApp(action?: BaseAction): Generator {
-  if (!action?.payload) {
-    throw new Error(t("auth.error_generation_failed"));
-  }
+function* handleLogin(action: PayloadAction<string>) {
+  const url = action.payload;
 
   try {
-    const { address, publicKey, username, uri } = action.payload;
+    const { address, publicKey, username } = yield select(state => state.chat.user);
 
-    if (!address || !publicKey || !username || !uri) {
+    if (!url || !address || !publicKey || !username) {
       throw new Error(t("auth.error_generation_failed"));
     }
 
     const authSlogan = yield call(getNonce, address);
 
-    const privateKey = yield call(getPrivateKey);
-
-    const signature = yield call(signMessage, privateKey, authSlogan);
+    const signature = yield call(signWithStoredWallet, authSlogan);
 
     const result = yield call(registerAndLogin, address, publicKey, username, signature);
 
-    yield call(CameraRoll.saveAsset, uri, { type: "photo", album: "ZeroTrace" });
+    yield call(CameraRoll.saveAsset, url, { type: "photo", album: "ZeroTrace" });
 
-    yield put(setAuthData(result));
-
-    yield put(setUserId(result.user.address));
+    yield put(setTokens(result));
   } catch (e: unknown) {
-    const message = getErrorMessage(e);
-    Toast.error(message);
+    console.error(e);
+    Toast.error(t("auth.error_generation_failed"));
   }
 }

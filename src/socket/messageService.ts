@@ -2,7 +2,7 @@ import { store } from "@/store";
 import { SocketClient } from "./socketClient";
 import { authService } from "@/api";
 import { AT_EXPIRE } from "@/constants";
-import { clearAuthData } from "@/features";
+import { setTokens } from "@/features";
 import { url } from "./events";
 
 export class MessageService {
@@ -31,6 +31,11 @@ export class MessageService {
 
   public forceLogout() {
     SocketClient.getInstance().disconnect();
-    store.dispatch(clearAuthData());
+    store.dispatch(
+      setTokens({
+        accessToken: "",
+        refreshToken: "",
+      }),
+    );
   }
 }

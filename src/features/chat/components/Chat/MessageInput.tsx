@@ -1,5 +1,4 @@
 import { ActionIcon, BaseInput } from "@/components";
-import { useChat } from "@/features/chat";
 import styled, { css } from "styled-components/native";
 
 const Container = styled.View<{
@@ -51,9 +50,7 @@ const Right = styled.View`
   }}
 `;
 
-export function MessageInput() {
-  const { text, setText, bottom, theme, onSend } = useChat();
-
+export function MessageInput({ text, setText, bottom, theme, onSend }) {
   return (
     <Container $bottom={bottom}>
       <Left>
