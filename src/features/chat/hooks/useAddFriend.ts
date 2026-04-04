@@ -3,21 +3,29 @@ import { useApp, useInput } from "@/hooks";
 import { searchUserResult } from "../services";
 import { UserInfo, addFriends } from "../store";
 import { isValidEthereumAddress } from "@/utils";
-
+import { useAppSelector } from "@/store";
 export function useAddFriend() {
-  const { navigation, dispatch, ROUTES, theme, t } = useApp();
+  const { navigation, dispatch, ROUTES } = useApp();
 
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
 
+  const { user, friends } = useAppSelector(state => state.chat);
+
   const [loading, setLoading] = useState(false);
+
   const friendAddress = useInput("");
 
   //  当账号匹配的时候自动搜索用户信息
   useEffect(() => {
     const value = friendAddress.value.trim();
 
-    if (!value || !isValidEthereumAddress(value)) {
+    if (!value || !isValidEthereumAddress(value) || value === user.address) {
       setUserInfo(null);
+      return;
+    }
+
+    if (friends[value]) {
+      setUserInfo(friends[value]);
       return;
     }
     const handleUserInfo = async (address: string) => {
@@ -34,7 +42,7 @@ export function useAddFriend() {
     };
 
     handleUserInfo(value);
-  }, [friendAddress.value]);
+  }, [friendAddress.value, friends, user.address]);
 
   const handleAddFriend = () => {
     if (!userInfo) return;
@@ -53,5 +61,5 @@ export function useAddFriend() {
     navigation.goBack();
   };
 
-  return { navigation, theme, t, friendAddress, userInfo, loading, handleAddFriend, handleGoBack };
+  return { navigation, friendAddress, userInfo, loading, handleAddFriend, handleGoBack };
 }
