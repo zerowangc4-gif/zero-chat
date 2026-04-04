@@ -11,17 +11,13 @@ const MainContent = styled(Main)`
 `;
 
 export function AddFriend() {
-  const { theme, navigation, t, friendAddress, userInfo, handleAddFriend } = useAddFriend();
+  const { friendAddress, userInfo, handleAddFriend, handleGoBack } = useAddFriend();
   return (
     <BaseScreen>
-      <AddFriendHeader theme={theme} navigation={navigation} title={t("chat.add_friend")} />
+      <AddFriendHeader handleGoBack={handleGoBack} />
       <MainContent hasHeader={true}>
-        <AddFriendInput
-          value={friendAddress.value}
-          onChange={friendAddress.onChange}
-          placeholder={t("chat.placeholder_search_address")}
-        />
-        <SearchResultCard userInfo={userInfo} theme={theme} title={t("chat.add_friend")} onPress={handleAddFriend} />
+        <AddFriendInput friendAddress={friendAddress} />
+        <SearchResultCard userInfo={userInfo} handleAddFriend={handleAddFriend} />
       </MainContent>
     </BaseScreen>
   );

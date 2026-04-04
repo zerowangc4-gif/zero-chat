@@ -1,6 +1,8 @@
-import styled, { css } from "styled-components/native";
+import styled, { css, useTheme } from "styled-components/native";
 import IconFont from "@/assets/font/iconfont";
 import { Typography } from "@/components";
+import { t } from "i18next";
+import { Props } from "./ChatList";
 
 const Container = styled.Pressable`
   ${({ theme }) => {
@@ -34,15 +36,16 @@ const IconBox = styled.View`
   }}
 `;
 
-export function SearchEntry({ theme, searchContactPlaceholder, onPress }) {
+export function SearchEntry({ handleAddFriend }: Pick<Props, "handleAddFriend">) {
+  const theme = useTheme();
   return (
-    <Container onPress={onPress}>
+    <Container onPress={handleAddFriend}>
       <SearchContent>
         <IconBox>
           <IconFont name="sousuo" size={theme.typography.size.md} color={theme.colors.secondaryWord} />
         </IconBox>
         <Typography type="main" color={theme.colors.secondaryWord}>
-          {searchContactPlaceholder}
+          {t("chat.placeholder_search_address")}
         </Typography>
       </SearchContent>
     </Container>

@@ -1,7 +1,8 @@
 import React from "react";
-import styled, { css } from "styled-components/native";
+import styled, { css, useTheme } from "styled-components/native";
 import { Avatar, Typography, Button } from "@/components";
-
+import { t } from "i18next";
+import { UserInfo } from "../../store";
 const Container = styled.View`
   ${({ theme }) => {
     return css`
@@ -42,7 +43,13 @@ const ActionButtonWrapper = styled.View`
   }}
 `;
 
-export function SearchResultCard({ theme, userInfo, title, onPress }) {
+interface Props {
+  userInfo: UserInfo | null;
+  handleAddFriend: () => void;
+}
+export function SearchResultCard({ userInfo, handleAddFriend }: Props) {
+  const theme = useTheme();
+
   if (!userInfo) return null;
 
   return (
@@ -58,7 +65,7 @@ export function SearchResultCard({ theme, userInfo, title, onPress }) {
         </Typography>
       </UserInfoWrapper>
       <ActionButtonWrapper>
-        <Button title={title} bgColor={theme.colors.baseInverse} onPress={onPress} />
+        <Button title={t("chat.add_friend")} bgColor={theme.colors.baseInverse} onPress={handleAddFriend} />
       </ActionButtonWrapper>
     </Container>
   );

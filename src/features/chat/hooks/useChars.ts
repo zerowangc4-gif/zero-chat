@@ -1,25 +1,24 @@
 import { useEffect, useMemo } from "react";
 import { useAppSelector } from "@/store";
 import { useApp } from "@/hooks";
-import { setActiveChatId, UserInfo, Message, ChatSession } from "@/features/chat";
+import { setActiveChatId, UserInfo, Message, ChatSession } from "../store";
 
 export function useChars() {
-  const { dispatch, navigation, ROUTES, theme, t } = useApp();
-  const { user, friends, chatMap } = useAppSelector(state => state.chat);
+  const { dispatch, navigation, ROUTES } = useApp();
+
+  const { friends, lastMessageMap } = useAppSelector(state => state.chat);
 
   // 好友列表
   const chatSessions: ChatSession[] = useMemo(() => {
+    const currentLastMsgMap = lastMessageMap || {};
+
     return Object.values(friends || {})
       .map((item: UserInfo) => {
-        const messages: Message[] = chatMap[item.address];
-        if (messages && messages.length) {
-          const message = messages[0];
-          return { ...item, lastMsg: message.content, time: message.timestamp };
-        }
-        return { ...item, lastMsg: "", time: 0 };
+        const message: Message = currentLastMsgMap[item.address];
+        return { ...item, lastMsg: message?.content || "", time: message?.timestamp || 0 };
       })
       .sort((sessionA, sessionB) => sessionB.time - sessionA.time);
-  }, [friends, chatMap]);
+  }, [friends, lastMessageMap]);
 
   //  跳转到聊天页面
   const handlePressItem = (item: UserInfo) => () => {
@@ -40,5 +39,5 @@ export function useChars() {
     dispatch(setActiveChatId(""));
   }, [dispatch]);
 
-  return { user, navigation, ROUTES, theme, t, handlePressItem, handleAddFriend, chatSessions };
+  return { handlePressItem, handleAddFriend, chatSessions };
 }

@@ -14,6 +14,7 @@ const initialState: State = {
   friends: {},
   activeChatId: "",
   chatMap: {},
+  lastMessageMap: {},
   haveReadUserMap: {},
 };
 
@@ -24,11 +25,11 @@ const chatSlice = createSlice({
     setUserInfo: (state, action: PayloadAction<UserInfo>) => {
       state.user = action.payload;
     },
-    addFriend: (state, action: PayloadAction<UserInfo>) => {
-      const user = action.payload;
+    addFriends: (state, action: PayloadAction<UserInfo[]>) => {
       state.friends = state.friends || {};
-
-      state.friends[user.address] = user;
+      action.payload.forEach((item: UserInfo) => {
+        state.friends[item.address] = item;
+      });
     },
     setActiveChatId: (state, action: PayloadAction<string>) => {
       if (state.activeChatId === action.payload) {
@@ -36,63 +37,52 @@ const chatSlice = createSlice({
       }
       state.activeChatId = action.payload;
     },
+
     insertMessages: (state, action: PayloadAction<Message[]>) => {
-      const chatIds = new Set<string>();
       action.payload.forEach((item: Message) => {
         const chatId = item.fromId === state.user.address ? item.toId : item.fromId;
-        chatIds.add(chatId);
+
         if (!state.chatMap[chatId]) {
-          state.chatMap[chatId] = [];
+          state.chatMap[chatId] = {};
         }
-        const currentChat = state.chatMap[chatId];
 
-        const isDuplicate = currentChat.some((msg: Message) => msg.id === item.id);
+        state.chatMap[chatId][item.id] = item;
 
-        if (!isDuplicate) {
-          currentChat.push(item);
-        }
-      });
-      chatIds.forEach(chatId => {
-        if (state.chatMap[chatId]) {
-          state.chatMap[chatId] = sortMessages(state.chatMap[chatId]);
-        }
+        const messages: Message[] = sortMessages([state.lastMessageMap[chatId] || item, item]);
+
+        state.lastMessageMap[chatId] = messages[0];
       });
     },
+
     updateMessage: (state, action: PayloadAction<Message>) => {
       const message: Message = action.payload;
-
       const chatId = message.fromId === state.user.address ? message.toId : message.fromId;
-
-      const currentChat = state.chatMap[chatId];
-
-      if (currentChat) {
-        const index = currentChat.findIndex((item: Message) => item.id === message.id);
-        if (index !== -1) {
-          currentChat[index] = message;
-          state.chatMap[chatId] = sortMessages(currentChat);
-        }
-      }
+      state.chatMap[chatId][message.id] = message;
+      const messages: Message[] = sortMessages([state.lastMessageMap[chatId] || message, message]);
+      state.lastMessageMap[chatId] = messages[0];
     },
 
     updateMessagesStatus: (state, action: PayloadAction<TargetMsg>) => {
       const { chatId, sessionSeqNum, status } = action.payload;
-
       const currentChat = state.chatMap[chatId];
 
       if (!currentChat) return;
 
-      const lastSessionSeqNum = Number(sessionSeqNum);
+      const lastSeq = Number(sessionSeqNum);
       const newStatusWeight = STATUS_WEIGHT[status] || 0;
-      currentChat.forEach((item: Message) => {
+
+      for (const msgId in currentChat) {
+        const item = currentChat[msgId];
         const currentWeight = STATUS_WEIGHT[item.status] || 0;
+
         if (
-          Number(item.sessionSeqNum) <= lastSessionSeqNum &&
+          Number(item.sessionSeqNum) <= lastSeq &&
           newStatusWeight > currentWeight &&
           item.status !== MESSAGE_STATUS.FAILED
         ) {
           item.status = status;
         }
-      });
+      }
     },
     updateHaveReadUserLatestMessage: (state, action: PayloadAction<Message>) => {
       const message: Message = action.payload;
@@ -108,7 +98,7 @@ export const {
   updateMessage,
   updateMessagesStatus,
   updateHaveReadUserLatestMessage,
-  addFriend,
+  addFriends,
 } = chatSlice.actions;
 
 export const SendChatMessage = createAction<Message>("chat/SendMessage");

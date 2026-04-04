@@ -17,6 +17,10 @@ export interface Message {
   type: MessageType;
   status: MessageStatus;
 }
+export interface InputProps {
+  value: string;
+  onChange: (text: string) => void;
+}
 export interface TargetMsg {
   chatId: string;
   id: string;
@@ -27,11 +31,13 @@ export interface ChatSession extends UserInfo {
   time: number;
   lastMsg: string;
 }
+
 export interface State {
   userId: string;
   user: UserInfo;
   friends: Record<string, UserInfo>;
   activeChatId: string;
-  chatMap: Record<string, Message[]>;
+  chatMap: Record<string, Record<string, Message>>;
   haveReadUserMap: Record<string, Message>;
+  lastMessageMap: Record<string, Message>;
 }

@@ -1,5 +1,5 @@
 import { ROUTES } from "@/navigation";
-import { useApp } from "@/hooks";
+import { useApp, useInput } from "@/hooks";
 import {
   Message,
   generateId,
@@ -11,24 +11,24 @@ import {
 } from "@/features/chat";
 import { useAppSelector } from "@/store";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo } from "react";
 
 import { MESSAGE_STATUS, MESSAGE_TYPE } from "@/constants";
+import { sortMessages } from "../utils";
 export function useChat() {
-  const { route, dispatch, theme, insets, navigation } = useApp<typeof ROUTES.Chat>();
+  const { route, dispatch, theme, navigation } = useApp<typeof ROUTES.Chat>();
 
-  const { avatarSeed, username, address } = route.params;
+  const { address } = route.params;
 
-  const { chatMap, haveReadUserMap, activeChatId, user } = useAppSelector(state => state.chat);
+  const { chatMap, haveReadUserMap, user } = useAppSelector(state => state.chat);
 
-  const messages = useMemo(() => chatMap[address] || [], [address, chatMap]);
+  const messages = useMemo(() => sortMessages(Object.values(chatMap[address] || [])) || [], [address, chatMap]);
 
   const haveReadlatestMessage = useMemo(() => haveReadUserMap[address] || [], [address, haveReadUserMap]);
 
-  const [text, setText] = useState("");
+  const msg = useInput("");
 
-  const bottom = insets.bottom + theme.spacing.step.xs;
-
+  // 更新信息已读状态
   useEffect(() => {
     const latestMessage: Message | undefined = messages.find((item: Message) => item.fromId === address);
     if (latestMessage && latestMessage.status !== MESSAGE_STATUS.READ) {
@@ -36,16 +36,17 @@ export function useChat() {
         updateMessagesStatus({
           chatId: address,
           id: latestMessage.id,
-          sessionSeqNum: parseInt(String(latestMessage.sessionSeqNum), 10),
+          sessionSeqNum: Number(latestMessage.sessionSeqNum),
           status: MESSAGE_STATUS.READ,
         }),
       );
     }
-    if (JSON.stringify(latestMessage) !== JSON.stringify(haveReadlatestMessage)) {
+    if (latestMessage && JSON.stringify(latestMessage) !== JSON.stringify(haveReadlatestMessage)) {
       dispatch(SyncHavedReadLatestMessage(latestMessage));
     }
-  }, [messages, address, dispatch, haveReadlatestMessage, activeChatId]);
+  }, [messages, address, dispatch, haveReadlatestMessage]);
 
+  // 更新停留在哪个聊天窗口
   useEffect(() => {
     dispatch(setActiveChatId(address));
     return () => {
@@ -60,28 +61,26 @@ export function useChat() {
       fromId: user.address,
       toId: address,
       sessionSeqNum: generateSessionSeqNum(address),
-      content: text.trim(),
+      content: msg.value.trim(),
       timestamp: Date.now(),
       type: MESSAGE_TYPE.TEXT,
       status: MESSAGE_STATUS.PENDING,
     };
 
     dispatch(SendChatMessage(message));
-
-    setText("");
+    msg.onChange("");
+  };
+  // 返回到上一页面
+  const handleGoBack = () => {
+    navigation.goBack();
   };
 
   return {
-    avatarSeed,
-    username,
     address,
-    user,
     onSend,
-    setText,
-    text,
-    bottom,
+    msg,
     theme,
     messages,
-    navigation,
+    handleGoBack,
   };
 }
