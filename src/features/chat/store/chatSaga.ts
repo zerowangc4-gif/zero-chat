@@ -10,7 +10,9 @@ import {
   InitChatData,
   updateHaveReadUserLatestMessage,
   TargetMsg,
+  UserInfo,
   updateMessagesStatus,
+  addFriends,
 } from "@/features/chat/store";
 import { all, call, put, select } from "redux-saga/effects";
 import {
@@ -19,6 +21,7 @@ import {
   deleteHavedSyncMessages,
   syncHavedReadLatestMessage,
   syncMessageStatus,
+  searchUserResult,
 } from "@/features/chat/services";
 import { MESSAGE_STATUS } from "@/constants";
 
@@ -56,11 +59,19 @@ function* handleSendChatMessage(action: PayloadAction<Message>) {
 // 同步信息
 function* handleInsertChatMessage() {
   try {
-    const { activeChatId } = yield select(state => state.chat);
+    const { activeChatId, friends } = yield select(state => state.chat);
     const result: Message[] = yield call(syncChatMessages, activeChatId);
     if (!result || result.length === 0) {
       return;
     }
+
+    const strangerIds: string[] = Array.from(
+      new Set(result.map((msg: Message) => msg.fromId).filter((id: string) => !friends[id])),
+    );
+
+    const newUserInfos: UserInfo[] = yield all(strangerIds.map(id => call(searchUserResult, id)));
+    yield put(addFriends(newUserInfos));
+
     yield put(insertMessages(result));
 
     yield call(deleteHavedSyncMessages, result[result.length - 1]);

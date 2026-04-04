@@ -3,20 +3,12 @@ import { ChatHeader, MessageList } from "../components";
 import { useChat } from "../hooks";
 
 export function Chat() {
-  const { theme, navigation, username, messages, user, text, setText, bottom, onSend } = useChat();
+  const { messages, onSend, handleGoBack, msg } = useChat();
   return (
     <BaseScreen>
-      <ChatHeader theme={theme} navigation={navigation} username={username} />
+      <ChatHeader handleGoBack={handleGoBack} />
       <Main hasHeader={true} enableKeyboardAvoiding={true}>
-        <MessageList
-          theme={theme}
-          messages={messages}
-          user={user}
-          text={text}
-          setText={setText}
-          bottom={bottom}
-          onSend={onSend}
-        />
+        <MessageList messages={messages} msg={msg} onSend={onSend} />
       </Main>
     </BaseScreen>
   );

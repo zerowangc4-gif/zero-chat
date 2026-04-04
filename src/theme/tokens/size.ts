@@ -1,5 +1,6 @@
 export const size = {
   xs: 32,
+  ms: 40,
   sm: 48,
   md: 56,
   lg: 80,

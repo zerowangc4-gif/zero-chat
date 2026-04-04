@@ -1,4 +1,3 @@
-import React from "react";
 import styled, { useTheme } from "styled-components/native";
 import { Typography } from "../common/Typography";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -43,8 +42,10 @@ interface HeaderProps {
 export const Header: React.FC<HeaderProps> = ({ title, leftElement, rightElement }) => {
   const theme = useTheme();
   const insets = useSafeAreaInsets();
-  const height = theme.spacing.layout.navBarHeight + insets.top;
+
   const hasContent = !!(title || leftElement || rightElement);
+
+  const height = theme.spacing.layout.navBarHeight + insets.top;
 
   return (
     <HeaderContainer height={height} paddingTop={insets.top} hasContent={hasContent}>

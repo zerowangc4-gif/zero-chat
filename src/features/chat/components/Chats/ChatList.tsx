@@ -1,5 +1,6 @@
 import { FlatList, StyleSheet } from "react-native";
 import styled from "styled-components/native";
+import { UserInfo, ChatSession } from "../../store";
 import { ChatItem } from "./ChatItem";
 
 import { SearchEntry } from "./SearchEntry";
@@ -8,15 +9,19 @@ const Container = styled.View`
   flex: 1;
 `;
 
-export function ChatList({ theme, chatSessions, handlePressItem, searchContactPlaceholder, handleAddFriend }) {
+export interface Props {
+  chatSessions: ChatSession[];
+  handlePressItem: (item: UserInfo) => () => void;
+  handleAddFriend: () => void;
+}
+
+export function ChatList({ chatSessions, handlePressItem, handleAddFriend }: Props) {
   return (
     <Container>
       <FlatList
         data={chatSessions}
-        ListHeaderComponent={
-          <SearchEntry theme={theme} searchContactPlaceholder={searchContactPlaceholder} onPress={handleAddFriend} />
-        }
-        renderItem={({ item }) => <ChatItem {...item} theme={theme} onPress={handlePressItem(item)} />}
+        ListHeaderComponent={<SearchEntry handleAddFriend={handleAddFriend} />}
+        renderItem={({ item }) => <ChatItem {...item} handlePressItem={handlePressItem(item)} />}
         keyExtractor={item => item.publicKey}
         contentContainerStyle={styles.listContentContainer}
         showsVerticalScrollIndicator={false}

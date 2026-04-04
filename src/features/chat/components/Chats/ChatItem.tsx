@@ -1,7 +1,7 @@
-import styled, { css } from "styled-components/native";
+import styled, { css, useTheme } from "styled-components/native";
 import { Avatar, Typography } from "@/components";
-import { size } from "./AccountInfo";
-
+import { ChatSession } from "../../store";
+import { getFormatTime } from "@/utils";
 const Container = styled.Pressable`
   ${({ theme }) => {
     return css`
@@ -43,28 +43,33 @@ const TitleRow = styled.View`
   }}
 `;
 
-export function ChatItem({ username, avatarSeed, lastMsg, time, onPress, theme }) {
+interface Props extends ChatSession {
+  handlePressItem: () => void;
+}
+export function ChatItem(props: Props) {
+  const theme = useTheme();
+
   return (
     <Container
-      onPress={onPress}
+      onPress={props.handlePressItem}
       style={({ pressed }) => ({
         backgroundColor: pressed ? theme.colors.fillSecondary : theme.colors.base,
         opacity: pressed ? theme.interactive.activeOpacity : 1,
       })}>
       <AvatarBox>
-        <Avatar avatarSeed={avatarSeed} size={size.medium} />
+        <Avatar avatarSeed={props.avatarSeed} size={theme.size.md} />
       </AvatarBox>
       <Content>
         <TitleRow>
           <Typography type="main" weight="bold">
-            {username}
+            {props.username}
           </Typography>
           <Typography type="caption" color={theme.colors.secondaryWord}>
-            {new Date(time).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+            {getFormatTime(props.time)}
           </Typography>
         </TitleRow>
         <Typography type="caption" color={theme.colors.secondaryWord}>
-          {lastMsg}
+          {props.lastMsg}
         </Typography>
       </Content>
     </Container>
