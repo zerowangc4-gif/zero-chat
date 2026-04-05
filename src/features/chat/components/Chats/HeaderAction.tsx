@@ -1,6 +1,6 @@
 import styled, { css, useTheme } from "styled-components/native";
 import IconFont from "@/assets/font/iconfont";
-
+import { Icon } from "@/constants";
 const HeaderActionContainer = styled.View`
   ${({ theme }) => css`
     width: ${theme.size.ms}px;
@@ -16,7 +16,7 @@ export function HeaderAction() {
   const theme = useTheme();
   return (
     <HeaderActionContainer>
-      <IconFont name="jiahao1" size={theme.typography.size.md} color={theme.colors.baseInverse} />
+      <IconFont name={Icon.add} size={theme.typography.size.md} color={theme.colors.baseInverse} />
     </HeaderActionContainer>
   );
 }

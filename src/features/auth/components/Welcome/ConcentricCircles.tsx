@@ -1,6 +1,7 @@
 import React from "react";
 import styled, { useTheme } from "styled-components/native";
 import IconFont from "@/assets/font/iconfont";
+import { Icon } from "@/constants";
 /**以8px 为基本单位 */
 const step = 8;
 const CONFIG = {
@@ -53,7 +54,7 @@ export const ConcentricCircles = () => {
       ))}
 
       <IconContainer>
-        <IconFont name="daoban-copy" size={typography.size.xxxl} />
+        <IconFont name={Icon.brand} size={typography.size.xxxl} />
       </IconContainer>
     </Container>
   );

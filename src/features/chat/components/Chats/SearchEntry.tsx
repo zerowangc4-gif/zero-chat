@@ -3,6 +3,7 @@ import IconFont from "@/assets/font/iconfont";
 import { Typography } from "@/components";
 import { t } from "i18next";
 import { Props } from "./ChatList";
+import { Icon } from "@/constants";
 
 const Container = styled.Pressable`
   ${({ theme }) => {
@@ -42,7 +43,7 @@ export function SearchEntry({ handleAddFriend }: Pick<Props, "handleAddFriend">)
     <Container onPress={handleAddFriend}>
       <SearchContent>
         <IconBox>
-          <IconFont name="sousuo" size={theme.typography.size.md} color={theme.colors.secondaryWord} />
+          <IconFont name={Icon.search} size={theme.typography.size.md} color={theme.colors.secondaryWord} />
         </IconBox>
         <Typography type="main" color={theme.colors.secondaryWord}>
           {t("chat.placeholder_search_address")}

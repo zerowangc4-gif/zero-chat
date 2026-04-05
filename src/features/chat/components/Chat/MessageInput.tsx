@@ -2,6 +2,7 @@ import { ActionIcon, BaseInput } from "@/components";
 import styled, { css, useTheme } from "styled-components/native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Props } from "./MessageList";
+import { Icon } from "@/constants";
 const Container = styled.View<{
   $bottom: number;
 }>`
@@ -57,7 +58,7 @@ export function MessageInput({ msg, onSend }: Omit<Props, "messages">) {
   return (
     <Container $bottom={insets.bottom + theme.spacing.step.xs}>
       <Left>
-        <ActionIcon name="shengyin" size={theme.typography.size.lg} color={theme.colors.baseInverse} />
+        <ActionIcon name={Icon.voice} size={theme.typography.size.lg} color={theme.colors.baseInverse} />
       </Left>
       <Center>
         <BaseInput
@@ -70,16 +71,11 @@ export function MessageInput({ msg, onSend }: Omit<Props, "messages">) {
         />
       </Center>
       <Right>
-        <ActionIcon name="xiaolian" size={theme.typography.size.lg} color={theme.colors.baseInverse} />
+        <ActionIcon name={Icon.meme} size={theme.typography.size.lg} color={theme.colors.baseInverse} />
         {msg.value.trim() ? (
-          <ActionIcon
-            name="fasongxiaoxi"
-            size={theme.typography.size.lg}
-            color={theme.palette.brand}
-            onPress={onSend}
-          />
+          <ActionIcon name={Icon.send} size={theme.typography.size.lg} color={theme.palette.brand} onPress={onSend} />
         ) : (
-          <ActionIcon name="jiahao" size={theme.typography.size.lg} color={theme.colors.baseInverse} />
+          <ActionIcon name={Icon.chatAdd} size={theme.typography.size.lg} color={theme.colors.baseInverse} />
         )}
       </Right>
     </Container>

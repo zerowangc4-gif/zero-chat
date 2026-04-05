@@ -11,21 +11,21 @@ interface Props extends GProps, ViewProps {
   color?: string | string[];
 }
 
-let IconFanhui1: FunctionComponent<Props> = ({ size, color, ...rest }) => {
+let IconJiahaoO: FunctionComponent<Props> = ({ size, color, ...rest }) => {
   return (
     <Svg viewBox="0 0 1024 1024" width={size} height={size} {...rest}>
       <Path
-        d="M255.72 511.99L250.27900001 517.451 686.469 953.646 773.721 866.41199999 419.317 511.99 773.721 157.608 686.469 70.354 250.27900001 506.568Z"
-        fill={getIconColor(color, 0, '#333333')}
+        d="M512 512V70.13093706h55.23363335v441.86906294h441.86906295v55.23363335h-441.86906295v441.86906295h-55.23363335v-441.86906295H70.13093706v-55.23363335h441.86906294z"
+        fill={getIconColor(color, 0, '#444444')}
       />
     </Svg>
   );
 };
 
-IconFanhui1.defaultProps = {
+IconJiahaoO.defaultProps = {
   size: 20,
 };
 
-IconFanhui1 = React.memo ? React.memo(IconFanhui1) : IconFanhui1;
+IconJiahaoO = React.memo ? React.memo(IconJiahaoO) : IconJiahaoO;
 
-export default IconFanhui1;
+export default IconJiahaoO;

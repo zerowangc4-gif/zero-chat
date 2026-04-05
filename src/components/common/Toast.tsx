@@ -3,27 +3,35 @@ import ToastMessage, { ToastConfig, BaseToastProps } from "react-native-toast-me
 import styled, { css } from "styled-components/native";
 import { Typography } from "./Typography";
 
-const ErrorToastContainer = styled.View`
+const CompactToast = styled.View`
   ${({ theme }) => css`
-    width: 90%;
-    padding: ${theme.spacing.layout.navBarHeight}px;
-    border-radius: ${theme.radii.scale.lg}px;
-    background-color: ${theme.colors.baseInverse};
-    align-self: center;
-    ${theme.shadows.mid}
-    elevation:6;
+    flex-direction: row;
+    justify-content: center;
+    padding-top: ${theme.spacing.step.md}px;
+    padding-bottom: ${theme.spacing.step.md}px;
+    background-color: ${theme.colors.surfaceBg};
   `}
 `;
-const Text = styled(Typography)`
+const SucessMessage = styled(Typography)`
   ${({ theme }) => css`
-    color: ${theme.colors.bgPage};
+    color: ${theme.palette.brand};
+  `}
+`;
+const FailMessage = styled(Typography)`
+  ${({ theme }) => css`
+    color: ${theme.palette.error};
   `}
 `;
 const toastConfig: ToastConfig = {
   error: ({ text1 }: BaseToastProps) => (
-    <ErrorToastContainer>
-      <Text type="caption">{text1}</Text>
-    </ErrorToastContainer>
+    <CompactToast>
+      <FailMessage color="">{text1}</FailMessage>
+    </CompactToast>
+  ),
+  success: ({ text1 }: BaseToastProps) => (
+    <CompactToast>
+      <SucessMessage>{text1}</SucessMessage>
+    </CompactToast>
   ),
 };
 
@@ -33,7 +41,18 @@ export const Toast = {
     ToastMessage.show({
       type: "error",
       text1: msg,
-      topOffset: 80,
+      topOffset: 50,
+      visibilityTime: 2000,
+      autoHide: true,
+    });
+  },
+  success: (msg: string) => {
+    ToastMessage.show({
+      type: "success",
+      text1: msg,
+      topOffset: 50,
+      visibilityTime: 2000,
+      autoHide: true,
     });
   },
 };

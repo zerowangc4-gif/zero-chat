@@ -4,34 +4,44 @@
 import React, { FunctionComponent } from 'react';
 import { ViewProps } from 'react-native';
 import { GProps } from 'react-native-svg';
+import IconZengjiatianjiajiahao from './IconZengjiatianjiajiahao';
+import IconSangedian from './IconSangedian';
+import IconSousuo1 from './IconSousuo1';
+import IconQingchu from './IconQingchu';
+import IconJiahaoO from './IconJiahaoO';
+import IconErweima from './IconErweima';
+import IconYoujiantou from './IconYoujiantou';
+import IconDuoyuyan from './IconDuoyuyan';
+import IconShezhi from './IconShezhi';
 import IconFasongxiaoxi from './IconFasongxiaoxi';
-import IconJiahao from './IconJiahao';
 import IconShengyin from './IconShengyin';
 import IconXiaolian from './IconXiaolian';
-import IconSangediandian from './IconSangediandian';
-import IconFanhui1 from './IconFanhui1';
-import IconJiahao1 from './IconJiahao1';
 import IconWode from './IconWode';
 import IconGlBubble from './IconGlBubble';
 import IconIconEyeOpenCopy from './IconIconEyeOpenCopy';
 import IconIconEyeCloseCopy from './IconIconEyeCloseCopy';
 import IconDaobanCopy from './IconDaobanCopy';
-import IconSousuo from './IconSousuo';
+import IconXiangzuojiantou from './IconXiangzuojiantou';
+export { default as IconZengjiatianjiajiahao } from './IconZengjiatianjiajiahao';
+export { default as IconSangedian } from './IconSangedian';
+export { default as IconSousuo1 } from './IconSousuo1';
+export { default as IconQingchu } from './IconQingchu';
+export { default as IconJiahaoO } from './IconJiahaoO';
+export { default as IconErweima } from './IconErweima';
+export { default as IconYoujiantou } from './IconYoujiantou';
+export { default as IconDuoyuyan } from './IconDuoyuyan';
+export { default as IconShezhi } from './IconShezhi';
 export { default as IconFasongxiaoxi } from './IconFasongxiaoxi';
-export { default as IconJiahao } from './IconJiahao';
 export { default as IconShengyin } from './IconShengyin';
 export { default as IconXiaolian } from './IconXiaolian';
-export { default as IconSangediandian } from './IconSangediandian';
-export { default as IconFanhui1 } from './IconFanhui1';
-export { default as IconJiahao1 } from './IconJiahao1';
 export { default as IconWode } from './IconWode';
 export { default as IconGlBubble } from './IconGlBubble';
 export { default as IconIconEyeOpenCopy } from './IconIconEyeOpenCopy';
 export { default as IconIconEyeCloseCopy } from './IconIconEyeCloseCopy';
 export { default as IconDaobanCopy } from './IconDaobanCopy';
-export { default as IconSousuo } from './IconSousuo';
+export { default as IconXiangzuojiantou } from './IconXiangzuojiantou';
 
-export type IconNames = 'fasongxiaoxi' | 'jiahao' | 'shengyin' | 'xiaolian' | 'sangediandian' | 'fanhui1' | 'jiahao1' | 'wode' | 'gl-bubble' | 'icon-eye-open-copy' | 'icon-eye-close-copy' | 'daoban-copy' | 'sousuo';
+export type IconNames = 'zengjiatianjiajiahao' | 'sangedian' | 'sousuo1' | 'qingchu' | 'jiahao_o' | 'erweima' | 'youjiantou' | 'duoyuyan' | 'shezhi' | 'fasongxiaoxi' | 'shengyin' | 'xiaolian' | 'wode' | 'gl-bubble' | 'icon-eye-open-copy' | 'icon-eye-close-copy' | 'daoban-copy' | 'xiangzuojiantou';
 
 interface Props extends GProps, ViewProps {
   name: IconNames;
@@ -41,32 +51,42 @@ interface Props extends GProps, ViewProps {
 
 let IconFont: FunctionComponent<Props> = ({ name, ...rest }) => {
   switch (name) {
+    case 'zengjiatianjiajiahao':
+      return <IconZengjiatianjiajiahao key="1" {...rest} />;
+    case 'sangedian':
+      return <IconSangedian key="2" {...rest} />;
+    case 'sousuo1':
+      return <IconSousuo1 key="3" {...rest} />;
+    case 'qingchu':
+      return <IconQingchu key="4" {...rest} />;
+    case 'jiahao_o':
+      return <IconJiahaoO key="5" {...rest} />;
+    case 'erweima':
+      return <IconErweima key="6" {...rest} />;
+    case 'youjiantou':
+      return <IconYoujiantou key="7" {...rest} />;
+    case 'duoyuyan':
+      return <IconDuoyuyan key="8" {...rest} />;
+    case 'shezhi':
+      return <IconShezhi key="9" {...rest} />;
     case 'fasongxiaoxi':
-      return <IconFasongxiaoxi key="1" {...rest} />;
-    case 'jiahao':
-      return <IconJiahao key="2" {...rest} />;
+      return <IconFasongxiaoxi key="10" {...rest} />;
     case 'shengyin':
-      return <IconShengyin key="3" {...rest} />;
+      return <IconShengyin key="11" {...rest} />;
     case 'xiaolian':
-      return <IconXiaolian key="4" {...rest} />;
-    case 'sangediandian':
-      return <IconSangediandian key="5" {...rest} />;
-    case 'fanhui1':
-      return <IconFanhui1 key="6" {...rest} />;
-    case 'jiahao1':
-      return <IconJiahao1 key="7" {...rest} />;
+      return <IconXiaolian key="12" {...rest} />;
     case 'wode':
-      return <IconWode key="8" {...rest} />;
+      return <IconWode key="13" {...rest} />;
     case 'gl-bubble':
-      return <IconGlBubble key="9" {...rest} />;
+      return <IconGlBubble key="14" {...rest} />;
     case 'icon-eye-open-copy':
-      return <IconIconEyeOpenCopy key="10" {...rest} />;
+      return <IconIconEyeOpenCopy key="15" {...rest} />;
     case 'icon-eye-close-copy':
-      return <IconIconEyeCloseCopy key="11" {...rest} />;
+      return <IconIconEyeCloseCopy key="16" {...rest} />;
     case 'daoban-copy':
-      return <IconDaobanCopy key="12" {...rest} />;
-    case 'sousuo':
-      return <IconSousuo key="13" {...rest} />;
+      return <IconDaobanCopy key="17" {...rest} />;
+    case 'xiangzuojiantou':
+      return <IconXiangzuojiantou key="18" {...rest} />;
   }
 
   return null;

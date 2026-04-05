@@ -2,7 +2,7 @@ import { TextProps } from "react-native";
 import styled, { css } from "styled-components/native";
 import { TextStyle } from "@/theme/presets";
 
-export type TypographyPreset = "brand" | "heading" | "main" | "caption" | "numeric";
+export type TypographyPreset = "brand" | "heading" | "subheading" | "main" | "caption" | "numeric";
 
 export type WeightType = "regular" | "medium" | "bold";
 

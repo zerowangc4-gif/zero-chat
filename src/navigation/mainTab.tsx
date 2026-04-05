@@ -5,7 +5,7 @@ import { MainTabParamList } from "./types";
 import { Chats } from "@/features/chat";
 import { Me } from "@/features/user";
 import { TabIcon } from "./helpers";
-
+import { Icon } from "@/constants";
 const Tab = createBottomTabNavigator<MainTabParamList>();
 
 function MainTab() {
@@ -34,7 +34,7 @@ function MainTab() {
         component={Chats}
         options={{
           tabBarLabel: t("tabs.chats"),
-          tabBarIcon: TabIcon("gl-bubble"),
+          tabBarIcon: TabIcon(Icon.chat),
         }}
       />
       <Tab.Screen
@@ -42,7 +42,7 @@ function MainTab() {
         component={Me}
         options={{
           tabBarLabel: t("tabs.me"),
-          tabBarIcon: TabIcon("wode"),
+          tabBarIcon: TabIcon(Icon.me),
         }}
       />
     </Tab.Navigator>

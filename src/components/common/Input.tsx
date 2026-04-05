@@ -4,6 +4,7 @@ import styled, { css, useTheme } from "styled-components/native";
 import { Size } from "@/theme/presets";
 import IconFont, { IconNames } from "@/assets/font/iconfont";
 import { BaseInput } from "./BaseInput";
+import { Icon } from "@/constants";
 
 const InputContainer = styled.View<{
   $size: Size;
@@ -72,7 +73,7 @@ export const Input = ({ size = "md", value, ...props }: InputProps) => {
         {props.secureTextEntry && (
           <Pressable onPress={() => setPasswordVisible(!passwordVisible)} hitSlop={20}>
             <IconFont
-              name={passwordVisible ? "icon-eye-open-copy" : "icon-eye-close-copy"}
+              name={passwordVisible ? Icon.showPassword : Icon.hidePassword}
               size={theme.typography.size.lg}
               color={theme.colors.secondaryWord}
             />
