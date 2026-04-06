@@ -53,7 +53,7 @@ const MnemonicContainer = styled.View`
     return css`
       flex-direction: row;
       flex-wrap: wrap;
-      gap: ${theme.spacing.step.md}px;
+      justify-content: space-between;
     `;
   }}
 `;
@@ -70,6 +70,7 @@ const MnemonicWrapper = styled.Pressable`
       border-color: ${theme.colors.borderColor};
       background-color: ${theme.colors.fillSecondary};
       border-radius: ${theme.radii.scale.md}px;
+      margin-bottom: ${theme.spacing.step.md}px;
       gap: ${theme.spacing.step.sm}px;
     `;
   }}
