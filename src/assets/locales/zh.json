@@ -30,6 +30,9 @@
     "placeholder_search_address": "请输入对方地址",
     "add_friend": "添加好友"
   },
+  "user": {
+    "copy_account_sucess_toast": "账号复制成功"
+  },
   "common": {
     "loading": "加载中",
     "server_error": "系统异常，请稍后再试"

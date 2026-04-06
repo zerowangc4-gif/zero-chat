@@ -15,7 +15,9 @@ type IconName =
   | "voice"
   | "search"
   | "QRCode"
-  | "go";
+  | "go"
+  | "clear"
+  | "scan";
 
 export const Icon: Record<IconName, IconNames> = {
   brand: "daoban-copy",
@@ -33,4 +35,6 @@ export const Icon: Record<IconName, IconNames> = {
   search: "sousuo1",
   QRCode: "erweima",
   go: "youjiantou",
+  clear: "qingchu",
+  scan: "saoyisao",
 };

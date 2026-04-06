@@ -13,6 +13,7 @@ export function AddFriendInput({ friendAddress }: Props) {
   return (
     <Container>
       <Input
+        clear={!!friendAddress.value}
         value={friendAddress.value}
         onChangeText={friendAddress.onChange}
         placeholder={t("chat.placeholder_search_address")}

@@ -1,43 +1,39 @@
 import React, { useEffect, useState, useRef } from "react";
-import { Animated, Dimensions, StatusBar, Modal } from "react-native";
-import styled from "styled-components/native";
+import { Animated, StatusBar, Modal } from "react-native";
+import styled, { useTheme } from "styled-components/native";
+import { Typography } from "@/components";
+import { t } from "i18next";
 
-// 获取屏幕物理全尺寸，解决 Dimensions.get('window') 不含虚拟按键的问题
-const { height: screenHeight, width: screenWidth } = Dimensions.get("screen");
-
-const FullContainer = styled(Animated.View)`
+const Container = styled(Animated.View)`
   position: absolute;
   top: 0;
+  bottom: 0;
   left: 0;
-  width: ${screenWidth}px;
-  height: ${screenHeight}px;
-  background-color: #000000; /* 确保是纯黑，不带引号 */
+  right: 0;
+  background-color: ${props => props.theme.colors.baseInverse};
   justify-content: center;
   align-items: center;
 `;
-
-const LogoText = styled.Text`
-  color: #ffffff;
-  font-size: 28px;
-  font-weight: bold;
-  letter-spacing: 4px;
+const WelcomeMessage = styled.View`
+  align-items: center;
+  margin-top: ${props => props.theme.spacing.step.md}px;
+  gap: ${props => props.theme.spacing.step.sm}px;
 `;
-
 export const SplashView = () => {
+  const theme = useTheme();
   const [visible, setVisible] = useState(true);
   const fadeAnim = useRef(new Animated.Value(1)).current;
 
   useEffect(() => {
-    // 强制等待 2500ms，确保底部的 RootNavigator 已经完成了 Insets 的“乱跳”过程
     const timer = setTimeout(() => {
       Animated.timing(fadeAnim, {
         toValue: 0,
-        duration: 800, // 平滑淡出，消除切换时的生硬感
+        duration: 500,
         useNativeDriver: true,
       }).start(() => {
         setVisible(false);
       });
-    }, 2500);
+    }, 1500);
 
     return () => clearTimeout(timer);
   }, [fadeAnim]);
@@ -52,9 +48,14 @@ export const SplashView = () => {
       statusBarTranslucent={true}
       hardwareAccelerated={true}>
       <StatusBar barStyle="light-content" backgroundColor="black" translucent />
-      <FullContainer style={{ opacity: fadeAnim }}>
-        <LogoText>ZERO TRACE</LogoText>
-      </FullContainer>
+      <Container style={{ opacity: fadeAnim }}>
+        <WelcomeMessage>
+          <Typography type="brand" weight="bold" color={theme.colors.base}>
+            {t("auth.brand_name")}
+          </Typography>
+          <Typography color={theme.colors.base}>{t("auth.brand_tagline")}</Typography>
+        </WelcomeMessage>
+      </Container>
     </Modal>
   );
 };

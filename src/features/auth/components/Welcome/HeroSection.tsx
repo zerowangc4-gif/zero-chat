@@ -1,4 +1,4 @@
-import styled from "styled-components/native";
+import styled, { useTheme } from "styled-components/native";
 import { Typography, Main } from "@/components";
 import { ConcentricCircles } from "./ConcentricCircles";
 
@@ -14,10 +14,10 @@ const WelcomeMessage = styled.View`
 interface HeroSectionProps {
   brand: string;
   slogan: string;
-  color: string;
 }
 
 export const HeroSection = (props: HeroSectionProps) => {
+  const theme = useTheme();
   return (
     <HeroSectionContainer>
       <ConcentricCircles />
@@ -25,7 +25,7 @@ export const HeroSection = (props: HeroSectionProps) => {
         <Typography type="brand" weight="bold">
           {props.brand}
         </Typography>
-        <Typography color={props.color}>{props.slogan}</Typography>
+        <Typography color={theme.colors.secondaryWord}>{props.slogan}</Typography>
       </WelcomeMessage>
     </HeroSectionContainer>
   );

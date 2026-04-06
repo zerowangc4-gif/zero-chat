@@ -30,7 +30,10 @@
     "placeholder_search_address": "Enter address",
     "add_friend": "Add Friend"
   },
+  "user": {
+    "copy_account_sucess_toast": "Successfully copied account"
+  },
   "common": {
-    "loading": "加载中"
+    "loading": "loading"
   }
 }

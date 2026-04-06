@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { TextInputProps, Pressable } from "react-native";
 import styled, { css, useTheme } from "styled-components/native";
 import { Size } from "@/theme/presets";
-import IconFont, { IconNames } from "@/assets/font/iconfont";
+import IconFont from "@/assets/font/iconfont";
 import { BaseInput } from "./BaseInput";
 import { Icon } from "@/constants";
 
@@ -40,15 +40,13 @@ const RightActions = styled.View<{
 
 interface InputProps extends TextInputProps {
   size?: Size;
-  borderType?: "all" | "bottom" | "none";
-  label?: string;
-  leftIcon?: IconNames;
-  rightIcon?: IconNames;
+  clear?: boolean;
 }
 
 export const Input = ({ size = "md", value, ...props }: InputProps) => {
   const theme = useTheme();
   const [isFocused, setIsFocused] = useState(false);
+
   const [passwordVisible, setPasswordVisible] = useState(false);
 
   return (
@@ -77,6 +75,11 @@ export const Input = ({ size = "md", value, ...props }: InputProps) => {
               size={theme.typography.size.lg}
               color={theme.colors.secondaryWord}
             />
+          </Pressable>
+        )}
+        {props.clear && (
+          <Pressable onPress={() => props.onChangeText("")} hitSlop={20}>
+            <IconFont name={Icon.clear} size={theme.typography.size.md} color={theme.colors.secondaryWord} />
           </Pressable>
         )}
       </RightActions>

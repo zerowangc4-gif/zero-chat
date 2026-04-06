@@ -4,6 +4,7 @@ export const ROUTES = {
   Welcome: "Welcome",
   SetupPassword: "SetupPassword",
   BackupSecretQR: "BackupSecretQR",
+  ReLogin: "ReLogin",
   // 主页滑动 Tab
   MainTab: "MainTab",
   Chats: "Chats",
