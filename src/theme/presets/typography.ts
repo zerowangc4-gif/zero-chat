@@ -10,6 +10,10 @@ export const Text = {
     fontSize: typography.size.xl,
     letterSpacing: typography.letterSpacing.xxxl,
   },
+  subheading: {
+    fontFamily: typography.family.base,
+    fontSize: typography.size.lg,
+  },
   main: {
     fontFamily: typography.family.base,
     fontSize: typography.size.md,

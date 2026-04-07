@@ -1,12 +1,13 @@
 import { BaseScreen } from "@/components";
 import { Footer, HeroSection } from "../components";
 import { useWelcome } from "../hooks";
+import { t } from "i18next";
 
 export function Welcome() {
-  const { handleSetupPassword, t, theme } = useWelcome();
+  const { handleSetupPassword, handleLogin, theme } = useWelcome();
   return (
     <BaseScreen>
-      <HeroSection brand={t("auth.brand_name")} color={theme.colors.secondaryWord} slogan={t("auth.brand_tagline")} />
+      <HeroSection brand={t("auth.brand_name")} slogan={t("auth.brand_tagline")} />
       <Footer
         data={[
           {
@@ -17,7 +18,7 @@ export function Welcome() {
           {
             title: t("auth.button_login_account"),
             textColor: theme.colors.baseInverse,
-            onPress: handleSetupPassword,
+            onPress: handleLogin,
           },
         ]}
       />

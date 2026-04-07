@@ -1,17 +1,20 @@
 import { ActionIcon, Header } from "@/components";
-
-export function AddFriendHeader({ theme, navigation, title }) {
+import { t } from "i18next";
+import { useTheme } from "styled-components/native";
+import { Icon } from "@/constants";
+export function AddFriendHeader({ handleGoBack }) {
+  const theme = useTheme();
   return (
     <Header
       leftElement={
         <ActionIcon
           size={theme.typography.size.lg}
           color={theme.colors.baseInverse}
-          onPress={navigation.goBack}
-          name="fanhui1"
+          onPress={handleGoBack}
+          name={Icon.back}
         />
       }
-      title={title}
+      title={t("chat.add_friend")}
     />
   );
 }

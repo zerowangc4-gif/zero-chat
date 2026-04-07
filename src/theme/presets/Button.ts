@@ -8,7 +8,7 @@ export const Button = {
   md: {
     fontSize: 16,
     borderRadius: 8,
-    height: 56,
+    height: 48,
   },
   lg: {
     fontSize: 16,

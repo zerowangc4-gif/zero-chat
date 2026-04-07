@@ -1,19 +1,12 @@
 import React from "react";
-import styled, { css } from "styled-components/native";
+import styled, { css, useTheme } from "styled-components/native";
+import { t } from "i18next";
+import { useAppSelector } from "@/store";
 import { Avatar, Typography } from "@/components";
-import { useChars } from "@/features/chat";
 import { useSocket } from "@/socket";
-import { useApp } from "@/hooks";
 
 const STATUS_DOT_SIZE = 12;
 
-export type SizeType = "small" | "normal" | "medium" | "large";
-
-export const size = { small: 35, normal: 40, medium: 56, large: 80 };
-
-export interface AccountInfoProps {
-  type: SizeType;
-}
 const AccountInfoContainer = styled.View`
   flex-direction: row;
   align-items: center;
@@ -21,8 +14,8 @@ const AccountInfoContainer = styled.View`
 const AvatarContent = styled.View`
   ${({ theme }) => css`
     position: relative;
-    width: ${size.normal}px;
-    height: ${size.normal}px;
+    width: ${theme.size.ms}px;
+    height: ${theme.size.ms}px;
     margin-right: ${theme.spacing.step.sm}px;
   `}
 `;
@@ -46,15 +39,17 @@ const InfoContent = styled.View`
   `}
 `;
 
-export function AccountInfo(props: AccountInfoProps) {
-  const { theme, t } = useApp();
-  const { user } = useChars();
+export function AccountInfo() {
+  const theme = useTheme();
+
+  const { user } = useAppSelector(state => state.chat);
+
   const { isConnected } = useSocket();
 
   return (
     <AccountInfoContainer>
       <AvatarContent>
-        <Avatar avatarSeed={user.avatarSeed} size={size[props.type]} />
+        <Avatar avatarSeed={user.avatarSeed} size={theme.size.ms} />
         <StatusDot $isConnected={isConnected} />
       </AvatarContent>
       <InfoContent>

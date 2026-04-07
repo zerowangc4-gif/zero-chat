@@ -1,6 +1,6 @@
 import "@/i18n";
 import ToastAPI from "react-native-toast-message";
-import { Toast } from "@/components";
+import { Toast, SplashView } from "@/components";
 import { useColorScheme } from "react-native";
 import { ThemeProvider } from "styled-components/native";
 import { Provider } from "react-redux";
@@ -13,6 +13,7 @@ import { store, persistor } from "@/store";
 const App = () => {
   const isDark = useColorScheme() === "dark";
   const theme = isDark ? darkTheme : lightTheme;
+
   return (
     <SafeAreaProvider>
       <Provider store={store}>
@@ -20,6 +21,7 @@ const App = () => {
           <KeyboardProvider>
             <ThemeProvider theme={theme}>
               <RootNavigator />
+              <SplashView />
               <ToastAPI config={Toast.config} />
             </ThemeProvider>
           </KeyboardProvider>

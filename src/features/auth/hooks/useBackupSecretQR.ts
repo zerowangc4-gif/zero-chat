@@ -18,6 +18,7 @@ export function useBackupSecretQR() {
 
   const viewShotRef = useRef<ViewShot>(null);
 
+  // 加密后的助记词
   const encryptedMnemonic = useMemo(() => {
     if (!password || !mnemonic) return mnemonic;
 

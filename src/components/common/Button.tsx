@@ -15,6 +15,8 @@ const Container = styled.Pressable<{ $size: Size; $block: boolean; $bg?: string 
       flex-direction: row;
       align-items: center;
       justify-content: center;
+      padding-left: ${config.fontSize}px;
+      padding-right: ${config.fontSize}px;
       background-color: ${$bg || theme.colors.base};
       border-style: solid;
       border-width: ${!$bg ? 1 : 0}px;

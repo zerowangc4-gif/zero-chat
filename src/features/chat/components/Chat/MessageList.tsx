@@ -1,8 +1,18 @@
 import { FlatList, StyleSheet } from "react-native";
+import { useAppSelector } from "@/store";
 import { MessageInput } from "./MessageInput";
 import { MessageItem } from "./MessageItem";
+import { Message, InputProps } from "../../store";
 
-export function MessageList({ theme, messages, user, text, setText, bottom, onSend }) {
+export interface Props {
+  messages: Message[];
+  msg: InputProps;
+  onSend: () => void;
+}
+
+export function MessageList({ messages, msg, onSend }: Props) {
+  const { user } = useAppSelector(state => state.chat);
+
   return (
     <>
       <FlatList
@@ -13,7 +23,7 @@ export function MessageList({ theme, messages, user, text, setText, bottom, onSe
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.listContentContainer}
       />
-      <MessageInput theme={theme} text={text} setText={setText} bottom={bottom} onSend={onSend} />
+      <MessageInput msg={msg} onSend={onSend} />
     </>
   );
 }

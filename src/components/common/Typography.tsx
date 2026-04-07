@@ -2,7 +2,7 @@ import { TextProps } from "react-native";
 import styled, { css } from "styled-components/native";
 import { TextStyle } from "@/theme/presets";
 
-export type TypographyPreset = "brand" | "heading" | "main" | "caption" | "numeric";
+export type TypographyPreset = "brand" | "heading" | "subheading" | "main" | "caption" | "numeric";
 
 export type WeightType = "regular" | "medium" | "bold";
 
@@ -20,13 +20,13 @@ export const Typography = styled.Text.attrs<AppTextProps>(
 )<AppTextProps>`
   ${({ theme, type = "main", color, weight = "regular" }) => {
     const style = theme.presets.Text[type] as TextStyle;
-    const lineHeight = style.lineHeight || style.fontSize;
+
     return css`
       font-family: ${style.fontFamily};
       font-size: ${style.fontSize}px;
       font-weight: ${theme.typography.weight[weight]};
       color: ${color};
-      line-height: ${lineHeight}px;
+      line-height: ${style.fontSize * 1.2}px;
       padding-bottom: 1px;
       ${style.letterSpacing ? `letter-spacing: ${style.letterSpacing}px;` : ""}
       ${style.fontVariant && style.fontVariant.length > 0 ? `font-variant: ${style.fontVariant.join(" ")};` : ""}

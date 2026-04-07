@@ -1,14 +1,23 @@
 import styled from "styled-components/native";
 import { Input } from "@/components";
+import { t } from "i18next";
+import { InputProps } from "../../store";
 
 const Container = styled.View`
   padding-top: ${props => props.theme.spacing.step.md}px;
 `;
-
-export function AddFriendInput({ value, onChange, placeholder }) {
+interface Props {
+  friendAddress: InputProps;
+}
+export function AddFriendInput({ friendAddress }: Props) {
   return (
     <Container>
-      <Input value={value} onChangeText={onChange} placeholder={placeholder} />
+      <Input
+        clear={!!friendAddress.value}
+        value={friendAddress.value}
+        onChangeText={friendAddress.onChange}
+        placeholder={t("chat.placeholder_search_address")}
+      />
     </Container>
   );
 }
