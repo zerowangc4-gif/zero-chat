@@ -7,8 +7,8 @@ const CompactToast = styled.View`
   ${({ theme }) => css`
     flex-direction: row;
     justify-content: center;
-    padding-top: ${theme.spacing.step.md}px;
-    padding-bottom: ${theme.spacing.step.md}px;
+    align-items: center;
+    padding: ${theme.spacing.step.xs}px;
     background-color: ${theme.colors.surfaceBg};
   `}
 `;

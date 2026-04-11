@@ -12,7 +12,6 @@ const Container = styled.View`
       padding-right: ${theme.spacing.step.lg}px;
       padding-top: ${theme.spacing.step.md}px;
       padding-bottom: ${theme.spacing.step.xl}px;
-      ${theme.shadows.low}
     `;
   }}
 `;
@@ -53,7 +52,7 @@ export function SearchResultCard({ userInfo, handleAddFriend }: Props) {
   if (!userInfo) return null;
 
   return (
-    <Container>
+    <Container style={theme.shadows.low}>
       <AvatarWrapper>
         <Avatar avatarSeed={userInfo.avatarSeed} size={theme.size.lg} />
       </AvatarWrapper>

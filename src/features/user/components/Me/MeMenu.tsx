@@ -14,7 +14,6 @@ const Container = styled.View<{ $top: number }>`
       background-color: ${theme.colors.surfaceBg};
       overflow: hidden;
       z-index: 101;
-      ${theme.shadows.low}
     `;
   }}
 `;
@@ -49,7 +48,7 @@ export function MeMenu({ menuItems }: { menuItems: ItemProps[] }) {
   const insets = useSafeAreaInsets();
 
   return (
-    <Container $top={insets.top + theme.spacing.step.xxs}>
+    <Container style={theme.shadows.low} $top={insets.top + theme.spacing.step.xxs}>
       {menuItems.map((item: ItemProps) => {
         return (
           <MeMenuItem
