@@ -38,8 +38,7 @@ export function useUnlockIdentity() {
       if (decryptedMnemonic !== result) {
         throw new Error(t("auth.indentify_certificate_error"));
       }
-      console.log(result);
-      return;
+
       dispatch(RegisterAndLogin());
     } catch (e: unknown) {
       console.error(e);
