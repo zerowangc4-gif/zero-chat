@@ -16,7 +16,7 @@ const authSlice = createSlice({
   },
 });
 
-export const Login = createAction<string>("auth/Login");
+export const RegisterAndLogin = createAction<string | undefined>("auth/RegisterAndLogin");
 
 export const { setTokens } = authSlice.actions;
 

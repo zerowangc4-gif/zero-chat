@@ -5,8 +5,6 @@ import { useAppSelector } from "@/store";
 import { Avatar, Typography } from "@/components";
 import { useSocket } from "@/socket";
 
-const STATUS_DOT_SIZE = 12;
-
 const AccountInfoContainer = styled.View`
   flex-direction: row;
   align-items: center;
@@ -16,14 +14,13 @@ const AvatarContent = styled.View`
     position: relative;
     width: ${theme.size.ms}px;
     height: ${theme.size.ms}px;
-    margin-right: ${theme.spacing.step.sm}px;
   `}
 `;
 const StatusDot = styled.View<{ $isConnected: boolean }>`
   ${({ theme, $isConnected }) => css`
-    width: ${STATUS_DOT_SIZE}px;
-    height: ${STATUS_DOT_SIZE}px;
-    border-radius: ${STATUS_DOT_SIZE / 2}px;
+    width: ${theme.typography.size.xs}px;
+    height: ${theme.typography.size.xs}px;
+    border-radius: ${theme.typography.size.xs / 2}px;
     background-color: ${$isConnected ? theme.palette.brand : theme.colors.secondaryWord};
     position: absolute;
     bottom: -1px;
@@ -35,7 +32,7 @@ const StatusDot = styled.View<{ $isConnected: boolean }>`
 `;
 const InfoContent = styled.View`
   ${({ theme }) => css`
-    gap: ${theme.spacing.step.xs}px;
+    margin-left: ${theme.spacing.step.sm}px;
   `}
 `;
 

@@ -18,7 +18,16 @@
     "remember_mnemonic_tagline": "This is your only way to recover your account. Write it down and store it offline",
     "backup_qr_title": "Secure Recovery QR Code",
     "backup_qr_helper": "Universal recovery credential · Do not store online",
-    "action_claim_identity": "Claim Your Digital Identity"
+    "action_claim_identity": "Claim Your Digital Identity",
+    "relogin_title": "Enter your mnemonic, or scan login credential",
+    "save": "Save",
+    "scan_credential": "Identify Login Credential",
+    "mnemonic_input_placeholder": "Enter mnemonic word",
+    "mnemonic_list_title": "Mnemonic List",
+    "mnemonic_empty_slot": "Empty",
+    "indentify_certificate_error": "Invalid Credential",
+    "unlock_identity_title": "Unlock Identity",
+    "unlock_identity__placeholder": "Please enter your password to decrypt the mnemonic"
   },
   "tabs": {
     "chats": "Chats",
@@ -31,6 +40,8 @@
     "add_friend": "Add Friend"
   },
   "user": {
+    "copy_id": "Copy Account ID",
+    "log_out": "Log Out",
     "copy_account_sucess_toast": "Successfully copied account"
   },
   "common": {

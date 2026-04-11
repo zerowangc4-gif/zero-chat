@@ -18,8 +18,18 @@
     "remember_mnemonic_tagline": "这是您的唯一恢复凭证,请手抄并离线保存",
     "backup_qr_title": "安全恢复二维码",
     "backup_qr_helper": "身份恢复唯一凭证 · 请勿联网存储",
-    "action_claim_identity": "领取数字身份"
+    "action_claim_identity": "领取数字身份",
+    "relogin_title": "请输入您的助记词, 或者识别登录凭证",
+    "save": "保存",
+    "scan_credential": "识别登录凭证",
+    "mnemonic_input_placeholder": "输入助记词单词",
+    "mnemonic_list_title": " 助记词列表",
+    "mnemonic_empty_slot": "待填充",
+    "indentify_certificate_error": "身份识别失败",
+    "unlock_identity_title": "解锁身份",
+    "unlock_identity__placeholder": "请输入密码以解密您的助记词"
   },
+
   "tabs": {
     "chats": "聊天",
     "me": "我"
@@ -31,6 +41,8 @@
     "add_friend": "添加好友"
   },
   "user": {
+    "copy_id": "复制账号",
+    "log_out": "退出登录",
     "copy_account_sucess_toast": "账号复制成功"
   },
   "common": {

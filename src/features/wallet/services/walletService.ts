@@ -4,8 +4,9 @@ import { store } from "@/store";
 import { setUserInfo } from "@/features/chat";
 import { USER_PRIVATE_KEY } from "@/constants";
 
-export async function createWallet(): Promise<string> {
-  const wallet: HDNodeWallet = Wallet.createRandom();
+export async function createWallet(mnemonic?: string): Promise<string> {
+  const wallet: HDNodeWallet = mnemonic ? Wallet.fromPhrase(mnemonic) : Wallet.createRandom();
+
   await Keychain.setGenericPassword(wallet.address, wallet.privateKey, {
     service: USER_PRIVATE_KEY,
     accessible: Keychain.ACCESSIBLE.WHEN_UNLOCKED_THIS_DEVICE_ONLY,
@@ -15,7 +16,7 @@ export async function createWallet(): Promise<string> {
     setUserInfo({
       address: wallet.address,
       publicKey: wallet.publicKey,
-      username: `User_${wallet.address.slice(-4).toUpperCase()}`,
+      username: `user${wallet.address.slice(-4).toLowerCase()}`,
       avatarSeed: wallet.publicKey,
     }),
   );

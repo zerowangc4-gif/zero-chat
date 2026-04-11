@@ -4,7 +4,7 @@ import { Toast } from "@/components";
 import ViewShot from "react-native-view-shot";
 import QRCode from "react-native-qrcode-svg";
 import { useApp, useAndroidPermission } from "@/hooks";
-import { Login } from "@/features/auth";
+import { RegisterAndLogin } from "@/features/auth";
 import { getFormatEncryptedMnemonic } from "@/utils";
 
 export function useBackupSecretQR() {
@@ -38,7 +38,7 @@ export function useBackupSecretQR() {
         throw new Error(t("auth.error_generation_failed"));
       }
 
-      dispatch(Login(url));
+      dispatch(RegisterAndLogin(url));
     } catch (e: unknown) {
       console.error(e);
       Toast.error(t("auth.error_generation_failed"));
