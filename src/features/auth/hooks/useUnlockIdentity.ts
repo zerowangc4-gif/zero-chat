@@ -43,7 +43,6 @@ export function useUnlockIdentity() {
     } catch (e: unknown) {
       console.error(e);
       Toast.error(t("auth.indentify_certificate_error"));
-    } finally {
       setIsUnlocking(false);
     }
   };

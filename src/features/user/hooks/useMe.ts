@@ -3,9 +3,9 @@ import { t } from "i18next";
 import { useEffect, useState } from "react";
 import { useAppSelector } from "@/store";
 import { Toast, OverlayLayer } from "@/components";
-import { setTokens } from "@/features/auth";
 import { Icon } from "@/constants";
 import { useApp } from "@/hooks";
+import { LogOut } from "../store";
 
 export function useMe() {
   const { dispatch } = useApp();
@@ -36,7 +36,7 @@ export function useMe() {
 
   // 退出登录
   const handleLogOut = () => {
-    dispatch(setTokens({ accessToken: "", refreshToken: "" }));
+    dispatch(LogOut());
   };
 
   // 菜单数据

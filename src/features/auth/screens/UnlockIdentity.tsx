@@ -46,7 +46,7 @@ export function UnlockIdentity() {
           {
             title: t("auth.unlock_identity_title"),
             loading: isUnlocking,
-            disabled: password.value.length < 8,
+            disabled: password.value.length < 8 || isUnlocking,
             bgColor: theme.colors.baseInverse,
             onPress: handleUnlock,
           },

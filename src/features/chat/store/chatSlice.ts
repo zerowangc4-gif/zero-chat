@@ -22,6 +22,9 @@ const chatSlice = createSlice({
   name: "chat",
   initialState,
   reducers: {
+    clearChatData: () => {
+      return initialState;
+    },
     setUserInfo: (state, action: PayloadAction<UserInfo>) => {
       state.user = action.payload;
     },
@@ -92,6 +95,7 @@ const chatSlice = createSlice({
 });
 
 export const {
+  clearChatData,
   setUserInfo,
   setActiveChatId,
   insertMessages,
