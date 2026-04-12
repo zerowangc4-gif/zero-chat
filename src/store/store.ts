@@ -3,7 +3,7 @@ import createSagaMiddleware from "redux-saga";
 import { persistStore, persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from "redux-persist";
 import { createMMKV } from "react-native-mmkv";
 import type { Storage } from "redux-persist";
-import { authSlice, chatSlice } from "@/features";
+import { authSlice, chatSlice, userSlice } from "@/features";
 import rootSaga from "./rootSaga";
 
 const storage = createMMKV({
@@ -28,12 +28,13 @@ const reduxStorage: Storage = {
 const rootReducer = combineReducers({
   auth: authSlice,
   chat: chatSlice,
+  user: userSlice,
 });
 
 const persistConfig = {
   key: "root",
   storage: reduxStorage,
-  whitelist: ["auth", "chat"],
+  whitelist: ["auth", "chat", "user"],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

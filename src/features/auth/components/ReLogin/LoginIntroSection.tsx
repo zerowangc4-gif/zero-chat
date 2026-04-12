@@ -2,12 +2,13 @@ import styled, { css, useTheme } from "styled-components/native";
 import { Typography } from "@/components";
 import IconFont from "@/assets/font/iconfont";
 import { Icon } from "@/constants";
+import { t } from "i18next";
 
 const Container = styled.View`
   ${({ theme }) => {
     return css`
-      padding-top: ${theme.spacing.step.xxxl};
-      gap: ${theme.spacing.step.lg};
+      padding-top: ${theme.spacing.step.xxxl}px;
+      gap: ${theme.spacing.step.lg}px;
     `;
   }}
 `;
@@ -21,17 +22,19 @@ const IdentifyQrCode = styled.Pressable`
     `;
   }}
 `;
-
-export const LoginIntroSection = () => {
+interface Props {
+  handleIdentifyQRCode: () => void;
+}
+export const LoginIntroSection = ({ handleIdentifyQRCode }: Props) => {
   const theme = useTheme();
   return (
     <Container>
       <Typography type="heading" weight="bold">
-        请输入您的助记词, 或者直接扫码登录
+        {t("auth.relogin_title")}
       </Typography>
-      <IdentifyQrCode>
+      <IdentifyQrCode onPress={handleIdentifyQRCode}>
         <IconFont name={Icon.scan} size={theme.typography.size.md} />
-        <Typography color={theme.colors.secondaryWord}>支持快速二维码识别</Typography>
+        <Typography color={theme.colors.secondaryWord}>{t("auth.scan_credential")}</Typography>
       </IdentifyQrCode>
     </Container>
   );

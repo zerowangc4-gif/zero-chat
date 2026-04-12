@@ -1,6 +1,7 @@
 import styled, { css, useTheme } from "styled-components/native";
 import { Input, Button, Typography } from "@/components";
 import { InputProps } from "@/features/chat";
+import { t } from "i18next";
 
 const Container = styled.View`
   ${({ theme }) => {
@@ -49,7 +50,7 @@ const ShowMnemonicWrapperTitle = styled.View`
 `;
 
 const MnemonicContainer = styled.View`
-  ${({ theme }) => {
+  ${() => {
     return css`
       flex-direction: row;
       flex-wrap: wrap;
@@ -71,7 +72,7 @@ const MnemonicWrapper = styled.Pressable`
       background-color: ${theme.colors.fillSecondary};
       border-radius: ${theme.radii.scale.md}px;
       margin-bottom: ${theme.spacing.step.md}px;
-      gap: ${theme.spacing.step.sm}px;
+      gap: ${theme.spacing.step.xxs}px;
     `;
   }}
 `;
@@ -80,30 +81,42 @@ interface Props {
   mnemonic: InputProps;
   mnemonics: Record<string, string>;
   handleSaveMnemonic: () => void;
+  handleRemoveMnemonic: (key: string) => () => void;
+  filledCount: number;
 }
-export const InputAndShowMnemonic = ({ mnemonic, mnemonics, handleSaveMnemonic }: Props) => {
+export const InputAndShowMnemonic = ({
+  mnemonic,
+  mnemonics,
+  handleSaveMnemonic,
+  handleRemoveMnemonic,
+  filledCount,
+}: Props) => {
   const theme = useTheme();
   return (
     <Container>
       <InputMnemonicWrapper>
         <InputWrapper>
-          <Input placeholder="输入助记词单词" value={mnemonic.value} onChangeText={mnemonic.onChange} />
+          <Input
+            placeholder={t("auth.mnemonic_input_placeholder")}
+            value={mnemonic.value}
+            onChangeText={mnemonic.onChange}
+          />
         </InputWrapper>
-        <Button title="保存" block={false} onPress={handleSaveMnemonic} bgColor={theme.colors.baseInverse} />
+        <Button title={t("auth.save")} block={false} onPress={handleSaveMnemonic} bgColor={theme.colors.baseInverse} />
       </InputMnemonicWrapper>
       <ShowMnemonicWrapper>
         <ShowMnemonicWrapperTitle>
           <Typography type="subheading" weight="bold">
-            助记词列表
+            {t("auth.mnemonic_list_title")}
           </Typography>
-          <Typography color={theme.colors.secondaryWord}>0/12 words</Typography>
+          <Typography color={theme.colors.secondaryWord}>{filledCount}/12 words</Typography>
         </ShowMnemonicWrapperTitle>
         <MnemonicContainer>
           {Object.entries(mnemonics).map(([key, value]) => (
-            <MnemonicWrapper key={key}>
+            <MnemonicWrapper onPress={handleRemoveMnemonic(key)} key={key}>
               <Typography color={theme.colors.secondaryWord}>{key}.</Typography>
 
-              <Typography color={theme.colors.secondaryWord}>{value || "待填充"}</Typography>
+              <Typography color={theme.colors.secondaryWord}>{value || t("auth.mnemonic_empty_slot")}</Typography>
             </MnemonicWrapper>
           ))}
         </MnemonicContainer>

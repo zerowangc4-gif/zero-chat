@@ -8,6 +8,7 @@ export type AuthStackParamList = {
   [ROUTES.SetupPassword]: undefined;
   [ROUTES.BackupSecretQR]: { mnemonic: string; password: string };
   [ROUTES.ReLogin]: undefined;
+  [ROUTES.UnlockIdentity]: { encryptedMnemonic: string };
 };
 
 export type MainTabParamList = {

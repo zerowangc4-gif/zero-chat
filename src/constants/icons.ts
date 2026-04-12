@@ -1,6 +1,6 @@
 import { IconNames } from "@/assets/font/iconfont";
 
-type IconName =
+export type IconName =
   | "brand"
   | "showPassword"
   | "hidePassword"
@@ -17,7 +17,10 @@ type IconName =
   | "QRCode"
   | "go"
   | "clear"
-  | "scan";
+  | "scan"
+  | "menu"
+  | "copy"
+  | "logOut";
 
 export const Icon: Record<IconName, IconNames> = {
   brand: "daoban-copy",
@@ -37,4 +40,7 @@ export const Icon: Record<IconName, IconNames> = {
   go: "youjiantou",
   clear: "qingchu",
   scan: "saoyisao",
+  menu: "sangedian1",
+  copy: "fuzhi-",
+  logOut: "tuichu",
 };

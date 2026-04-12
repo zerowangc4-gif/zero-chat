@@ -12,20 +12,35 @@ const MainContent = styled(Main)`
 export function ReLogin() {
   const theme = useTheme();
 
-  const { mnemonic, mnemonics, handleSaveMnemonic } = useReLogin();
+  const {
+    mnemonic,
+    mnemonics,
+    handleIdentifyQRCode,
+    handleSaveMnemonic,
+    handleRemoveMnemonic,
+    handleReLogin,
+    filledCount,
+  } = useReLogin();
 
   return (
     <BaseScreen>
       <MainContent hasHeader={false}>
-        <LoginIntroSection />
-        <InputAndShowMnemonic mnemonic={mnemonic} mnemonics={mnemonics} handleSaveMnemonic={handleSaveMnemonic} />
+        <LoginIntroSection handleIdentifyQRCode={handleIdentifyQRCode} />
+        <InputAndShowMnemonic
+          mnemonic={mnemonic}
+          mnemonics={mnemonics}
+          handleSaveMnemonic={handleSaveMnemonic}
+          handleRemoveMnemonic={handleRemoveMnemonic}
+          filledCount={filledCount}
+        />
       </MainContent>
       <Footer
         data={[
           {
             title: t("auth.action_claim_identity"),
             bgColor: theme.colors.baseInverse,
-            onPress: handleSaveMnemonic,
+            disabled: filledCount !== 12,
+            onPress: handleReLogin,
           },
         ]}
       />
