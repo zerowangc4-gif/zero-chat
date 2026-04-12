@@ -36,6 +36,8 @@ export interface State {
   userId: string;
   user: UserInfo;
   friends: Record<string, UserInfo>;
+  groupMembers: Record<string, UserInfo>;
+  groupMembersDraft: Record<string, UserInfo>;
   activeChatId: string;
   chatMap: Record<string, Record<string, Message>>;
   haveReadUserMap: Record<string, Message>;

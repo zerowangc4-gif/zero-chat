@@ -1,7 +1,7 @@
 import { ActionIcon, BaseInput } from "@/components";
 import styled, { css, useTheme } from "styled-components/native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { Props } from "./MessageList";
+import { MessageListProps } from "./MessageList";
 import { Icon } from "@/constants";
 const Container = styled.View<{
   $bottom: number;
@@ -52,7 +52,7 @@ const Right = styled.View`
   }}
 `;
 
-export function MessageInput({ msg, onSend }: Omit<Props, "messages">) {
+export function MessageInput({ msg, onSend }: Omit<MessageListProps, "messages">) {
   const theme = useTheme();
   const insets = useSafeAreaInsets();
   return (

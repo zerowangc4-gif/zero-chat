@@ -12,6 +12,8 @@ const initialState: State = {
     avatarSeed: "",
   },
   friends: {},
+  groupMembers: {},
+  groupMembersDraft: {},
   activeChatId: "",
   chatMap: {},
   lastMessageMap: {},
@@ -33,6 +35,12 @@ const chatSlice = createSlice({
       action.payload.forEach((item: UserInfo) => {
         state.friends[item.address] = item;
       });
+    },
+    clearGroupMembersDraft: state => {
+      state.groupMembersDraft = {};
+    },
+    setGroupMembersDraft: (state, action: PayloadAction<Record<string, UserInfo>>) => {
+      state.groupMembersDraft = action.payload || {};
     },
     setActiveChatId: (state, action: PayloadAction<string>) => {
       if (state.activeChatId === action.payload) {
@@ -98,6 +106,8 @@ export const {
   clearChatData,
   setUserInfo,
   setActiveChatId,
+  clearGroupMembersDraft,
+  setGroupMembersDraft,
   insertMessages,
   updateMessage,
   updateMessagesStatus,

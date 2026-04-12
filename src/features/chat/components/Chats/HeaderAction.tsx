@@ -11,11 +11,13 @@ const HeaderActionContainer = styled.Pressable`
     align-items: center;
   `}
 `;
-
-export function HeaderAction() {
+interface Props {
+  handleShowChatsMenu: () => void;
+}
+export function HeaderAction({ handleShowChatsMenu }: Props) {
   const theme = useTheme();
   return (
-    <HeaderActionContainer>
+    <HeaderActionContainer onPress={handleShowChatsMenu}>
       <IconFont name={Icon.add} size={theme.typography.size.md} color={theme.colors.baseInverse} />
     </HeaderActionContainer>
   );

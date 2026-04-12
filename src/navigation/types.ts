@@ -21,6 +21,8 @@ export type RootStackParamList = {
   [ROUTES.MainTab]: NavigatorScreenParams<MainTabParamList>;
   [ROUTES.Chat]: { avatarSeed: string; username: string; address: string; publicKey: string };
   [ROUTES.AddFriend]: undefined;
+  [ROUTES.CreateGroup]: undefined;
+  [ROUTES.GroupSettings]: undefined;
 };
 
 // 平铺所有路由，用于全局导航提示

@@ -20,7 +20,10 @@ export type IconName =
   | "scan"
   | "menu"
   | "copy"
-  | "logOut";
+  | "logOut"
+  | "addFriend"
+  | "selected"
+  | "unselected";
 
 export const Icon: Record<IconName, IconNames> = {
   brand: "daoban-copy",
@@ -43,4 +46,7 @@ export const Icon: Record<IconName, IconNames> = {
   menu: "sangedian1",
   copy: "fuzhi-",
   logOut: "tuichu",
+  addFriend: "tianjiahaoyou_o",
+  selected: "shixinyuanquan",
+  unselected: "kongxinyuandian",
 };

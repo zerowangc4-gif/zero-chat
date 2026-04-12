@@ -25,8 +25,8 @@ export function UnlockIdentity() {
           <ActionIcon
             onPress={handleGoback}
             name={Icon.back}
-            size={theme.typography.size.md}
-            color={theme.colors.secondaryWord}
+            size={theme.typography.size.lg}
+            color={theme.colors.baseInverse}
           />
         }
         title={t("auth.unlock_identity_title")}

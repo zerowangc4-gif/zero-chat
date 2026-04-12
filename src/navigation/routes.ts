@@ -14,6 +14,8 @@ export const ROUTES = {
   // 全局
   Chat: "Chat",
   AddFriend: "AddFriend",
+  CreateGroup: "CreateGroup",
+  GroupSettings: "GroupSettings",
 } as const;
 
 export type RouteNames = (typeof ROUTES)[keyof typeof ROUTES];
