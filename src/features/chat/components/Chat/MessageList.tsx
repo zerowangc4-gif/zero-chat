@@ -4,13 +4,13 @@ import { MessageInput } from "./MessageInput";
 import { MessageItem } from "./MessageItem";
 import { Message, InputProps } from "../../store";
 
-export interface Props {
+export interface MessageListProps {
   messages: Message[];
   msg: InputProps;
   onSend: () => void;
 }
 
-export function MessageList({ messages, msg, onSend }: Props) {
+export function MessageList({ messages, msg, onSend }: MessageListProps) {
   const { user } = useAppSelector(state => state.chat);
 
   return (

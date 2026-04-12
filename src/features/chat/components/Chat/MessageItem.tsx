@@ -20,7 +20,7 @@ const TimeText = styled.Text`
   margin-top: 4px;
   align-self: flex-end;
 `;
-export interface Props {
+interface Props {
   item: Message;
   isMe: boolean;
 }

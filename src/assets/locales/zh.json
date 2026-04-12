@@ -37,10 +37,15 @@
     "me": "我"
   },
   "chat": {
+    "menu_item_add_friend": "添加好友",
+    "menu_item_start_group": "发起群聊",
     "Online": "在线",
     "Offline": "离线",
     "placeholder_search_address": "请输入对方地址",
-    "add_friend": "添加好友"
+    "add_friend": "添加好友",
+    "start_group": "发起群聊",
+    "next": "下一步",
+    "group_settings": "群组设置"
   },
   "user": {
     "copy_id": "复制账号",

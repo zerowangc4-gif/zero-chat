@@ -36,10 +36,15 @@
     "me": "Me"
   },
   "chat": {
+    "menu_item_add_friend": "Add Friend",
+    "menu_item_start_group": "Start Group Chat",
     "Online": "Online",
     "Offline": "Offline",
     "placeholder_search_address": "Enter address",
-    "add_friend": "Add Friend"
+    "add_friend": "Add Friend",
+    "start_group": "Start Group Chat",
+    "next": "Next",
+    "group_settings": "Group Settings"
   },
   "user": {
     "copy_id": "Copy Account ID",

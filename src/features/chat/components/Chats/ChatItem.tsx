@@ -2,6 +2,7 @@ import styled, { css, useTheme } from "styled-components/native";
 import { Avatar, Typography } from "@/components";
 import { ChatSession } from "../../store";
 import { getFormatTime } from "@/utils";
+
 const Container = styled.Pressable`
   ${({ theme }) => {
     return css`

@@ -17,7 +17,7 @@ export function MeRightAction({ handleShowMeMenu }: Props) {
   const theme = useTheme();
   return (
     <Container onPress={handleShowMeMenu}>
-      <IconFont name={Icon.menu} size={theme.typography.size.md} color={theme.colors.baseInverse} />
+      <IconFont name={Icon.menu} size={theme.typography.size.lg} color={theme.colors.baseInverse} />
     </Container>
   );
 }
