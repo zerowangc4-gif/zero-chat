@@ -23,6 +23,7 @@ export type RootStackParamList = {
   [ROUTES.AddFriend]: undefined;
   [ROUTES.CreateGroup]: undefined;
   [ROUTES.GroupSettings]: undefined;
+  [ROUTES.CommonEditor]: { fieldKey: string; title: string; placeholder: string };
 };
 
 // 平铺所有路由，用于全局导航提示

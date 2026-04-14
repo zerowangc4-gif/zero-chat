@@ -8,7 +8,7 @@
     "setting_mnemonic_tagline": "此密码是解密助记词二维码的唯一凭证",
     "setting_password": "设置密码",
     "password_placeholder": "请输入您的密码",
-    "setting_password_tagline": "至少 8 位字符",
+    "setting_password_tagline": "8 位以上，需包含大小写字母与特殊符号",
     "verify_password": "确认密码",
     "verify_password_placeholder": "再次确认您的密码",
     "verify_password_tagline": "密码不匹配",
@@ -45,7 +45,13 @@
     "add_friend": "添加好友",
     "start_group": "发起群聊",
     "next": "下一步",
-    "group_settings": "群组设置"
+    "group_settings": "群组设置",
+    "group_name": "群名称",
+    "group_intro": "群简介",
+    "set_group_name": "设置群名称",
+    "set_group_intro": "设置群简介",
+    "set_group_name_placeholder": "请输入群名称",
+    "set_group_intro_placeholder": "介绍一下这个群吧"
   },
   "user": {
     "copy_id": "复制账号",

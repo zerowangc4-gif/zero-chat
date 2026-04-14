@@ -2,8 +2,8 @@ import { useCallback, useState } from "react";
 import { Toast } from "@/components";
 import { createWallet } from "@/features/wallet";
 import { useApp, useInput } from "@/hooks";
+import { validatePassword } from "@/utils";
 import { ROUTES } from "@/navigation";
-
 export function useSetupPassword() {
   const [isGenerating, setIsGenerating] = useState(false);
   const { theme, t, navigation } = useApp();
@@ -12,7 +12,7 @@ export function useSetupPassword() {
 
   const confirmPassword = useInput("");
 
-  const isPasswordValid = password.value.length >= 8;
+  const isPasswordValid = validatePassword(password.value);
 
   const isPasswordMatch = password.value === confirmPassword.value;
 

@@ -16,6 +16,7 @@ export const ROUTES = {
   AddFriend: "AddFriend",
   CreateGroup: "CreateGroup",
   GroupSettings: "GroupSettings",
+  CommonEditor: "CommonEditor",
 } as const;
 
 export type RouteNames = (typeof ROUTES)[keyof typeof ROUTES];

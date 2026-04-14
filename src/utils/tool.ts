@@ -11,6 +11,12 @@ export const isValidEthereumAddress = (address: string): boolean => {
   return ethAddressRegex.test(address);
 };
 
+//校验密码是否有效，大写字母加小写字母加特殊字符
+export const validatePassword = (password: string): boolean => {
+  const PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).{8,}$/;
+  return PASSWORD_REGEX.test(password);
+};
+
 // 获取标准时间
 
 export const getFormatTime = (time: number): string => {

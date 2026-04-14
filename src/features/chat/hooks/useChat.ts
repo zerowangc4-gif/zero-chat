@@ -2,6 +2,7 @@ import { ROUTES } from "@/navigation";
 import { useApp, useInput } from "@/hooks";
 import {
   Message,
+  ChatType,
   generateId,
   generateSessionSeqNum,
   SendChatMessage,
@@ -58,16 +59,20 @@ export function useChat() {
   const onSend = async () => {
     const message: Message = {
       id: generateId(),
+      chatType: ChatType.SINGLE,
       fromId: user.address,
       toId: address,
       sessionSeqNum: generateSessionSeqNum(address),
-      content: msg.value.trim(),
+      content: {
+        text: msg.value.trim(),
+      },
       timestamp: Date.now(),
       type: MESSAGE_TYPE.TEXT,
       status: MESSAGE_STATUS.PENDING,
     };
 
     dispatch(SendChatMessage(message));
+
     msg.onChange("");
   };
   // 返回到上一页面

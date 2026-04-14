@@ -27,7 +27,7 @@ interface Props {
 export function MessageItem({ item, isMe }: Props) {
   return (
     <Container isMe={isMe}>
-      <MessageText isMe={isMe}>{item.content}</MessageText>
+      <MessageText isMe={isMe}>{item.content.text}</MessageText>
       <TimeText>
         {item.status}
         {new Date(item.timestamp).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}

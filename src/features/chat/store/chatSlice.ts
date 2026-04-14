@@ -1,5 +1,5 @@
 import { createAction, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Message, TargetMsg, UserInfo, State } from "./types";
+import { Message, TargetMsg, UserInfo, GroupBasicProperty, State } from "./types";
 import { MESSAGE_STATUS, STATUS_WEIGHT } from "@/constants";
 import { sortMessages } from "../utils";
 
@@ -14,6 +14,7 @@ const initialState: State = {
   friends: {},
   groupMembers: {},
   groupMembersDraft: {},
+  GroupBasicSettingDraft: {},
   activeChatId: "",
   chatMap: {},
   lastMessageMap: {},
@@ -39,8 +40,15 @@ const chatSlice = createSlice({
     clearGroupMembersDraft: state => {
       state.groupMembersDraft = {};
     },
+    clearGroupBasicSettingDraft: state => {
+      state.groupMembersDraft = {};
+    },
     setGroupMembersDraft: (state, action: PayloadAction<Record<string, UserInfo>>) => {
       state.groupMembersDraft = action.payload || {};
+    },
+    setGroupBasicSettingDraft: (state, action: PayloadAction<GroupBasicProperty>) => {
+      const { fieldKey, value } = action.payload;
+      state.GroupBasicSettingDraft[fieldKey] = value;
     },
     setActiveChatId: (state, action: PayloadAction<string>) => {
       if (state.activeChatId === action.payload) {
@@ -107,6 +115,8 @@ export const {
   setUserInfo,
   setActiveChatId,
   clearGroupMembersDraft,
+  clearGroupBasicSettingDraft,
+  setGroupBasicSettingDraft,
   setGroupMembersDraft,
   insertMessages,
   updateMessage,
