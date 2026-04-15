@@ -2,7 +2,6 @@ import { ROUTES } from "@/navigation";
 import { useApp, useInput } from "@/hooks";
 import {
   Message,
-  ChatType,
   generateId,
   generateSessionSeqNum,
   SendChatMessage,
@@ -59,7 +58,6 @@ export function useChat() {
   const onSend = async () => {
     const message: Message = {
       id: generateId(),
-      chatType: ChatType.SINGLE,
       fromId: user.address,
       toId: address,
       sessionSeqNum: generateSessionSeqNum(address),

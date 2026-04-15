@@ -13,7 +13,6 @@ export enum ChatType {
 
 export interface Message {
   id: string;
-  chatType: ChatType;
   fromId: string;
   toId: string;
   sessionSeqNum: number | string;
