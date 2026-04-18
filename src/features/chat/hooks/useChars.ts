@@ -2,7 +2,14 @@ import { t } from "i18next";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useAppSelector } from "@/store";
 import { useApp } from "@/hooks";
-import { setActiveChatId, UserInfo, Message, ChatSession, clearGroupMembersDraft } from "../store";
+import {
+  setActiveChatId,
+  UserInfo,
+  Message,
+  ChatSession,
+  clearGroupMembersDraft,
+  clearGroupBasicSettingDraft,
+} from "../store";
 import { Icon } from "@/constants";
 import { OverlayLayer } from "@/components";
 import { useFocusEffect } from "@react-navigation/native";
@@ -21,7 +28,7 @@ export function useChars() {
     return Object.values(friends || {})
       .map((item: UserInfo) => {
         const message: Message = currentLastMsgMap[item.address];
-        return { ...item, lastMsg: message?.content || "", time: message?.timestamp || 0 };
+        return { ...item, lastMsg: message?.content.text || "", time: message?.timestamp || 0 };
       })
       .sort((sessionA, sessionB) => sessionB.time - sessionA.time);
   }, [friends, lastMessageMap]);
@@ -45,7 +52,7 @@ export function useChars() {
 
   //  跳转到创建群页面页面
   const handleCreateGroup = () => {
-    navigation.navigate(ROUTES.CreateGroup);
+    navigation.navigate(ROUTES.StartGroup);
     setMenuVisible(false);
     OverlayLayer.hide();
   };
@@ -55,6 +62,7 @@ export function useChars() {
     useCallback(() => {
       dispatch(setActiveChatId(""));
       dispatch(clearGroupMembersDraft());
+      dispatch(clearGroupBasicSettingDraft());
     }, [dispatch]),
   );
 

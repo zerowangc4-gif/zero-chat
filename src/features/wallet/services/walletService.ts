@@ -31,3 +31,18 @@ export async function signWithStoredWallet(message: string): Promise<string> {
 
   return new Wallet(credentials.password).signMessage(message);
 }
+
+export async function CreateGroupWallet(groupSeqNum: number) {
+  const credentials = await Keychain.getGenericPassword({ service: USER_PRIVATE_KEY });
+
+  if (!credentials) return null;
+
+  const groupWallet = HDNodeWallet.fromSeed(credentials.password).deriveChild(groupSeqNum);
+
+  return {
+    seqNum: groupSeqNum,
+    address: groupWallet.address,
+    publicKey: groupWallet.publicKey,
+    avatarSeed: groupWallet.publicKey,
+  };
+}

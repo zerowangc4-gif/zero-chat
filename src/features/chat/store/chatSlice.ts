@@ -1,5 +1,5 @@
 import { createAction, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Message, TargetMsg, UserInfo, State } from "./types";
+import { Message, TargetMsg, UserInfo, GroupBasicInfo, GroupBasicProperty, State } from "./types";
 import { MESSAGE_STATUS, STATUS_WEIGHT } from "@/constants";
 import { sortMessages } from "../utils";
 
@@ -14,6 +14,8 @@ const initialState: State = {
   friends: {},
   groupMembers: {},
   groupMembersDraft: {},
+  groupBasicSettingDraft: {},
+  haveJoinGroups: {},
   activeChatId: "",
   chatMap: {},
   lastMessageMap: {},
@@ -39,8 +41,19 @@ const chatSlice = createSlice({
     clearGroupMembersDraft: state => {
       state.groupMembersDraft = {};
     },
+    clearGroupBasicSettingDraft: state => {
+      state.groupBasicSettingDraft = {};
+    },
     setGroupMembersDraft: (state, action: PayloadAction<Record<string, UserInfo>>) => {
       state.groupMembersDraft = action.payload || {};
+    },
+    setGroupBasicSettingDraft: (state, action: PayloadAction<GroupBasicProperty>) => {
+      const { fieldKey, value } = action.payload;
+      state.groupBasicSettingDraft[fieldKey] = value;
+    },
+    setHaveJoinGroups(state, action: PayloadAction<GroupBasicInfo>) {
+      const { address } = action.payload;
+      state.haveJoinGroups[address] = action.payload;
     },
     setActiveChatId: (state, action: PayloadAction<string>) => {
       if (state.activeChatId === action.payload) {
@@ -107,7 +120,10 @@ export const {
   setUserInfo,
   setActiveChatId,
   clearGroupMembersDraft,
+  clearGroupBasicSettingDraft,
+  setGroupBasicSettingDraft,
   setGroupMembersDraft,
+  setHaveJoinGroups,
   insertMessages,
   updateMessage,
   updateMessagesStatus,
@@ -119,8 +135,12 @@ export const SendChatMessage = createAction<Message>("chat/SendMessage");
 
 export const InsertChatMessages = createAction("chat/InsertChatMessage");
 
+export const InsertGroupChatMessages = createAction<Message>("chat/InsertGroupChatMessages");
+
 export const SyncHavedReadLatestMessage = createAction<Message>("chat/syncHavedReadLatestMessage");
 
 export const InitChatData = createAction("chat/initChatData");
+
+export const CreateGroup = createAction<GroupBasicInfo>("chat/CreateGroup");
 
 export default chatSlice.reducer;

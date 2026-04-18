@@ -2,12 +2,12 @@ import { useTheme } from "styled-components/native";
 import { t } from "i18next";
 import { BaseScreen, Header, Main, ActionIcon } from "@/components";
 import { Icon } from "@/constants";
-import { FriendList, GroupMembers, CreateGroupRightAction } from "../components";
-import { useCreateGroup } from "../hooks";
+import { FriendList, GroupMembers, StartGroupRightAction } from "../components";
+import { useStartGroup } from "../hooks";
 
-export function CreateGroup() {
+export function StartGroup() {
   const theme = useTheme();
-  const { handleGoBack, groupMembers, handleSelectGroupMember, handleGoGroupSettings } = useCreateGroup();
+  const { handleGoBack, groupMembers, handleSelectGroupMember, handleGoGroupSettings } = useStartGroup();
   return (
     <BaseScreen>
       <Header
@@ -22,7 +22,7 @@ export function CreateGroup() {
         title={t("chat.start_group")}
         rightElement={
           Object.values(groupMembers || {}).length > 0 && (
-            <CreateGroupRightAction handleGoGroupSettings={handleGoGroupSettings} />
+            <StartGroupRightAction handleGoGroupSettings={handleGoGroupSettings} />
           )
         }
       />

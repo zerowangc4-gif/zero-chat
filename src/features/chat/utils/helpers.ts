@@ -1,6 +1,7 @@
 import { store } from "@/store";
 import { hexlify, randomBytes } from "ethers";
-import { Message } from "@/features/chat";
+import { Message, ContentType } from "@/features/chat";
+import { MESSAGE_STATUS, MessageType } from "@/constants";
 
 export function generateId(length: number = 16): string {
   return hexlify(randomBytes(length));
@@ -29,4 +30,20 @@ export function sortMessages(messages: Message[]): Message[] {
 
     return (bRight || 0) - (aRight || 0);
   });
+}
+
+export function handleFormatMessage(toId: string, content: ContentType, type: MessageType): Message {
+  const { user } = store.getState().chat;
+  const message = {
+    id: generateId(),
+    fromId: user.address,
+    toId: toId,
+    sessionSeqNum: generateSessionSeqNum(toId),
+    content: content,
+    timestamp: Date.now(),
+    type: type,
+    status: MESSAGE_STATUS.PENDING,
+  };
+
+  return message;
 }
