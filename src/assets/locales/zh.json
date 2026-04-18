@@ -46,12 +46,14 @@
     "start_group": "发起群聊",
     "next": "下一步",
     "group_settings": "群组设置",
+    "done": "完成",
     "group_name": "群名称",
     "group_intro": "群简介",
     "set_group_name": "设置群名称",
     "set_group_intro": "设置群简介",
     "set_group_name_placeholder": "请输入群名称",
-    "set_group_intro_placeholder": "介绍一下这个群吧"
+    "set_group_intro_placeholder": "介绍一下这个群吧",
+    "create_group_fail": "群组创建失败，请稍后再试"
   },
   "user": {
     "copy_id": "复制账号",

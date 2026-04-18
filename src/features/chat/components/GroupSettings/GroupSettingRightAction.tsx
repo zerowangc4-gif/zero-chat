@@ -14,14 +14,14 @@ const Container = styled.Pressable`
 `;
 
 interface Props {
-  handleGoGroupSettings: () => void;
+  handleCreateGroup: () => void;
 }
-export function CreateGroupRightAction({ handleGoGroupSettings }: Props) {
+export function GroupSettingRightAction({ handleCreateGroup }: Props) {
   const theme = useTheme();
   return (
-    <Container onPress={handleGoGroupSettings}>
+    <Container onPress={handleCreateGroup}>
       <Typography type="caption" color={theme.colors.base}>
-        {t("chat.next")}
+        {t("chat.done")}
       </Typography>
     </Container>
   );

@@ -3,7 +3,7 @@ import { useApp } from "@/hooks";
 import { useAppSelector } from "@/store";
 import { UserInfo, setGroupMembersDraft } from "../store";
 
-export function useCreateGroup() {
+export function useStartGroup() {
   const { navigation, ROUTES, dispatch } = useApp();
 
   const groupMembers = useAppSelector(state => state.chat.groupMembersDraft || {});

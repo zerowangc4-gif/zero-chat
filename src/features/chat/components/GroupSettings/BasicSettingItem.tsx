@@ -45,7 +45,7 @@ const IconWrapper = styled.View`
 
 export function BasicSettingItem({ label, fieldKey, title, placeholder, onpress }: EditableProperty) {
   const theme = useTheme();
-  const GroupBasicSettingDraft = useAppSelector(state => state.chat.GroupBasicSettingDraft) || {};
+  const groupBasicSettingDraft = useAppSelector(state => state.chat.groupBasicSettingDraft) || {};
   return (
     <Container
       onPress={onpress({ fieldKey: fieldKey, title: title, placeholder: placeholder })}
@@ -57,7 +57,7 @@ export function BasicSettingItem({ label, fieldKey, title, placeholder, onpress 
         <Typography weight="bold">{label}</Typography>
       </Label>
       <ValueWrapper>
-        <Typography color={theme.colors.secondaryWord}>{GroupBasicSettingDraft[fieldKey || ""]}</Typography>
+        <Typography color={theme.colors.secondaryWord}>{groupBasicSettingDraft[fieldKey || ""]}</Typography>
       </ValueWrapper>
       <IconWrapper>
         <IconFont name={Icon.go} size={theme.typography.size.md} />

@@ -4,7 +4,7 @@ interface TextContent {
   text: string;
 }
 
-type ContentType = TextContent;
+export type ContentType = TextContent;
 
 export enum ChatType {
   SINGLE = "single",
@@ -27,6 +27,16 @@ export interface UserInfo {
   publicKey: string;
   address: string;
   avatarSeed: string;
+}
+export interface GroupBasicInfo {
+  seqNum: number;
+  ownerId: string;
+  address: string;
+  publicKey: string;
+  groupName: string;
+  avatarSeed: string;
+  groupIntro: string;
+  timestamp: number;
 }
 
 export interface InputProps {
@@ -61,7 +71,8 @@ export interface State {
   friends: Record<string, UserInfo>;
   groupMembers: Record<string, UserInfo>;
   groupMembersDraft: Record<string, UserInfo>;
-  GroupBasicSettingDraft: Record<string, string>;
+  groupBasicSettingDraft: Record<string, string>;
+  haveJoinGroups: Record<string, GroupBasicInfo>;
   activeChatId: string;
   chatMap: Record<string, Record<string, Message>>;
   haveReadUserMap: Record<string, Message>;

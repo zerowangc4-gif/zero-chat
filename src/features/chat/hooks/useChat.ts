@@ -2,8 +2,6 @@ import { ROUTES } from "@/navigation";
 import { useApp, useInput } from "@/hooks";
 import {
   Message,
-  generateId,
-  generateSessionSeqNum,
   SendChatMessage,
   updateMessagesStatus,
   SyncHavedReadLatestMessage,
@@ -14,7 +12,7 @@ import { useAppSelector } from "@/store";
 import { useEffect, useMemo } from "react";
 
 import { MESSAGE_STATUS, MESSAGE_TYPE } from "@/constants";
-import { sortMessages } from "../utils";
+import { sortMessages, handleFormatMessage } from "../utils";
 export function useChat() {
   const { route, dispatch, theme, navigation } = useApp<typeof ROUTES.Chat>();
 
@@ -30,7 +28,9 @@ export function useChat() {
 
   // 更新信息已读状态
   useEffect(() => {
-    const latestMessage: Message | undefined = messages.find((item: Message) => item.fromId === address);
+    const latestMessage: Message | undefined = messages.find(
+      (item: Message) => item.fromId === address || item.fromId !== user.address,
+    );
     if (latestMessage && latestMessage.status !== MESSAGE_STATUS.READ) {
       dispatch(
         updateMessagesStatus({
@@ -44,7 +44,7 @@ export function useChat() {
     if (latestMessage && JSON.stringify(latestMessage) !== JSON.stringify(haveReadlatestMessage)) {
       dispatch(SyncHavedReadLatestMessage(latestMessage));
     }
-  }, [messages, address, dispatch, haveReadlatestMessage]);
+  }, [messages, address, dispatch, haveReadlatestMessage, user.address]);
 
   // 更新停留在哪个聊天窗口
   useEffect(() => {
@@ -56,18 +56,9 @@ export function useChat() {
 
   // 发送信息
   const onSend = async () => {
-    const message: Message = {
-      id: generateId(),
-      fromId: user.address,
-      toId: address,
-      sessionSeqNum: generateSessionSeqNum(address),
-      content: {
-        text: msg.value.trim(),
-      },
-      timestamp: Date.now(),
-      type: MESSAGE_TYPE.TEXT,
-      status: MESSAGE_STATUS.PENDING,
-    };
+    const content = { text: msg.value.trim() };
+
+    const message: Message = handleFormatMessage(address, content, MESSAGE_TYPE.TEXT);
 
     dispatch(SendChatMessage(message));
 

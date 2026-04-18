@@ -1,6 +1,6 @@
 export * from "./Chat";
 export * from "./Chats";
 export * from "./AddFriend";
-export * from "./CreateGroup";
+export * from "./StartGroup";
 export * from "./GroupSettings";
 export * from "./CommonEditor";

@@ -14,7 +14,7 @@ export const ROUTES = {
   // 全局
   Chat: "Chat",
   AddFriend: "AddFriend",
-  CreateGroup: "CreateGroup",
+  StartGroup: "StartGroup",
   GroupSettings: "GroupSettings",
   CommonEditor: "CommonEditor",
 } as const;

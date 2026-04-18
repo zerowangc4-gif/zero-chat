@@ -4,7 +4,7 @@ import { setGroupBasicSettingDraft } from "../store";
 export function useCommonEditor() {
   const { theme, navigation, route, dispatch } = useApp();
   const { fieldKey, title, placeholder } = route.params;
-  const GroupBasicSettingInfo = useAppSelector(state => state.chat.GroupBasicSettingDraft) || {};
+  const GroupBasicSettingInfo = useAppSelector(state => state.chat.groupBasicSettingDraft) || {};
 
   const activeProperty = useInput(GroupBasicSettingInfo[fieldKey || ""]);
 

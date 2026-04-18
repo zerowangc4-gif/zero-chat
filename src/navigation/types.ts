@@ -21,7 +21,7 @@ export type RootStackParamList = {
   [ROUTES.MainTab]: NavigatorScreenParams<MainTabParamList>;
   [ROUTES.Chat]: { avatarSeed: string; username: string; address: string; publicKey: string };
   [ROUTES.AddFriend]: undefined;
-  [ROUTES.CreateGroup]: undefined;
+  [ROUTES.StartGroup]: undefined;
   [ROUTES.GroupSettings]: undefined;
   [ROUTES.CommonEditor]: { fieldKey: string; title: string; placeholder: string };
 };

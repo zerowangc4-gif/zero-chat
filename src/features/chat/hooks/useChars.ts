@@ -52,7 +52,7 @@ export function useChars() {
 
   //  跳转到创建群页面页面
   const handleCreateGroup = () => {
-    navigation.navigate(ROUTES.CreateGroup);
+    navigation.navigate(ROUTES.StartGroup);
     setMenuVisible(false);
     OverlayLayer.hide();
   };
