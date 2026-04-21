@@ -11,6 +11,7 @@ import {
   SyncHavedReadLatestMessage,
   InitChatData,
   CreateGroup,
+  JoinGroup,
   updateHaveReadUserLatestMessage,
   TargetMsg,
   UserInfo,
@@ -37,6 +38,7 @@ export function* watchChatSaga() {
     [SyncHavedReadLatestMessage.type]: handleSyncHavedReadLatestMessage,
     [InitChatData.type]: handleInitChatData,
     [CreateGroup.type]: handleCreateGroup,
+    [JoinGroup.type]: handleJoinGroup,
   });
 }
 
@@ -70,6 +72,17 @@ function* handleInsertChatMessage() {
     const result: Message[] = yield call(syncChatMessages, activeChatId);
     if (!result || result.length === 0) {
       return;
+    }
+    // 检测邀请
+    for (const message of result) {
+      switch (message.type) {
+        case MESSAGE_TYPE.joinGroupNotification:
+          yield call(handleJoinGroup, {
+            payload: message,
+            type: JoinGroup.type,
+          });
+          break;
+      }
     }
 
     const strangerIds: string[] = Array.from(
@@ -151,6 +164,18 @@ function* handleInsertGroupChatMessage(action: PayloadAction<Message>) {
     const message: Message = action.payload;
 
     yield put(insertMessages([message]));
+  } catch (error: unknown) {
+    console.error(error);
+  }
+}
+
+// 加入聊天群
+function* handleJoinGroup(action: PayloadAction<Message>) {
+  try {
+    if (!action.payload) {
+      return;
+    }
+    yield;
   } catch (error: unknown) {
     console.error(error);
   }

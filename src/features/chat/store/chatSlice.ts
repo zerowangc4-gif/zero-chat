@@ -143,4 +143,6 @@ export const InitChatData = createAction("chat/initChatData");
 
 export const CreateGroup = createAction<GroupBasicInfo>("chat/CreateGroup");
 
+export const JoinGroup = createAction<GroupBasicInfo>("chat/JoinGroup");
+
 export default chatSlice.reducer;
