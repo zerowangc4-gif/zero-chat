@@ -58,7 +58,7 @@ export function useChat() {
   const onSend = async () => {
     const content = { text: msg.value.trim() };
 
-    const message: Message = handleFormatMessage(address, content, MESSAGE_TYPE.TEXT);
+    const message: Message = handleFormatMessage(address, content, MESSAGE_TYPE.text);
 
     dispatch(SendChatMessage(message));
 

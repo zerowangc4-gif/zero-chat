@@ -115,18 +115,20 @@ function* handleSyncMessageStatus() {
 }
 // 创建群组
 function* handleCreateGroup(action: PayloadAction<GroupBasicInfo>) {
-  if (!action.payload) {
-    return;
-  }
   try {
+    if (!action.payload) {
+      return;
+    }
     yield put(setHaveJoinGroups(action.payload));
     const { groupMembersDraft } = yield select(state => state.chat);
 
-    const content = { text: "YAO" };
+    const content = action.payload;
 
     const memberIds = Object.keys(groupMembersDraft || {});
 
-    const messages = memberIds.map(id => handleFormatMessage(id as string, content, MESSAGE_TYPE.TEXT));
+    const messages = memberIds.map(id =>
+      handleFormatMessage(id as string, content, MESSAGE_TYPE.joinGroupNotification),
+    );
 
     yield all(
       messages.map(msg =>

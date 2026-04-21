@@ -15,7 +15,8 @@ export const STATUS_WEIGHT = {
 };
 
 export const MESSAGE_TYPE = {
-  TEXT: "text",
+  text: "text",
+  joinGroupNotification: "joinGroupNotification",
 } as const;
 
 export type MessageStatus = (typeof MESSAGE_STATUS)[keyof typeof MESSAGE_STATUS];

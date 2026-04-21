@@ -1,25 +1,8 @@
 import { MessageStatus, MessageType } from "@/constants";
 
-interface TextContent {
-  text: string;
-}
-
-export type ContentType = TextContent;
-
 export enum ChatType {
   SINGLE = "single",
   GROUP = "group",
-}
-
-export interface Message {
-  id: string;
-  fromId: string;
-  toId: string;
-  sessionSeqNum: number | string;
-  content: ContentType;
-  timestamp: number;
-  type: MessageType;
-  status: MessageStatus;
 }
 
 export interface UserInfo {
@@ -63,6 +46,23 @@ export interface EditableProperty {
 export interface GroupBasicProperty {
   fieldKey: string;
   value: string;
+}
+
+interface TextContent {
+  text: string;
+}
+
+export type ContentType = TextContent | GroupBasicInfo;
+
+export interface Message {
+  id: string;
+  fromId: string;
+  toId: string;
+  sessionSeqNum: number | string;
+  content: ContentType;
+  timestamp: number;
+  type: MessageType;
+  status: MessageStatus;
 }
 
 export interface State {
