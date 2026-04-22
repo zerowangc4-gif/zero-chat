@@ -19,7 +19,7 @@ export type MainTabParamList = {
 export type RootStackParamList = {
   [ROUTES.AuthStack]: NavigatorScreenParams<AuthStackParamList>;
   [ROUTES.MainTab]: NavigatorScreenParams<MainTabParamList>;
-  [ROUTES.Chat]: { avatarSeed: string; username: string; address: string; publicKey: string };
+  [ROUTES.Chat]: { address: string };
   [ROUTES.AddFriend]: undefined;
   [ROUTES.StartGroup]: undefined;
   [ROUTES.GroupSettings]: undefined;

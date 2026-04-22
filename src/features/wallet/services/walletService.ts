@@ -16,7 +16,7 @@ export async function createWallet(mnemonic?: string): Promise<string> {
     setUserInfo({
       address: wallet.address,
       publicKey: wallet.publicKey,
-      username: `user${wallet.address.slice(-4).toLowerCase()}`,
+      name: `user${wallet.address.slice(-4).toLowerCase()}`,
       avatarSeed: wallet.publicKey,
     }),
   );

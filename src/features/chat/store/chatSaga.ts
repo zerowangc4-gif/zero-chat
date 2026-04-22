@@ -1,5 +1,6 @@
 import { onActions } from "@/store/actions";
 import { PayloadAction } from "@reduxjs/toolkit";
+
 import {
   Message,
   GroupBasicInfo,
@@ -89,7 +90,12 @@ function* handleInsertChatMessage() {
       new Set(result.map((msg: Message) => msg.fromId).filter((id: string) => !friends[id])),
     );
 
-    const newUserInfos: UserInfo[] = yield all(strangerIds.map(id => call(searchUserResult, id)));
+    const results: UserInfo[] = yield all(strangerIds.map(id => call(searchUserResult, id)));
+
+    const newUserInfos = results.map((item: UserInfo) => {
+      return { ...item, timestamp: Date.now() };
+    });
+
     yield put(addFriends(newUserInfos));
 
     yield put(insertMessages(result));

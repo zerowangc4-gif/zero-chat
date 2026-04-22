@@ -1,5 +1,5 @@
 import { createAction, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Message, TargetMsg, UserInfo, GroupBasicInfo, GroupBasicProperty, State } from "./types";
+import { Message, TargetMsg, UserInfo, FriendInfo, GroupBasicInfo, GroupBasicProperty, State } from "./types";
 import { MESSAGE_STATUS, STATUS_WEIGHT } from "@/constants";
 import { sortMessages } from "../utils";
 
@@ -8,7 +8,7 @@ const initialState: State = {
   user: {
     address: "",
     publicKey: "",
-    username: "",
+    name: "",
     avatarSeed: "",
   },
   friends: {},
@@ -32,9 +32,9 @@ const chatSlice = createSlice({
     setUserInfo: (state, action: PayloadAction<UserInfo>) => {
       state.user = action.payload;
     },
-    addFriends: (state, action: PayloadAction<UserInfo[]>) => {
+    addFriends: (state, action: PayloadAction<FriendInfo[]>) => {
       state.friends = state.friends || {};
-      action.payload.forEach((item: UserInfo) => {
+      action.payload.forEach((item: FriendInfo) => {
         state.friends[item.address] = item;
       });
     },

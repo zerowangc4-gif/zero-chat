@@ -6,17 +6,22 @@ export enum ChatType {
 }
 
 export interface UserInfo {
-  username: string;
+  name: string;
   publicKey: string;
   address: string;
   avatarSeed: string;
 }
+
+export interface FriendInfo extends UserInfo {
+  timestamp: number;
+}
+
 export interface GroupBasicInfo {
   seqNum: number;
   ownerId: string;
   address: string;
   publicKey: string;
-  groupName: string;
+  name: string;
   avatarSeed: string;
   groupIntro: string;
   timestamp: number;
@@ -32,7 +37,11 @@ export interface TargetMsg {
   sessionSeqNum: number;
   status: MessageStatus;
 }
-export interface ChatSession extends UserInfo {
+export interface ChatSession {
+  address: string;
+  publicKey: string;
+  name: string;
+  avatarSeed: string;
   time: number;
   lastMsg: string;
 }
@@ -68,7 +77,7 @@ export interface Message {
 export interface State {
   userId: string;
   user: UserInfo;
-  friends: Record<string, UserInfo>;
+  friends: Record<string, FriendInfo>;
   groupMembers: Record<string, UserInfo>;
   groupMembersDraft: Record<string, UserInfo>;
   groupBasicSettingDraft: Record<string, string>;

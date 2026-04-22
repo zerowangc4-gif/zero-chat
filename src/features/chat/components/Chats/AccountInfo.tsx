@@ -51,7 +51,7 @@ export function AccountInfo() {
       </AvatarContent>
       <InfoContent>
         <Typography type="main" weight="bold">
-          {user.username}
+          {user.name}
         </Typography>
         <Typography type="caption" color={isConnected ? theme.palette.brand : theme.colors.secondaryWord}>
           {isConnected ? t("chat.Online") : t("chat.Offline")}

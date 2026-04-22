@@ -4,6 +4,7 @@ import { getGroupSeqNum, createGroup } from "../services";
 import { CreateGroupWallet } from "@/features/wallet";
 import { Toast } from "@/components";
 import { useAppSelector } from "@/store";
+import { CommonActions } from "@react-navigation/native";
 export function useGroupSettings() {
   const { navigation, t, ROUTES, dispatch } = useApp();
   const { user, groupBasicSettingDraft } = useAppSelector(state => state.chat);
@@ -24,23 +25,41 @@ export function useGroupSettings() {
     try {
       const GroupSeqNum = await getGroupSeqNum();
       const walletInfo = await CreateGroupWallet(GroupSeqNum);
-      const { groupName, groupIntro } = groupBasicSettingDraft;
 
-      if (!walletInfo || !groupName || !groupIntro) {
+      const { name, groupIntro } = groupBasicSettingDraft;
+
+      if (!walletInfo || !name || !groupIntro) {
         throw new Error(t("chat.create_group_fail"));
       }
       const groupBasicInfo: GroupBasicInfo = {
         ...walletInfo,
         ownerId: user.address,
-        groupName: groupName,
+        name: name,
         groupIntro: groupIntro,
         timestamp: Date.now(),
       };
       const result: GroupBasicInfo = await createGroup(groupBasicInfo);
+
       if (!result) {
         throw new Error(t("chat.create_group_fail"));
       }
       dispatch(CreateGroup(result));
+
+      // 回退的时候返回列表页
+      navigation.dispatch(
+        CommonActions.reset({
+          index: 1,
+          routes: [
+            { name: ROUTES.MainTab },
+            {
+              name: ROUTES.Chat,
+              params: {
+                address: result.address,
+              },
+            },
+          ],
+        }),
+      );
     } catch (err: unknown) {
       Toast.error(t("chat.create_group_fail"));
       console.error(err);
@@ -51,7 +70,7 @@ export function useGroupSettings() {
   const basicGroupInfo: EditableProperty[] = [
     {
       label: t("chat.group_name"),
-      fieldKey: "groupName",
+      fieldKey: "name",
       title: t("chat.set_group_name"),
       placeholder: t("chat.set_group_name_placeholder"),
       onpress: handleGoCommonEditor,

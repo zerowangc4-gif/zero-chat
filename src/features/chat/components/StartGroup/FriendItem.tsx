@@ -51,7 +51,7 @@ export function FriendItem({ userInfo, groupMembers, handleSelectGroupMember }: 
       <AvatarWrapper>
         <Avatar size={theme.size.ms} avatarSeed={userInfo.avatarSeed} />
       </AvatarWrapper>
-      <Typography weight="bold">{userInfo.username}</Typography>
+      <Typography weight="bold">{userInfo.name}</Typography>
     </Container>
   );
 }

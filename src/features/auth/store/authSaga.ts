@@ -16,9 +16,9 @@ export function* watchAuthSaga() {
 
 function* handleLogin(action: PayloadAction<string | undefined>) {
   try {
-    const { address, publicKey, username } = yield select(state => state.chat.user);
+    const { address, publicKey, name } = yield select(state => state.chat.user);
 
-    if (!address || !publicKey || !username) {
+    if (!address || !publicKey || !name) {
       throw new Error(t("auth.error_generation_failed"));
     }
 
@@ -26,7 +26,7 @@ function* handleLogin(action: PayloadAction<string | undefined>) {
 
     const signature = yield call(signWithStoredWallet, authSlogan);
 
-    const result: AuthResult = yield call(registerAndLogin, address, publicKey, username, signature);
+    const result: AuthResult = yield call(registerAndLogin, address, publicKey, name, signature);
 
     if (action.payload) {
       yield call(CameraRoll.saveAsset, action.payload, { type: "photo", album: "ZeroTrace" });
