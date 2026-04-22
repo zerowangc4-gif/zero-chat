@@ -6,12 +6,12 @@ export async function getNonce(address: string): Promise<string> {
   });
   return result;
 }
-export async function registerAndLogin(address: string, publicKey: string, username: string, signature: string) {
+export async function registerAndLogin(address: string, publicKey: string, name: string, signature: string) {
   const result = await apiClient.post("/api/auth/registerAndLogin", {
     address,
     signature,
     publicKey,
-    username,
+    name,
   });
   return result;
 }

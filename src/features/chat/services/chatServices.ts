@@ -1,5 +1,5 @@
 import { apiClient } from "@/api";
-import { Message, TargetMsg, UserInfo } from "@/features/chat";
+import { Message, TargetMsg, UserInfo, GroupBasicInfo } from "@/features/chat";
 
 // 发送消息
 export async function sendMessage(message: Message): Promise<Message> {
@@ -37,5 +37,17 @@ export async function searchUserResult(value: string): Promise<UserInfo> {
   const result: UserInfo = await apiClient.post("/api/chat/searchUserResult", {
     address: value,
   });
+  return result;
+}
+
+// 创建群组时，获取最新的群组号，以便根据主私钥派生出副本账号
+export async function getGroupSeqNum(): Promise<number> {
+  const result: number = await apiClient.post("/api/chat/getGroupSeqNum");
+  return result;
+}
+
+// 创建群组
+export async function createGroup(groupBasicInfo: GroupBasicInfo): Promise<GroupBasicInfo> {
+  const result: GroupBasicInfo = await apiClient.post("/api/chat/createGroup", groupBasicInfo);
   return result;
 }

@@ -57,7 +57,7 @@ export function SearchResultCard({ userInfo, handleAddFriend }: Props) {
         <Avatar avatarSeed={userInfo.avatarSeed} size={theme.size.lg} />
       </AvatarWrapper>
       <UserInfoWrapper>
-        <Typography weight="bold">{userInfo.username}</Typography>
+        <Typography weight="bold">{userInfo.name}</Typography>
 
         <Typography type="caption" color={theme.colors.secondaryWord} numberOfLines={1} ellipsizeMode="middle">
           {userInfo.address}

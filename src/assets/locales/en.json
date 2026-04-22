@@ -8,7 +8,7 @@
     "setting_mnemonic_tagline": "Encrypt your phrase into a QR code. Only this password can unlock it",
     "setting_password": "Set Password",
     "password_placeholder": "Enter password",
-    "setting_password_tagline": "At least 8 characters",
+    "setting_password_tagline": "8+ characters with mixed cases and symbols",
     "verify_password": "Confirm Password",
     "verify_password_placeholder": "Confirm password",
     "verify_password_tagline": "Passwords do not match",
@@ -44,7 +44,15 @@
     "add_friend": "Add Friend",
     "start_group": "Start Group Chat",
     "next": "Next",
-    "group_settings": "Group Settings"
+    "group_settings": "Group Settings",
+    "done": "Done",
+    "group_name": "Group Name",
+    "group_intro": "Group Intro",
+    "set_group_name": "Set Group Name",
+    "set_group_intro": "Set Group Intro",
+    "set_group_name_placeholder": "Enter group name",
+    "set_group_intro_placeholder": "Tell us about this group",
+    "create_group_fail": "Failed to create group. Please try again later"
   },
   "user": {
     "copy_id": "Copy Account ID",

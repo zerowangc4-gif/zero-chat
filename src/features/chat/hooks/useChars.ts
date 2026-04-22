@@ -2,7 +2,14 @@ import { t } from "i18next";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useAppSelector } from "@/store";
 import { useApp } from "@/hooks";
-import { setActiveChatId, UserInfo, Message, ChatSession, clearGroupMembersDraft } from "../store";
+import {
+  setActiveChatId,
+  UserInfo,
+  Message,
+  ChatSession,
+  clearGroupMembersDraft,
+  clearGroupBasicSettingDraft,
+} from "../store";
 import { Icon } from "@/constants";
 import { OverlayLayer } from "@/components";
 import { useFocusEffect } from "@react-navigation/native";
@@ -10,7 +17,7 @@ import { useFocusEffect } from "@react-navigation/native";
 export function useChars() {
   const { dispatch, navigation, ROUTES } = useApp();
 
-  const { friends, lastMessageMap } = useAppSelector(state => state.chat);
+  const { friends, haveJoinGroups, lastMessageMap } = useAppSelector(state => state.chat);
 
   const [isMenuVisible, setMenuVisible] = useState<boolean>(false);
 
@@ -18,21 +25,26 @@ export function useChars() {
   const chatSessions: ChatSession[] = useMemo(() => {
     const currentLastMsgMap = lastMessageMap || {};
 
-    return Object.values(friends || {})
-      .map((item: UserInfo) => {
-        const message: Message = currentLastMsgMap[item.address];
-        return { ...item, lastMsg: message?.content || "", time: message?.timestamp || 0 };
+    return Object.keys({ ...friends, ...haveJoinGroups })
+      .map((address: string) => {
+        const { avatarSeed, publicKey, name, timestamp } = friends[address] || haveJoinGroups[address];
+        const message: Message = currentLastMsgMap[address];
+        return {
+          address: address,
+          publicKey: publicKey,
+          name: name,
+          avatarSeed: avatarSeed,
+          lastMsg: message?.content?.text || "",
+          time: message?.timestamp || timestamp,
+        };
       })
       .sort((sessionA, sessionB) => sessionB.time - sessionA.time);
-  }, [friends, lastMessageMap]);
+  }, [friends, haveJoinGroups, lastMessageMap]);
 
   //  跳转到聊天页面
   const handlePressItem = (item: UserInfo) => () => {
     navigation.navigate(ROUTES.Chat, {
       address: item.address,
-      username: item.username,
-      avatarSeed: item.avatarSeed,
-      publicKey: item.publicKey,
     });
   };
 
@@ -45,7 +57,7 @@ export function useChars() {
 
   //  跳转到创建群页面页面
   const handleCreateGroup = () => {
-    navigation.navigate(ROUTES.CreateGroup);
+    navigation.navigate(ROUTES.StartGroup);
     setMenuVisible(false);
     OverlayLayer.hide();
   };
@@ -55,6 +67,7 @@ export function useChars() {
     useCallback(() => {
       dispatch(setActiveChatId(""));
       dispatch(clearGroupMembersDraft());
+      dispatch(clearGroupBasicSettingDraft());
     }, [dispatch]),
   );
 
