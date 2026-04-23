@@ -19,7 +19,7 @@ export function useChat() {
 
   const { address } = route.params;
 
-  const { chatMap, haveReadUserMap, user } = useAppSelector(state => state.chat);
+  const { chatMap, haveReadUserMap, haveJoinGroups, user } = useAppSelector(state => state.chat);
 
   const messages = useMemo(() => sortMessages(Object.values(chatMap[address] || [])) || [], [address, chatMap]);
 
@@ -61,7 +61,8 @@ export function useChat() {
 
     const message: Message = handleFormatMessage(address, content, MESSAGE_TYPE.text);
 
-    const isGroupMessage = !!haveReadUserMap[message.toId];
+    const isGroupMessage = !!haveJoinGroups[message.toId];
+
     if (isGroupMessage) {
       dispatch(SendGroupMessage(message));
     } else {

@@ -34,6 +34,7 @@ import {
   searchUserResult,
   joinGroup,
   syncGroupChatMessages,
+  sendGroupMessage,
 } from "@/features/chat/services";
 import { MESSAGE_STATUS, MESSAGE_TYPE } from "@/constants";
 import { handleFormatMessage } from "../utils";
@@ -212,8 +213,8 @@ function* handleSendGroupMessage(action: PayloadAction<Message>) {
   const message: Message = action.payload;
 
   try {
-    yield put(insertMessages([message]));
-    const result: Message = yield call(sendMessage, message);
+    yield put(insertGroupMessages([message]));
+    const result: Message = yield call(sendGroupMessage, message);
     yield put(updateMessage(result));
   } catch (error: unknown) {
     yield put(updateMessage({ ...message, status: MESSAGE_STATUS.FAILED }));
