@@ -5,11 +5,12 @@ import {
   Message,
   GroupBasicInfo,
   SendChatMessage,
+  SendGroupMessage,
   insertMessages,
   updateMessage,
   InsertChatMessages,
-  InsertGroupChatMessages,
   SyncHavedReadLatestMessage,
+  SyncGroupChatMessages,
   InitChatData,
   CreateGroup,
   JoinGroup,
@@ -19,6 +20,8 @@ import {
   updateMessagesStatus,
   addFriends,
   setHaveJoinGroups,
+  setGroupMembers,
+  insertGroupMessages,
 } from "@/features/chat/store";
 import { all, call, put, select } from "redux-saga/effects";
 import {
@@ -28,24 +31,29 @@ import {
   syncHavedReadLatestMessage,
   syncMessageStatus,
   searchUserResult,
+  joinGroup,
+  syncGroupChatMessages,
+  sendGroupMessage,
 } from "@/features/chat/services";
 import { MESSAGE_STATUS, MESSAGE_TYPE } from "@/constants";
 import { handleFormatMessage } from "../utils";
 export function* watchChatSaga() {
   yield onActions({
     [SendChatMessage.type]: handleSendChatMessage,
+    [SendGroupMessage.type]: handleSendGroupMessage,
     [InsertChatMessages.type]: handleInsertChatMessage,
-    [InsertGroupChatMessages.type]: handleInsertGroupChatMessage,
     [SyncHavedReadLatestMessage.type]: handleSyncHavedReadLatestMessage,
     [InitChatData.type]: handleInitChatData,
     [CreateGroup.type]: handleCreateGroup,
     [JoinGroup.type]: handleJoinGroup,
+    [SyncGroupChatMessages.type]: handleSyncGroupChatMessages,
   });
 }
 
 // 上线时初始化状态
 function* handleInitChatData() {
   yield call(handleInsertChatMessage);
+  yield call(handleSyncGroupChatMessages);
   yield call(handleSyncMessageStatus);
 }
 
@@ -71,6 +79,7 @@ function* handleInsertChatMessage() {
   try {
     const { activeChatId, friends } = yield select(state => state.chat);
     const result: Message[] = yield call(syncChatMessages, activeChatId);
+
     if (!result || result.length === 0) {
       return;
     }
@@ -100,7 +109,11 @@ function* handleInsertChatMessage() {
 
     yield put(insertMessages(result));
 
-    yield call(deleteHavedSyncMessages, result[result.length - 1]);
+    let latestMessage = result[result.length - 1];
+
+    latestMessage = { ...latestMessage, status: MESSAGE_STATUS.SENT_TO_SERVER };
+
+    yield call(deleteHavedSyncMessages, latestMessage);
   } catch (error: unknown) {
     console.error(error);
   }
@@ -132,6 +145,7 @@ function* handleSyncMessageStatus() {
     console.error(error);
   }
 }
+
 // 创建群组
 function* handleCreateGroup(action: PayloadAction<GroupBasicInfo>) {
   try {
@@ -161,19 +175,6 @@ function* handleCreateGroup(action: PayloadAction<GroupBasicInfo>) {
     console.error(error);
   }
 }
-// 接收群信息
-function* handleInsertGroupChatMessage(action: PayloadAction<Message>) {
-  try {
-    if (!action.payload) {
-      return;
-    }
-    const message: Message = action.payload;
-
-    yield put(insertMessages([message]));
-  } catch (error: unknown) {
-    console.error(error);
-  }
-}
 
 // 加入聊天群
 function* handleJoinGroup(action: PayloadAction<Message>) {
@@ -181,7 +182,61 @@ function* handleJoinGroup(action: PayloadAction<Message>) {
     if (!action.payload) {
       return;
     }
-    yield;
+    const { address } = action.payload.content;
+    const { haveJoinGroups } = yield select(state => state.chat);
+
+    if (!address || haveJoinGroups[address]) {
+      return;
+    }
+    const result = yield call(joinGroup, address);
+    yield put(setHaveJoinGroups(result));
+  } catch (error: unknown) {
+    console.error(error);
+  }
+}
+
+// 发送群信息
+function* handleSendGroupMessage(action: PayloadAction<Message>) {
+  if (!action.payload) {
+    return;
+  }
+  const message: Message = action.payload;
+
+  try {
+    yield put(insertGroupMessages([message]));
+    const result: Message = yield call(sendGroupMessage, message);
+    yield put(updateMessage(result));
+  } catch (error: unknown) {
+    yield put(updateMessage({ ...message, status: MESSAGE_STATUS.FAILED }));
+    console.error(error);
+  }
+}
+
+// 同步群离线信息
+function* handleSyncGroupChatMessages() {
+  try {
+    const { activeChatId, groupMembers } = yield select(state => state.chat);
+    const messages: Message[] = yield call(syncGroupChatMessages, activeChatId);
+
+    if (!messages || messages.length === 0) {
+      return;
+    }
+
+    const strangerIds: string[] = Array.from(
+      new Set(messages.map((msg: Message) => msg.fromId).filter((id: string) => !groupMembers[id])),
+    );
+
+    const results: UserInfo[] = yield all(strangerIds.map(id => call(searchUserResult, id)));
+
+    yield put(setGroupMembers(results));
+
+    yield put(insertGroupMessages(messages));
+
+    let latestMessage = messages[messages.length - 1];
+
+    latestMessage = { ...latestMessage, status: MESSAGE_STATUS.SENT_TO_SERVER };
+
+    yield call(deleteHavedSyncMessages, latestMessage);
   } catch (error: unknown) {
     console.error(error);
   }

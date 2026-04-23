@@ -51,3 +51,23 @@ export async function createGroup(groupBasicInfo: GroupBasicInfo): Promise<Group
   const result: GroupBasicInfo = await apiClient.post("/api/chat/createGroup", groupBasicInfo);
   return result;
 }
+
+// 加入聊天群
+export async function joinGroup(groupId: string): Promise<GroupBasicInfo> {
+  const result: GroupBasicInfo = await apiClient.post("/api/chat/joinGroup", { groupId: groupId });
+  return result;
+}
+
+// 发送群消息
+export async function sendGroupMessage(message: Message): Promise<Message> {
+  const result: Message = await apiClient.post("/api/chat/sendGroupMessage", message);
+  return result;
+}
+
+// 同步群离线信息
+export async function syncGroupChatMessages(activeChatId: string): Promise<Message[]> {
+  const result: Message[] = await apiClient.post("/api/chat/syncGroupChatMessages", {
+    activeChatId: activeChatId,
+  });
+  return result;
+}

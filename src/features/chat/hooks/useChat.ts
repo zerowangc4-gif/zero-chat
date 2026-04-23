@@ -3,6 +3,7 @@ import { useApp, useInput } from "@/hooks";
 import {
   Message,
   SendChatMessage,
+  SendGroupMessage,
   updateMessagesStatus,
   SyncHavedReadLatestMessage,
   setActiveChatId,
@@ -18,7 +19,7 @@ export function useChat() {
 
   const { address } = route.params;
 
-  const { chatMap, haveReadUserMap, user } = useAppSelector(state => state.chat);
+  const { chatMap, haveReadUserMap, haveJoinGroups, user } = useAppSelector(state => state.chat);
 
   const messages = useMemo(() => sortMessages(Object.values(chatMap[address] || [])) || [], [address, chatMap]);
 
@@ -41,6 +42,7 @@ export function useChat() {
         }),
       );
     }
+
     if (latestMessage && JSON.stringify(latestMessage) !== JSON.stringify(haveReadlatestMessage)) {
       dispatch(SyncHavedReadLatestMessage(latestMessage));
     }
@@ -60,7 +62,13 @@ export function useChat() {
 
     const message: Message = handleFormatMessage(address, content, MESSAGE_TYPE.text);
 
-    dispatch(SendChatMessage(message));
+    const isGroupMessage = !!haveJoinGroups[message.toId];
+
+    if (isGroupMessage) {
+      dispatch(SendGroupMessage(message));
+    } else {
+      dispatch(SendChatMessage(message));
+    }
 
     msg.onChange("");
   };
