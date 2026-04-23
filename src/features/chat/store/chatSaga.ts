@@ -109,9 +109,9 @@ function* handleInsertChatMessage() {
 
     yield put(insertMessages(result));
 
-    const latestMessage = result[result.length - 1];
+    let latestMessage = result[result.length - 1];
 
-    latestMessage.status = MESSAGE_STATUS.SENT_TO_SERVER;
+    latestMessage = { ...latestMessage, status: MESSAGE_STATUS.SENT_TO_SERVER };
 
     yield call(deleteHavedSyncMessages, latestMessage);
   } catch (error: unknown) {
@@ -232,9 +232,10 @@ function* handleSyncGroupChatMessages() {
 
     yield put(insertGroupMessages(messages));
 
-    const latestMessage = messages[messages.length - 1];
+    let latestMessage = messages[messages.length - 1];
 
-    latestMessage.status = MESSAGE_STATUS.SENT_TO_SERVER;
+    latestMessage = { ...latestMessage, status: MESSAGE_STATUS.SENT_TO_SERVER };
+
     yield call(deleteHavedSyncMessages, latestMessage);
   } catch (error: unknown) {
     console.error(error);
