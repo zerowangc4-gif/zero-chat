@@ -3,6 +3,7 @@ import { useApp, useInput } from "@/hooks";
 import {
   Message,
   SendChatMessage,
+  SendGroupMessage,
   updateMessagesStatus,
   SyncHavedReadLatestMessage,
   setActiveChatId,
@@ -60,7 +61,12 @@ export function useChat() {
 
     const message: Message = handleFormatMessage(address, content, MESSAGE_TYPE.text);
 
-    dispatch(SendChatMessage(message));
+    const isGroupMessage = !!haveReadUserMap[message.toId];
+    if (isGroupMessage) {
+      dispatch(SendGroupMessage(message));
+    } else {
+      dispatch(SendChatMessage(message));
+    }
 
     msg.onChange("");
   };

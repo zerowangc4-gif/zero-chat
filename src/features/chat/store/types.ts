@@ -61,7 +61,7 @@ interface TextContent {
   text: string;
 }
 
-export type ContentType = TextContent | GroupBasicInfo;
+interface ContentType extends TextContent, GroupBasicInfo {}
 
 export interface Message {
   id: string;

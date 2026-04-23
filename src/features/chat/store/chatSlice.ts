@@ -55,6 +55,12 @@ const chatSlice = createSlice({
       const { address } = action.payload;
       state.haveJoinGroups[address] = action.payload;
     },
+    setGroupMembers(state, action: PayloadAction<UserInfo[]>) {
+      state.groupMembers = state.groupMembers || {};
+      action.payload.forEach((item: FriendInfo) => {
+        state.groupMembers[item.address] = item;
+      });
+    },
     setActiveChatId: (state, action: PayloadAction<string>) => {
       if (state.activeChatId === action.payload) {
         return;
@@ -65,6 +71,21 @@ const chatSlice = createSlice({
     insertMessages: (state, action: PayloadAction<Message[]>) => {
       action.payload.forEach((item: Message) => {
         const chatId = item.fromId === state.user.address ? item.toId : item.fromId;
+
+        if (!state.chatMap[chatId]) {
+          state.chatMap[chatId] = {};
+        }
+
+        state.chatMap[chatId][item.id] = item;
+
+        const messages: Message[] = sortMessages([state.lastMessageMap[chatId] || item, item]);
+
+        state.lastMessageMap[chatId] = messages[0];
+      });
+    },
+    insertGroupMessages: (state, action: PayloadAction<Message[]>) => {
+      action.payload.forEach((item: Message) => {
+        const chatId = item.toId;
 
         if (!state.chatMap[chatId]) {
           state.chatMap[chatId] = {};
@@ -125,10 +146,12 @@ export const {
   setGroupMembersDraft,
   setHaveJoinGroups,
   insertMessages,
+  insertGroupMessages,
   updateMessage,
   updateMessagesStatus,
   updateHaveReadUserLatestMessage,
   addFriends,
+  setGroupMembers,
 } = chatSlice.actions;
 
 export const SendChatMessage = createAction<Message>("chat/SendMessage");
@@ -144,5 +167,9 @@ export const InitChatData = createAction("chat/initChatData");
 export const CreateGroup = createAction<GroupBasicInfo>("chat/CreateGroup");
 
 export const JoinGroup = createAction<GroupBasicInfo>("chat/JoinGroup");
+
+export const SendGroupMessage = createAction<Message>("chat/SendGroupMessage");
+
+export const SyncGroupChatMessages = createAction("chat/SyncGroupChatMessages");
 
 export default chatSlice.reducer;
