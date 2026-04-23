@@ -131,7 +131,8 @@ const chatSlice = createSlice({
     },
     updateHaveReadUserLatestMessage: (state, action: PayloadAction<Message>) => {
       const message: Message = action.payload;
-      state.haveReadUserMap[message.fromId] = message;
+      const chatId = state.haveJoinGroups[message.toId] ? message.toId : message.fromId;
+      state.haveReadUserMap[chatId] = message;
     },
   },
 });

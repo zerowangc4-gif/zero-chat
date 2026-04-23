@@ -42,6 +42,7 @@ export function useChat() {
         }),
       );
     }
+
     if (latestMessage && JSON.stringify(latestMessage) !== JSON.stringify(haveReadlatestMessage)) {
       dispatch(SyncHavedReadLatestMessage(latestMessage));
     }
