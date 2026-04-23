@@ -159,8 +159,6 @@ export const SendChatMessage = createAction<Message>("chat/SendMessage");
 
 export const InsertChatMessages = createAction("chat/InsertChatMessage");
 
-export const InsertGroupChatMessages = createAction<Message>("chat/InsertGroupChatMessages");
-
 export const SyncHavedReadLatestMessage = createAction<Message>("chat/syncHavedReadLatestMessage");
 
 export const InitChatData = createAction("chat/initChatData");

@@ -1,7 +1,7 @@
 import { Socket } from "socket.io-client";
 import { store } from "@/store";
 import { MessageService } from "./messageService";
-import { InsertChatMessages, InsertGroupChatMessages, updateMessagesStatus, TargetMsg, Message } from "@/features/chat";
+import { InsertChatMessages, SyncGroupChatMessages, updateMessagesStatus, TargetMsg } from "@/features/chat";
 import { EVENT } from "./events";
 
 export const setupSocketListeners = (socket: Socket) => {
@@ -18,8 +18,8 @@ export const setupSocketListeners = (socket: Socket) => {
   });
 
   // 监听群消息
-  socket.on(EVENT.chat.groupChatMessage, (data: Message) => {
-    store.dispatch(InsertGroupChatMessages(data));
+  socket.on(EVENT.chat.groupChatMessage, () => {
+    store.dispatch(SyncGroupChatMessages());
   });
 
   //同步信息状态

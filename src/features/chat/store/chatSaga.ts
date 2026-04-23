@@ -9,7 +9,6 @@ import {
   insertMessages,
   updateMessage,
   InsertChatMessages,
-  InsertGroupChatMessages,
   SyncHavedReadLatestMessage,
   SyncGroupChatMessages,
   InitChatData,
@@ -43,7 +42,6 @@ export function* watchChatSaga() {
     [SendChatMessage.type]: handleSendChatMessage,
     [SendGroupMessage.type]: handleSendGroupMessage,
     [InsertChatMessages.type]: handleInsertChatMessage,
-    [InsertGroupChatMessages.type]: handleInsertGroupChatMessage,
     [SyncHavedReadLatestMessage.type]: handleSyncHavedReadLatestMessage,
     [InitChatData.type]: handleInitChatData,
     [CreateGroup.type]: handleCreateGroup,
@@ -169,18 +167,6 @@ function* handleCreateGroup(action: PayloadAction<GroupBasicInfo>) {
         }),
       ),
     );
-  } catch (error: unknown) {
-    console.error(error);
-  }
-}
-// 接收群信息
-function* handleInsertGroupChatMessage(action: PayloadAction<Message>) {
-  try {
-    if (!action.payload) {
-      return;
-    }
-
-    yield put(insertGroupMessages([action.payload]));
   } catch (error: unknown) {
     console.error(error);
   }
