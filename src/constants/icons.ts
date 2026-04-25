@@ -23,7 +23,8 @@ export type IconName =
   | "logOut"
   | "addFriend"
   | "selected"
-  | "unselected";
+  | "unselected"
+  | "keyboard";
 
 export const Icon: Record<IconName, IconNames> = {
   brand: "daoban-copy",
@@ -49,4 +50,5 @@ export const Icon: Record<IconName, IconNames> = {
   addFriend: "tianjiahaoyou_o",
   selected: "shixinyuanquan",
   unselected: "kongxinyuandian",
+  keyboard: "ic_comment_keyboard",
 };

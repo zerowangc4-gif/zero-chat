@@ -1,4 +1,4 @@
-export const Emojis = {
+export const Emojis: Record<number, string> = {
   0: "😀",
   1: "😃",
   2: "😄",
