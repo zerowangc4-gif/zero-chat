@@ -1,17 +1,12 @@
-import React, { useMemo, useEffect } from "react";
+import React, { useMemo, useEffect, useRef } from "react";
 import styled, { useTheme, css } from "styled-components/native";
-import { FlatList, Dimensions, Platform, LayoutAnimation, UIManager } from "react-native";
+import { FlatList, Dimensions, Platform, Animated } from "react-native";
 import { Emojis } from "@/constants";
 
 import { MessageListProps } from "./MessageList";
 import { useAppSelector } from "@/store";
 
-if (Platform.OS === "android" && UIManager.setLayoutAnimationEnabledExperimental) {
-  UIManager.setLayoutAnimationEnabledExperimental(true);
-}
-
 const { width } = Dimensions.get("window");
-
 const ITEM_SIZE = width / 8;
 
 const Container = styled.View<{ $height: number }>`
@@ -20,6 +15,8 @@ const Container = styled.View<{ $height: number }>`
     overflow: hidden;
   `}
 `;
+
+const AnimatedContainer = Animated.createAnimatedComponent(Container);
 
 const EmojiWrapper = styled.Pressable`
   width: ${ITEM_SIZE}px;
@@ -31,7 +28,6 @@ const EmojiWrapper = styled.Pressable`
 const EmojiText = styled.Text`
   ${({ theme }) => css`
     font-size: ${theme.typography.size.md}px;
-    /* 修正 Android Emoji 渲染偏置 */
     include-font-padding: false;
     text-align-vertical: center;
   `}
@@ -41,25 +37,30 @@ export function EmojiPanel({ onSelectEmoji }: Pick<MessageListProps, "onSelectEm
   const theme = useTheme();
   const { keyboardHeight } = useAppSelector(state => state.user.inputConfig);
 
-  const emojiPanelHeight = keyboardHeight || theme.size.xxxl;
+  const targetHeight = keyboardHeight || theme.size.xxxl;
 
   const emojiData = useMemo(() => Object.values(Emojis), []);
 
+  const animValue = useRef(new Animated.Value(0)).current;
+
   useEffect(() => {
-    LayoutAnimation.configureNext({
-      duration: 300,
-      create: {
-        type: LayoutAnimation.Types.easeInEaseOut,
-        property: LayoutAnimation.Properties.opacity,
-      },
-      update: {
-        type: LayoutAnimation.Types.easeInEaseOut,
-      },
-    });
-  }, []);
+    Animated.timing(animValue, {
+      toValue: 1,
+      duration: 250,
+      useNativeDriver: false,
+    }).start();
+  }, [animValue]);
+
+  const animatedStyle = {
+    height: animValue.interpolate({
+      inputRange: [0, 1],
+      outputRange: [0, targetHeight],
+    }),
+    opacity: animValue,
+  };
 
   return (
-    <Container $height={emojiPanelHeight}>
+    <AnimatedContainer $height={targetHeight} style={animatedStyle}>
       <FlatList
         data={emojiData}
         numColumns={8}
@@ -83,6 +84,6 @@ export function EmojiPanel({ onSelectEmoji }: Pick<MessageListProps, "onSelectEm
           </EmojiWrapper>
         )}
       />
-    </Container>
+    </AnimatedContainer>
   );
 }
