@@ -11,7 +11,9 @@ export function ChatHeader({ handleGoBack }: Props) {
   const route = useAppRoute<typeof ROUTES.Chat>();
   const { friends, haveJoinGroups } = useAppSelector(state => state.chat);
   const { address } = route.params;
-  const { name } = friends[address] || haveJoinGroups[address];
+
+  const name = friends[address] ? friends[address].alias : haveJoinGroups[address].name;
+
   return (
     <Header
       leftElement={

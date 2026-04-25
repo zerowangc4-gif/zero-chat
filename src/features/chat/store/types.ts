@@ -38,14 +38,13 @@ export interface TargetMsg {
   sessionSeqNum: number;
   status: MessageStatus;
 }
-export interface ChatSession {
-  address: string;
-  publicKey: string;
-  name: string;
-  avatarSeed: string;
-  time: number;
+
+export interface ChatSession extends UserInfo {
+  alias?: string;
+  timestamp: number;
   lastMsg: string;
 }
+
 export interface EditableProperty {
   label: string;
   fieldKey: string;

@@ -27,7 +27,9 @@ export function useChars() {
 
     return Object.keys({ ...friends, ...haveJoinGroups })
       .map((address: string) => {
-        const { avatarSeed, publicKey, name, timestamp } = friends[address] || haveJoinGroups[address];
+        const { avatarSeed, publicKey, timestamp } = friends[address] || haveJoinGroups[address];
+        const name = friends[address] ? friends[address].alias : haveJoinGroups[address].name;
+
         const message: Message = currentLastMsgMap[address];
         return {
           address: address,
@@ -35,10 +37,10 @@ export function useChars() {
           name: name,
           avatarSeed: avatarSeed,
           lastMsg: message?.content?.text || "",
-          time: message?.timestamp || timestamp,
+          timestamp: message?.timestamp || timestamp,
         };
       })
-      .sort((sessionA, sessionB) => sessionB.time - sessionA.time);
+      .sort((sessionA, sessionB) => sessionB.timestamp - sessionA.timestamp);
   }, [friends, haveJoinGroups, lastMessageMap]);
 
   //  跳转到聊天页面
