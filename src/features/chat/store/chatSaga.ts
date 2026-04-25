@@ -102,7 +102,7 @@ function* handleInsertChatMessage() {
     const results: UserInfo[] = yield all(strangerIds.map(id => call(searchUserResult, id)));
 
     const newUserInfos = results.map((item: UserInfo) => {
-      return { ...item, timestamp: Date.now() };
+      return { ...item, alias: item.name, timestamp: Date.now() };
     });
 
     yield put(addFriends(newUserInfos));

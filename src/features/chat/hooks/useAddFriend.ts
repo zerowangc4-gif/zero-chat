@@ -46,8 +46,12 @@ export function useAddFriend() {
 
   const handleAddFriend = () => {
     if (!userInfo) return;
-    dispatch(addFriends([{ ...userInfo, timestamp: Date.now() }]));
 
+    const isExistingFriend = !!friends[userInfo.address];
+
+    if (!isExistingFriend) {
+      dispatch(addFriends([{ ...userInfo, alias: userInfo.name, timestamp: Date.now() }]));
+    }
     navigation.replace(ROUTES.Chat, {
       address: userInfo.address,
     });
