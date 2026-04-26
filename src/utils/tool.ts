@@ -1,3 +1,5 @@
+import { t } from "i18next";
+
 import { MNEMONIC_PROTOCOL_PREFIX } from "@/constants";
 
 // 获取加密后的助记词
@@ -17,8 +19,7 @@ export const validatePassword = (password: string): boolean => {
   return PASSWORD_REGEX.test(password);
 };
 
-// 获取标准时间
-
+// 规范化时间
 export const getFormatTime = (time: number): string => {
   if (time <= 0) return "";
 
@@ -30,15 +31,32 @@ export const getFormatTime = (time: number): string => {
 
   if (isSameDay) {
     const hours = date.getHours();
-    const period = hours < 12 ? "上午" : "下午";
-    const displayHours = hours % 12 || 12; // 12小时制转换
     const minutes = date.getMinutes().toString().padStart(2, "0");
-    return `${period} ${displayHours}:${minutes}`;
+    const displayHours = hours % 12 || 12;
+
+    const periodKey = hours < 12 ? "period_am" : "period_pm";
+
+    return t("common.time.template", {
+      period: t(`common.time.${periodKey}`),
+      time: `${displayHours}:${minutes}`,
+    });
   }
 
-  if (isSameYear) {
-    return `${date.getMonth() + 1}月${date.getDate()}日`;
+  const yesterday = new Date();
+  yesterday.setDate(now.getDate() - 1);
+
+  const isYesterday =
+    isSameYear && new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1).toDateString() === date.toDateString();
+
+  if (isYesterday) {
+    return t("common.time.yesterday");
   }
 
-  return `${date.getFullYear()}年${date.getMonth() + 1}月${date.getDate()}日`;
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
+  const year = date.getFullYear();
+
+  return isSameYear
+    ? t("common.time.format_month_day", { month, day })
+    : t("common.time.format_year", { year, month, day });
 };

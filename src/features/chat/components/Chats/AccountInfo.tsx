@@ -5,7 +5,7 @@ import { useAppSelector } from "@/store";
 import { Avatar, Typography } from "@/components";
 import { useSocket } from "@/socket";
 
-const AccountInfoContainer = styled.View`
+const AccountInfoContainer = styled.Pressable`
   flex-direction: row;
   align-items: center;
 `;
@@ -36,7 +36,10 @@ const InfoContent = styled.View`
   `}
 `;
 
-export function AccountInfo() {
+interface Props {
+  handleGoProfile: () => void;
+}
+export function AccountInfo({ handleGoProfile }: Props) {
   const theme = useTheme();
 
   const { user } = useAppSelector(state => state.chat);
@@ -44,7 +47,7 @@ export function AccountInfo() {
   const { isConnected } = useSocket();
 
   return (
-    <AccountInfoContainer>
+    <AccountInfoContainer onPress={handleGoProfile}>
       <AvatarContent>
         <Avatar avatarSeed={user.avatarSeed} size={theme.size.ms} />
         <StatusDot $isConnected={isConnected} />

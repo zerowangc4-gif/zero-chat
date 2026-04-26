@@ -22,6 +22,7 @@ import {
   setHaveJoinGroups,
   setGroupMembers,
   insertGroupMessages,
+  ContentType,
 } from "@/features/chat/store";
 import { all, call, put, select } from "redux-saga/effects";
 import {
@@ -155,7 +156,7 @@ function* handleCreateGroup(action: PayloadAction<GroupBasicInfo>) {
     yield put(setHaveJoinGroups(action.payload));
     const { groupMembersDraft } = yield select(state => state.chat);
 
-    const content = action.payload;
+    const content = action.payload as ContentType;
 
     const memberIds = Object.keys(groupMembersDraft || {});
 

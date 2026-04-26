@@ -13,6 +13,7 @@ export interface MessageListProps {
   closeInputPanel: () => void;
   setInputSelection: React.Dispatch<React.SetStateAction<InputSelection>>;
   inputRef: React.RefObject<TextInput | null>;
+  handleGroupLink: (id: string) => () => void;
   onSend: () => void;
 }
 
@@ -25,13 +26,14 @@ export function MessageList({
   closeInputPanel,
   setInputSelection,
   inputRef,
+  handleGroupLink,
   onSend,
 }: MessageListProps) {
   return (
     <>
       <FlatList
         data={messages}
-        renderItem={({ item }) => <MessageItem {...item} />}
+        renderItem={({ item }) => <MessageItem handleGroupLink={handleGroupLink} message={item} />}
         keyExtractor={item => item.id}
         inverted
         showsVerticalScrollIndicator={false}

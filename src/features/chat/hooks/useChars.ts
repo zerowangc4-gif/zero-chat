@@ -9,6 +9,7 @@ import {
   ChatSession,
   clearGroupMembersDraft,
   clearGroupBasicSettingDraft,
+  setUserDraft,
 } from "../store";
 import { Icon } from "@/constants";
 import { OverlayLayer } from "@/components";
@@ -36,7 +37,7 @@ export function useChars() {
           publicKey: publicKey,
           name: name,
           avatarSeed: avatarSeed,
-          lastMsg: message?.content?.text || "",
+          lastMsg: message?.content?.text || t("chat.invite_text", { groupName: message?.content.name }),
           timestamp: message?.timestamp || timestamp,
         };
       })
@@ -70,6 +71,14 @@ export function useChars() {
       dispatch(setActiveChatId(""));
       dispatch(clearGroupMembersDraft());
       dispatch(clearGroupBasicSettingDraft());
+      dispatch(
+        setUserDraft({
+          address: "",
+          publicKey: "",
+          name: "",
+          avatarSeed: "",
+        }),
+      );
     }, [dispatch]),
   );
 
@@ -94,5 +103,18 @@ export function useChars() {
     { iconName: Icon.chat, text: t("chat.menu_item_start_group"), onPress: handleCreateGroup },
   ];
 
-  return { handlePressItem, handleAddFriend, chatSessions, menuItems, isMenuVisible, handleShowChatsMenu };
+  // 跳转到个人详情页
+  const handleGoProfile = () => {
+    navigation.navigate(ROUTES.Profile);
+  };
+
+  return {
+    handlePressItem,
+    handleAddFriend,
+    chatSessions,
+    menuItems,
+    isMenuVisible,
+    handleShowChatsMenu,
+    handleGoProfile,
+  };
 }

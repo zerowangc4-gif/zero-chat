@@ -24,7 +24,11 @@ export type IconName =
   | "addFriend"
   | "selected"
   | "unselected"
-  | "keyboard";
+  | "keyboard"
+  | "msFail"
+  | "msPending"
+  | "msDelivered"
+  | "msRead";
 
 export const Icon: Record<IconName, IconNames> = {
   brand: "daoban-copy",
@@ -51,4 +55,8 @@ export const Icon: Record<IconName, IconNames> = {
   selected: "shixinyuanquan",
   unselected: "kongxinyuandian",
   keyboard: "ic_comment_keyboard",
+  msFail: "error",
+  msPending: "Loading",
+  msDelivered: "check",
+  msRead: "DONE_ALL",
 };

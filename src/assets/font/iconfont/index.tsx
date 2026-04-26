@@ -4,6 +4,10 @@
 import React, { FunctionComponent } from 'react';
 import { ViewProps } from 'react-native';
 import { GProps } from 'react-native-svg';
+import IconCheck from './IconCheck';
+import IconDoneAll from './IconDoneAll';
+import IconError from './IconError';
+import IconLoading from './IconLoading';
 import IconIcCommentKeyboard from './IconIcCommentKeyboard';
 import IconShixinyuanquan from './IconShixinyuanquan';
 import IconKongxinyuandian from './IconKongxinyuandian';
@@ -31,6 +35,10 @@ import IconIconEyeOpenCopy from './IconIconEyeOpenCopy';
 import IconIconEyeCloseCopy from './IconIconEyeCloseCopy';
 import IconDaobanCopy from './IconDaobanCopy';
 import IconXiangzuojiantou from './IconXiangzuojiantou';
+export { default as IconCheck } from './IconCheck';
+export { default as IconDoneAll } from './IconDoneAll';
+export { default as IconError } from './IconError';
+export { default as IconLoading } from './IconLoading';
 export { default as IconIcCommentKeyboard } from './IconIcCommentKeyboard';
 export { default as IconShixinyuanquan } from './IconShixinyuanquan';
 export { default as IconKongxinyuandian } from './IconKongxinyuandian';
@@ -59,7 +67,7 @@ export { default as IconIconEyeCloseCopy } from './IconIconEyeCloseCopy';
 export { default as IconDaobanCopy } from './IconDaobanCopy';
 export { default as IconXiangzuojiantou } from './IconXiangzuojiantou';
 
-export type IconNames = 'ic_comment_keyboard' | 'shixinyuanquan' | 'kongxinyuandian' | 'tianjiahaoyou_o' | 'tuichu' | 'fuzhi-' | 'sangedian1' | 'saoyisao' | 'shangcheng' | 'zengjiatianjiajiahao' | 'sangedian' | 'sousuo1' | 'qingchu' | 'jiahao_o' | 'erweima' | 'youjiantou' | 'duoyuyan' | 'shezhi' | 'fasongxiaoxi' | 'shengyin' | 'xiaolian' | 'wode' | 'gl-bubble' | 'icon-eye-open-copy' | 'icon-eye-close-copy' | 'daoban-copy' | 'xiangzuojiantou';
+export type IconNames = 'check' | 'DONE_ALL' | 'error' | 'Loading' | 'ic_comment_keyboard' | 'shixinyuanquan' | 'kongxinyuandian' | 'tianjiahaoyou_o' | 'tuichu' | 'fuzhi-' | 'sangedian1' | 'saoyisao' | 'shangcheng' | 'zengjiatianjiajiahao' | 'sangedian' | 'sousuo1' | 'qingchu' | 'jiahao_o' | 'erweima' | 'youjiantou' | 'duoyuyan' | 'shezhi' | 'fasongxiaoxi' | 'shengyin' | 'xiaolian' | 'wode' | 'gl-bubble' | 'icon-eye-open-copy' | 'icon-eye-close-copy' | 'daoban-copy' | 'xiangzuojiantou';
 
 interface Props extends GProps, ViewProps {
   name: IconNames;
@@ -69,60 +77,68 @@ interface Props extends GProps, ViewProps {
 
 let IconFont: FunctionComponent<Props> = ({ name, ...rest }) => {
   switch (name) {
+    case 'check':
+      return <IconCheck key="1" {...rest} />;
+    case 'DONE_ALL':
+      return <IconDoneAll key="2" {...rest} />;
+    case 'error':
+      return <IconError key="3" {...rest} />;
+    case 'Loading':
+      return <IconLoading key="4" {...rest} />;
     case 'ic_comment_keyboard':
-      return <IconIcCommentKeyboard key="1" {...rest} />;
+      return <IconIcCommentKeyboard key="5" {...rest} />;
     case 'shixinyuanquan':
-      return <IconShixinyuanquan key="2" {...rest} />;
+      return <IconShixinyuanquan key="6" {...rest} />;
     case 'kongxinyuandian':
-      return <IconKongxinyuandian key="3" {...rest} />;
+      return <IconKongxinyuandian key="7" {...rest} />;
     case 'tianjiahaoyou_o':
-      return <IconTianjiahaoyouO key="4" {...rest} />;
+      return <IconTianjiahaoyouO key="8" {...rest} />;
     case 'tuichu':
-      return <IconTuichu key="5" {...rest} />;
+      return <IconTuichu key="9" {...rest} />;
     case 'fuzhi-':
-      return <IconFuzhi key="6" {...rest} />;
+      return <IconFuzhi key="10" {...rest} />;
     case 'sangedian1':
-      return <IconSangedian1 key="7" {...rest} />;
+      return <IconSangedian1 key="11" {...rest} />;
     case 'saoyisao':
-      return <IconSaoyisao key="8" {...rest} />;
+      return <IconSaoyisao key="12" {...rest} />;
     case 'shangcheng':
-      return <IconShangcheng key="9" {...rest} />;
+      return <IconShangcheng key="13" {...rest} />;
     case 'zengjiatianjiajiahao':
-      return <IconZengjiatianjiajiahao key="10" {...rest} />;
+      return <IconZengjiatianjiajiahao key="14" {...rest} />;
     case 'sangedian':
-      return <IconSangedian key="11" {...rest} />;
+      return <IconSangedian key="15" {...rest} />;
     case 'sousuo1':
-      return <IconSousuo1 key="12" {...rest} />;
+      return <IconSousuo1 key="16" {...rest} />;
     case 'qingchu':
-      return <IconQingchu key="13" {...rest} />;
+      return <IconQingchu key="17" {...rest} />;
     case 'jiahao_o':
-      return <IconJiahaoO key="14" {...rest} />;
+      return <IconJiahaoO key="18" {...rest} />;
     case 'erweima':
-      return <IconErweima key="15" {...rest} />;
+      return <IconErweima key="19" {...rest} />;
     case 'youjiantou':
-      return <IconYoujiantou key="16" {...rest} />;
+      return <IconYoujiantou key="20" {...rest} />;
     case 'duoyuyan':
-      return <IconDuoyuyan key="17" {...rest} />;
+      return <IconDuoyuyan key="21" {...rest} />;
     case 'shezhi':
-      return <IconShezhi key="18" {...rest} />;
+      return <IconShezhi key="22" {...rest} />;
     case 'fasongxiaoxi':
-      return <IconFasongxiaoxi key="19" {...rest} />;
+      return <IconFasongxiaoxi key="23" {...rest} />;
     case 'shengyin':
-      return <IconShengyin key="20" {...rest} />;
+      return <IconShengyin key="24" {...rest} />;
     case 'xiaolian':
-      return <IconXiaolian key="21" {...rest} />;
+      return <IconXiaolian key="25" {...rest} />;
     case 'wode':
-      return <IconWode key="22" {...rest} />;
+      return <IconWode key="26" {...rest} />;
     case 'gl-bubble':
-      return <IconGlBubble key="23" {...rest} />;
+      return <IconGlBubble key="27" {...rest} />;
     case 'icon-eye-open-copy':
-      return <IconIconEyeOpenCopy key="24" {...rest} />;
+      return <IconIconEyeOpenCopy key="28" {...rest} />;
     case 'icon-eye-close-copy':
-      return <IconIconEyeCloseCopy key="25" {...rest} />;
+      return <IconIconEyeCloseCopy key="29" {...rest} />;
     case 'daoban-copy':
-      return <IconDaobanCopy key="26" {...rest} />;
+      return <IconDaobanCopy key="30" {...rest} />;
     case 'xiangzuojiantou':
-      return <IconXiangzuojiantou key="27" {...rest} />;
+      return <IconXiangzuojiantou key="31" {...rest} />;
   }
 
   return null;

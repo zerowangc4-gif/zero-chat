@@ -4,7 +4,7 @@ import { useChat } from "../hooks";
 
 export function Chat() {
   const {
-    messages,
+    formatMessages,
     onSend,
     handleGoBack,
     msg,
@@ -14,13 +14,15 @@ export function Chat() {
     closeInputPanel,
     setInputSelection,
     inputRef,
+    handleGroupLink,
+    handleGoNextScreen,
   } = useChat();
   return (
     <BaseScreen>
-      <ChatHeader handleGoBack={handleGoBack} />
+      <ChatHeader handleGoBack={handleGoBack} handleGoNextScreen={handleGoNextScreen} />
       <Main hasHeader={true} enableKeyboardAvoiding={true}>
         <MessageList
-          messages={messages}
+          messages={formatMessages}
           msg={msg}
           onSend={onSend}
           showEmoji={showEmoji}
@@ -29,6 +31,7 @@ export function Chat() {
           closeInputPanel={closeInputPanel}
           setInputSelection={setInputSelection}
           inputRef={inputRef}
+          handleGroupLink={handleGroupLink}
         />
       </Main>
     </BaseScreen>

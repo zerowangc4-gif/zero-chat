@@ -1,11 +1,26 @@
 import { createAction, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Message, TargetMsg, UserInfo, FriendInfo, GroupBasicInfo, GroupBasicProperty, State } from "./types";
+import {
+  Message,
+  TargetMsg,
+  UserInfo,
+  UserInfoProperty,
+  FriendInfo,
+  GroupBasicInfo,
+  GroupBasicProperty,
+  State,
+} from "./types";
 import { MESSAGE_STATUS, STATUS_WEIGHT } from "@/constants";
 import { sortMessages } from "../utils";
 
 const initialState: State = {
   userId: "",
   user: {
+    address: "",
+    publicKey: "",
+    name: "",
+    avatarSeed: "",
+  },
+  userDraft: {
     address: "",
     publicKey: "",
     name: "",
@@ -32,6 +47,13 @@ const chatSlice = createSlice({
     setUserInfo: (state, action: PayloadAction<UserInfo>) => {
       state.user = action.payload;
     },
+    setUserDraft: (state, action: PayloadAction<UserInfo>) => {
+      state.userDraft = action.payload;
+    },
+    setUserDraftProperty: (state, action: PayloadAction<UserInfoProperty>) => {
+      const { fieldKey, value } = action.payload;
+      state.userDraft[fieldKey] = value;
+    },
     addFriends: (state, action: PayloadAction<FriendInfo[]>) => {
       state.friends = state.friends || {};
       action.payload.forEach((item: FriendInfo) => {
@@ -57,7 +79,7 @@ const chatSlice = createSlice({
     },
     setGroupMembers(state, action: PayloadAction<UserInfo[]>) {
       state.groupMembers = state.groupMembers || {};
-      action.payload.forEach((item: FriendInfo) => {
+      action.payload.forEach((item: UserInfo) => {
         state.groupMembers[item.address] = item;
       });
     },
@@ -153,6 +175,8 @@ export const {
   updateHaveReadUserLatestMessage,
   addFriends,
   setGroupMembers,
+  setUserDraft,
+  setUserDraftProperty,
 } = chatSlice.actions;
 
 export const SendChatMessage = createAction<Message>("chat/SendMessage");

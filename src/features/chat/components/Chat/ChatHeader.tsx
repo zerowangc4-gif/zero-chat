@@ -5,8 +5,9 @@ import { useAppSelector } from "@/store";
 import { Icon } from "@/constants";
 interface Props {
   handleGoBack: () => void;
+  handleGoNextScreen: () => void;
 }
-export function ChatHeader({ handleGoBack }: Props) {
+export function ChatHeader({ handleGoBack, handleGoNextScreen }: Props) {
   const theme = useTheme();
   const route = useAppRoute<typeof ROUTES.Chat>();
   const { friends, haveJoinGroups } = useAppSelector(state => state.chat);
@@ -25,7 +26,14 @@ export function ChatHeader({ handleGoBack }: Props) {
         />
       }
       title={name}
-      rightElement={<ActionIcon size={theme.typography.size.lg} color={theme.colors.baseInverse} name={Icon.check} />}
+      rightElement={
+        <ActionIcon
+          size={theme.typography.size.lg}
+          color={theme.colors.baseInverse}
+          name={Icon.check}
+          onPress={handleGoNextScreen}
+        />
+      }
     />
   );
 }
