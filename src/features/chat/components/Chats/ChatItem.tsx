@@ -63,10 +63,10 @@ export function ChatItem(props: Props) {
       <Content>
         <TitleRow>
           <Typography type="main" weight="bold">
-            {props.name}
+            {props.alias}
           </Typography>
           <Typography type="caption" color={theme.colors.secondaryWord}>
-            {getFormatTime(props.time)}
+            {getFormatTime(props.timestamp)}
           </Typography>
         </TitleRow>
         <Typography type="caption" color={theme.colors.secondaryWord}>

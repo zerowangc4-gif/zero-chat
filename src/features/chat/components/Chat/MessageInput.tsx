@@ -3,6 +3,8 @@ import styled, { css, useTheme } from "styled-components/native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { MessageListProps } from "./MessageList";
 import { Icon } from "@/constants";
+import { EmojiPanel } from "./EmojiPanel";
+
 const Container = styled.View<{
   $bottom: number;
 }>`
@@ -52,32 +54,62 @@ const Right = styled.View`
   }}
 `;
 
-export function MessageInput({ msg, onSend }: Omit<MessageListProps, "messages">) {
+export function MessageInput({
+  msg,
+  showEmoji,
+  handleEmojiPanel,
+  onSelectEmoji,
+  closeInputPanel,
+  setInputSelection,
+  inputRef,
+  onSend,
+}: Omit<MessageListProps, "messages">) {
   const theme = useTheme();
   const insets = useSafeAreaInsets();
+
+  const actions = [
+    {
+      name: showEmoji ? Icon.keyboard : Icon.meme,
+      size: theme.typography.size.lg,
+      color: theme.colors.baseInverse,
+      onPress: handleEmojiPanel,
+    },
+    {
+      name: msg.value.trim() ? Icon.send : Icon.chatAdd,
+      size: theme.typography.size.lg,
+      color: msg.value.trim() ? theme.palette.brand : theme.colors.baseInverse,
+      onPress: msg.value.trim() ? onSend : null,
+    },
+  ];
+
   return (
-    <Container $bottom={insets.bottom + theme.spacing.step.xs}>
-      <Left>
-        <ActionIcon name={Icon.voice} size={theme.typography.size.lg} color={theme.colors.baseInverse} />
-      </Left>
-      <Center>
-        <BaseInput
-          $size="md"
-          multiline={true}
-          scrollEnabled={false}
-          textAlignVertical="center"
-          value={msg.value}
-          onChangeText={msg.onChange}
-        />
-      </Center>
-      <Right>
-        <ActionIcon name={Icon.meme} size={theme.typography.size.lg} color={theme.colors.baseInverse} />
-        {msg.value.trim() ? (
-          <ActionIcon name={Icon.send} size={theme.typography.size.lg} color={theme.palette.brand} onPress={onSend} />
-        ) : (
-          <ActionIcon name={Icon.chatAdd} size={theme.typography.size.lg} color={theme.colors.baseInverse} />
-        )}
-      </Right>
-    </Container>
+    <>
+      <Container $bottom={insets.bottom + theme.spacing.step.xs}>
+        <Left>
+          <ActionIcon name={Icon.voice} size={theme.typography.size.lg} color={theme.colors.baseInverse} />
+        </Left>
+        <Center>
+          <BaseInput
+            $size="md"
+            ref={inputRef}
+            value={msg.value}
+            onChangeText={msg.onChange}
+            onFocus={closeInputPanel}
+            onSelectionChange={e => setInputSelection(e.nativeEvent.selection)}
+            multiline={true}
+            scrollEnabled={false}
+            textAlignVertical="center"
+          />
+        </Center>
+        <Right>
+          {actions.map(item => {
+            return (
+              <ActionIcon key={item.name} name={item.name} size={item.size} color={item.color} onPress={item.onPress} />
+            );
+          })}
+        </Right>
+      </Container>
+      {showEmoji && <EmojiPanel onSelectEmoji={onSelectEmoji} />}
+    </>
   );
 }
