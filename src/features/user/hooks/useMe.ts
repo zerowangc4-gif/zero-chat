@@ -8,7 +8,7 @@ import { useApp } from "@/hooks";
 import { LogOut } from "../store";
 
 export function useMe() {
-  const { dispatch } = useApp();
+  const { dispatch, navigation, ROUTES } = useApp();
   const { user } = useAppSelector(state => state.chat);
   const [isMenuVisible, setMenuVisible] = useState<boolean>(false);
 
@@ -45,5 +45,10 @@ export function useMe() {
     { iconName: Icon.logOut, text: t("user.log_out"), onPress: handleLogOut },
   ];
 
-  return { handleShowMeMenu, isMenuVisible, menuItems };
+  // 跳转到个人详情页
+  const handleGoProfile = () => {
+    navigation.navigate(ROUTES.Profile);
+  };
+
+  return { handleShowMeMenu, isMenuVisible, menuItems, handleGoProfile };
 }

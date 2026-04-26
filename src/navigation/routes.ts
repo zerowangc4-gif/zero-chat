@@ -19,6 +19,8 @@ export const ROUTES = {
   CommonEditor: "CommonEditor",
   FriendSettings: "FriendSettings",
   GroupInfo: "GroupInfo",
+  Profile: "Profile",
+  UserCommonEditor: "UserCommonEditor",
 } as const;
 
 export type RouteNames = (typeof ROUTES)[keyof typeof ROUTES];

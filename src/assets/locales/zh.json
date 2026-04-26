@@ -61,7 +61,12 @@
   "user": {
     "copy_id": "复制账号",
     "log_out": "退出登录",
-    "copy_account_sucess_toast": "账号复制成功"
+    "copy_account_sucess_toast": "账号复制成功",
+    "profile": "个人信息",
+    "avatar": "头像",
+    "name": "名字",
+    "address": "地址",
+    "set_user_name": "修改名字"
   },
   "common": {
     "loading": "加载中",

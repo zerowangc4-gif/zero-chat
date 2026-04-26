@@ -60,7 +60,12 @@
   "user": {
     "copy_id": "Copy Account ID",
     "log_out": "Log Out",
-    "copy_account_sucess_toast": "Successfully copied account"
+    "copy_account_sucess_toast": "Successfully copied account",
+    "profile": "Personal Info",
+    "avatar": "Avatar",
+    "name": "Name",
+    "address": "Address",
+    "set_user_name": "Edit Name"
   },
   "common": {
     "loading": "loading",

@@ -3,10 +3,21 @@ import { AccountInfo, HeaderAction, ChatList, ChatsMenu } from "../components";
 import { useChars } from "../hooks";
 
 export function Chats() {
-  const { handlePressItem, handleAddFriend, chatSessions, isMenuVisible, handleShowChatsMenu, menuItems } = useChars();
+  const {
+    handlePressItem,
+    handleAddFriend,
+    chatSessions,
+    isMenuVisible,
+    handleShowChatsMenu,
+    menuItems,
+    handleGoProfile,
+  } = useChars();
   return (
     <BaseScreen>
-      <Header leftElement={<AccountInfo />} rightElement={<HeaderAction handleShowChatsMenu={handleShowChatsMenu} />} />
+      <Header
+        leftElement={<AccountInfo handleGoProfile={handleGoProfile} />}
+        rightElement={<HeaderAction handleShowChatsMenu={handleShowChatsMenu} />}
+      />
       <Main hasHeader={true}>
         {isMenuVisible && (
           <Portal id="chats-menu">

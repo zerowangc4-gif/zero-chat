@@ -2,10 +2,13 @@ import { BaseScreen, Header, Main, Portal } from "@/components";
 import { UserInfo, MeRightAction, MeMenu } from "../components";
 import { useMe } from "../hooks";
 export function Me() {
-  const { handleShowMeMenu, isMenuVisible, menuItems } = useMe();
+  const { handleShowMeMenu, isMenuVisible, menuItems, handleGoProfile } = useMe();
   return (
     <BaseScreen>
-      <Header leftElement={<UserInfo />} rightElement={<MeRightAction handleShowMeMenu={handleShowMeMenu} />} />
+      <Header
+        leftElement={<UserInfo handleGoProfile={handleGoProfile} />}
+        rightElement={<MeRightAction handleShowMeMenu={handleShowMeMenu} />}
+      />
       <Main hasHeader={true}>
         {isMenuVisible && (
           <Portal id="me-menu">

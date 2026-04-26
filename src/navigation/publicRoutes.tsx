@@ -2,6 +2,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { ROUTES } from "./routes";
 
 import { Chat, AddFriend, StartGroup, GroupSettings, CommonEditor, FriendSettings, GroupInfo } from "@/features/chat";
+import { Profile, UserCommonEditor } from "@/features/user";
 
 const Stack = createNativeStackNavigator();
 
@@ -53,6 +54,20 @@ function renderPublicRoutes() {
       <Stack.Screen
         name={ROUTES.GroupInfo}
         component={GroupInfo}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name={ROUTES.Profile}
+        component={Profile}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name={ROUTES.UserCommonEditor}
+        component={UserCommonEditor}
         options={{
           headerShown: false,
         }}
