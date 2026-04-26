@@ -53,7 +53,8 @@
     "set_group_intro": "设置群简介",
     "set_group_name_placeholder": "请输入群名称",
     "set_group_intro_placeholder": "介绍一下这个群吧",
-    "create_group_fail": "群组创建失败，请稍后再试"
+    "create_group_fail": "群组创建失败，请稍后再试",
+    "invite_text": "邀请加入群聊：{{groupName}}"
   },
   "user": {
     "copy_id": "复制账号",
@@ -63,6 +64,14 @@
   "common": {
     "loading": "加载中",
     "cancel": "取消",
-    "go_to_settings": "设置"
+    "go_to_settings": "设置",
+    "time": {
+      "template": "{{period}} {{time}}",
+      "period_am": "上午",
+      "period_pm": "下午",
+      "yesterday": "昨天",
+      "format_year": "{{year}}年{{month}}月{{day}}日",
+      "format_month_day": "{{month}}月{{day}}日"
+    }
   }
 }

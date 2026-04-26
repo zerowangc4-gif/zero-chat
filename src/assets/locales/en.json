@@ -52,7 +52,8 @@
     "set_group_intro": "Set Group Intro",
     "set_group_name_placeholder": "Enter group name",
     "set_group_intro_placeholder": "Tell us about this group",
-    "create_group_fail": "Failed to create group. Please try again later"
+    "create_group_fail": "Failed to create group. Please try again later",
+    "invite_text": "Invited you to join: {{groupName}}"
   },
   "user": {
     "copy_id": "Copy Account ID",
@@ -62,6 +63,14 @@
   "common": {
     "loading": "loading",
     "cancel": "Cancel",
-    "go_to_settings": "Settings"
+    "go_to_settings": "Settings",
+    "time": {
+      "template": "{{time}} {{period}}",
+      "period_am": "AM",
+      "period_pm": "PM",
+      "yesterday": "Yesterday",
+      "format_year": "{{month}}/{{day}}/{{year}}",
+      "format_month_day": "{{month}}/{{day}}"
+    }
   }
 }

@@ -7,6 +7,8 @@ import {
   updateMessagesStatus,
   SyncHavedReadLatestMessage,
   setActiveChatId,
+  JoinGroup,
+  ContentType,
 } from "@/features/chat";
 import { useAppSelector } from "@/store";
 
@@ -22,7 +24,25 @@ export function useChat() {
 
   const { chatMap, haveReadUserMap, haveJoinGroups, user } = useAppSelector(state => state.chat);
 
-  const messages = useMemo(() => sortMessages(Object.values(chatMap[address] || [])) || [], [address, chatMap]);
+  const chatMessages = chatMap[address];
+
+  const messages = useMemo(() => sortMessages(Object.values(chatMessages || [])) || [], [chatMessages]);
+
+  //对于消息时间的是否显示加一个判断值不影响其他的逻辑，仅在渲染的时候起效
+  const formatMessages = useMemo(() => {
+    const TIME_THRESHOLD = 5 * 60 * 1000;
+
+    return messages.map((item: Message, index: number) => {
+      const prev = index < messages.length - 1 ? messages[index + 1] : null;
+
+      const isTimeout = prev ? item.timestamp - prev.timestamp > TIME_THRESHOLD : true;
+
+      return {
+        ...item,
+        showTime: isTimeout,
+      };
+    });
+  }, [messages]);
 
   const haveReadlatestMessage = useMemo(() => haveReadUserMap[address] || [], [address, haveReadUserMap]);
 
@@ -65,7 +85,7 @@ export function useChat() {
 
   // 发送信息
   const onSend = async () => {
-    const content = { text: msg.value.trim() };
+    const content = { text: msg.value.trim() } as ContentType;
 
     const message: Message = handleFormatMessage(address, content, MESSAGE_TYPE.text);
 
@@ -145,12 +165,31 @@ export function useChat() {
     };
   }, []);
 
+  // 处理点击群邀请链接
+  const handleGroupLink = (id: string) => () => {
+    const groupId = chatMessages?.[id]?.content?.address;
+
+    if (groupId) {
+      return;
+    }
+
+    const isJoinGroup = haveJoinGroups?.[groupId];
+
+    if (isJoinGroup) {
+      navigation.replace(ROUTES.Chat, {
+        address: groupId,
+      });
+    } else {
+      dispatch(JoinGroup(chatMessages[id].content));
+    }
+  };
+
   return {
     address,
     onSend,
     msg,
     theme,
-    messages,
+    formatMessages,
     handleGoBack,
     handleEmojiPanel,
     showEmoji,
@@ -158,5 +197,6 @@ export function useChat() {
     closeInputPanel,
     setInputSelection,
     inputRef,
+    handleGroupLink,
   };
 }

@@ -36,7 +36,9 @@ const Center = styled.View`
     return css`
       flex: 1;
       min-height: ${theme.size.sm}px;
-      border-radius: 12px;
+      border-radius: ${theme.radii.scale.lg}px;
+      padding-left: ${theme.spacing.step.sm}px;
+      padding-right: ${theme.spacing.step.sm}px;
       background-color: ${theme.colors.base};
       overflow: hidden;
     `;
@@ -63,7 +65,7 @@ export function MessageInput({
   setInputSelection,
   inputRef,
   onSend,
-}: Omit<MessageListProps, "messages">) {
+}: Omit<MessageListProps, "messages" | "handleGroupLink">) {
   const theme = useTheme();
   const insets = useSafeAreaInsets();
 

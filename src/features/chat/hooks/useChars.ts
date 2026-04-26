@@ -36,7 +36,7 @@ export function useChars() {
           publicKey: publicKey,
           name: name,
           avatarSeed: avatarSeed,
-          lastMsg: message?.content?.text || "",
+          lastMsg: message?.content?.text || t("chat.invite_text", { groupName: message?.content.name }),
           timestamp: message?.timestamp || timestamp,
         };
       })

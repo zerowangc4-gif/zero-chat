@@ -1,7 +1,9 @@
 import { store } from "@/store";
 import { hexlify, randomBytes } from "ethers";
 import { Message, ContentType } from "@/features/chat";
-import { MESSAGE_STATUS, MessageType } from "@/constants";
+import { MESSAGE_STATUS, MessageType, MessageStatus, Icon } from "@/constants";
+
+import { useTheme } from "styled-components/native";
 
 export function generateId(length: number = 16): string {
   return hexlify(randomBytes(length));
@@ -46,4 +48,38 @@ export function handleFormatMessage(toId: string, content: ContentType, type: Me
   };
 
   return message;
+}
+
+export function useMessageStatus(status: MessageStatus) {
+  const theme = useTheme();
+
+  const iconConfig = {
+    [MESSAGE_STATUS.FAILED]: {
+      name: Icon.msFail,
+      size: theme.typography.size.xs,
+      color: theme.palette.error,
+    },
+    [MESSAGE_STATUS.PENDING]: {
+      name: Icon.msPending,
+      size: theme.typography.size.xs,
+      color: theme.colors.secondaryWord,
+    },
+    [MESSAGE_STATUS.SENT_TO_SERVER]: {
+      name: Icon.msDelivered,
+      size: theme.typography.size.xs,
+      color: theme.colors.secondaryWord,
+    },
+    [MESSAGE_STATUS.DELIVERED]: {
+      name: Icon.msDelivered,
+      size: theme.typography.size.xs,
+      color: theme.colors.secondaryWord,
+    },
+    [MESSAGE_STATUS.READ]: {
+      name: Icon.msRead,
+      size: theme.typography.size.xs,
+      color: theme.colors.secondaryWord,
+    },
+  };
+
+  return iconConfig[status];
 }

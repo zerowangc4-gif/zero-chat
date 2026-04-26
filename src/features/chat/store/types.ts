@@ -61,7 +61,7 @@ interface TextContent {
   text: string;
 }
 
-interface ContentType extends TextContent, GroupBasicInfo {}
+export interface ContentType extends TextContent, GroupBasicInfo {}
 
 export interface Message {
   id: string;
@@ -72,6 +72,7 @@ export interface Message {
   timestamp: number;
   type: MessageType;
   status: MessageStatus;
+  showTime?: boolean;
 }
 
 export interface State {

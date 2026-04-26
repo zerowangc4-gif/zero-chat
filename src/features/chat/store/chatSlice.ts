@@ -57,7 +57,7 @@ const chatSlice = createSlice({
     },
     setGroupMembers(state, action: PayloadAction<UserInfo[]>) {
       state.groupMembers = state.groupMembers || {};
-      action.payload.forEach((item: FriendInfo) => {
+      action.payload.forEach((item: UserInfo) => {
         state.groupMembers[item.address] = item;
       });
     },

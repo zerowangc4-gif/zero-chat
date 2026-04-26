@@ -25,6 +25,7 @@ export const palette = {
   },
   brand: "#07C160",
   error: "#FF3B30",
+  link: "#2563EB",
 };
 export const lightColors = {
   /** 基础色 */
@@ -47,6 +48,10 @@ export const lightColors = {
   secondaryWord: palette.gray["500"],
   /** 禁用按钮背景色 */
   disableButtonBg: palette.gray["300"],
+  /** 对方消息气泡  */
+  chatBubbleOther: palette.gray["200"],
+  /** 我方消息气泡) */ //
+  chatBubbleMe: palette.brand,
 } as const;
 
 export const darkColors: typeof lightColors = {
@@ -70,4 +75,8 @@ export const darkColors: typeof lightColors = {
   secondaryWord: palette.gray["500"],
   /** 禁用按钮背景色 */
   disableButtonBg: palette.gray["300"],
+  /** 对方消息气泡  */
+  chatBubbleOther: palette.gray["200"],
+  /** 我方消息气泡) */ //
+  chatBubbleMe: palette.brand,
 };
