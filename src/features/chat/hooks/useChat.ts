@@ -169,10 +169,6 @@ export function useChat() {
   const handleGroupLink = (id: string) => () => {
     const groupId = chatMessages?.[id]?.content?.address;
 
-    if (groupId) {
-      return;
-    }
-
     const isJoinGroup = haveJoinGroups?.[groupId];
 
     if (isJoinGroup) {
