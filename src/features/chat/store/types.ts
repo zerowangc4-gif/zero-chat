@@ -57,6 +57,11 @@ export interface GroupBasicProperty {
   value: string;
 }
 
+export interface UserInfoProperty {
+  fieldKey: string;
+  value: string;
+}
+
 interface TextContent {
   text: string;
 }

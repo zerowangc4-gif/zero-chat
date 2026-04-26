@@ -3,11 +3,11 @@ import { ActionIcon, BaseScreen, Header, Main } from "@/components";
 import { useProfile } from "../hooks";
 import { Icon } from "@/constants";
 import { useTheme } from "styled-components/native";
-import { UserInfoItem } from "../components";
+import { UserInfoItem, UserSettingRightAction } from "../components";
 
 export function Profile() {
   const theme = useTheme();
-  const { handleGoBack, handleItemPress, userInfoConfigs } = useProfile();
+  const { handleGoBack, handleItemPress, userInfoConfigs, hasChanges, handleUpdateUserInfo } = useProfile();
 
   return (
     <BaseScreen>
@@ -21,6 +21,7 @@ export function Profile() {
           />
         }
         title={t("user.profile")}
+        rightElement={hasChanges && <UserSettingRightAction handleUpdateUserInfo={handleUpdateUserInfo} />}
       />
       <Main hasHeader={true}>
         {userInfoConfigs.map(item => (
