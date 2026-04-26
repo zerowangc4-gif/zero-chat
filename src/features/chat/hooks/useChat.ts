@@ -22,7 +22,7 @@ export function useChat() {
 
   const { address } = route.params;
 
-  const { chatMap, haveReadUserMap, haveJoinGroups, user } = useAppSelector(state => state.chat);
+  const { chatMap, haveReadUserMap, haveJoinGroups, friends, user } = useAppSelector(state => state.chat);
 
   const chatMessages = chatMap[address];
 
@@ -184,6 +184,15 @@ export function useChat() {
     }
   };
 
+  // 跳转到群详情或者好友设置
+  const handleGoNextScreen = () => {
+    if (friends[address]) {
+      navigation.navigate(ROUTES.FriendSettings, { address: address });
+    } else {
+      navigation.navigate(ROUTES.GroupInfo, { address: address });
+    }
+  };
+
   return {
     address,
     onSend,
@@ -198,5 +207,6 @@ export function useChat() {
     setInputSelection,
     inputRef,
     handleGroupLink,
+    handleGoNextScreen,
   };
 }

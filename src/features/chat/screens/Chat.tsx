@@ -15,10 +15,11 @@ export function Chat() {
     setInputSelection,
     inputRef,
     handleGroupLink,
+    handleGoNextScreen,
   } = useChat();
   return (
     <BaseScreen>
-      <ChatHeader handleGoBack={handleGoBack} />
+      <ChatHeader handleGoBack={handleGoBack} handleGoNextScreen={handleGoNextScreen} />
       <Main hasHeader={true} enableKeyboardAvoiding={true}>
         <MessageList
           messages={formatMessages}

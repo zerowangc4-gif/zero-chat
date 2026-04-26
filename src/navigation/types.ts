@@ -24,6 +24,8 @@ export type RootStackParamList = {
   [ROUTES.StartGroup]: undefined;
   [ROUTES.GroupSettings]: undefined;
   [ROUTES.CommonEditor]: { fieldKey: string; title: string; placeholder: string };
+  [ROUTES.FriendSettings]: { address: string };
+  [ROUTES.GroupInfo]: { address: string };
 };
 
 // 平铺所有路由，用于全局导航提示

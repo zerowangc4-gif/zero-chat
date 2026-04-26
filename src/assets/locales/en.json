@@ -53,7 +53,9 @@
     "set_group_name_placeholder": "Enter group name",
     "set_group_intro_placeholder": "Tell us about this group",
     "create_group_fail": "Failed to create group. Please try again later",
-    "invite_text": "Invited you to join: {{groupName}}"
+    "invite_text": "Invited you to join: {{groupName}}",
+    "friend_settings": "Friend Settings",
+    "group_detail": "Group Details"
   },
   "user": {
     "copy_id": "Copy Account ID",
