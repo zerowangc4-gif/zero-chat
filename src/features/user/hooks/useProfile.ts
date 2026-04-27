@@ -1,5 +1,5 @@
 import Clipboard from "@react-native-clipboard/clipboard";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useApp } from "@/hooks";
 import { t } from "i18next";
 import { useAppSelector } from "@/store";
