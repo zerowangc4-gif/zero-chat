@@ -1,7 +1,14 @@
 import { Socket } from "socket.io-client";
 import { store } from "@/store";
 import { MessageService } from "./messageService";
-import { InsertChatMessages, SyncGroupChatMessages, updateMessagesStatus, TargetMsg } from "@/features/chat";
+import {
+  InsertChatMessages,
+  SyncGroupChatMessages,
+  updateMessagesStatus,
+  TargetMsg,
+  UserInfo,
+  setFriendInfos,
+} from "@/features/chat";
 import { EVENT } from "./events";
 
 export const setupSocketListeners = (socket: Socket) => {
@@ -25,5 +32,11 @@ export const setupSocketListeners = (socket: Socket) => {
   //同步信息状态
   socket.on(EVENT.chat.syncMessageStatus, (data: TargetMsg) => {
     store.dispatch(updateMessagesStatus(data));
+  });
+  //同步好友信息
+  socket.on(EVENT.user.updateFriendInfo, (data: UserInfo) => {
+    if (data) {
+      store.dispatch(setFriendInfos([data]));
+    }
   });
 };

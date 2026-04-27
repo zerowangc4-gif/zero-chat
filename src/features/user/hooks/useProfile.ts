@@ -1,15 +1,18 @@
 import Clipboard from "@react-native-clipboard/clipboard";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useApp } from "@/hooks";
 import { t } from "i18next";
 import { useAppSelector } from "@/store";
 import { Toast } from "@/components";
-import { setUserDraft, setUserDraftProperty } from "@/features/chat";
+import { setUserDraft, setUserDraftProperty, setUserInfo } from "@/features/chat";
+import { updateUserInfo } from "../services";
 
 export function useProfile() {
   const { navigation, dispatch, ROUTES } = useApp();
 
   const { user, userDraft } = useAppSelector(state => state.chat);
+
+  const [isUpdateInfo, setIsUpdateInfo] = useState(false);
 
   // 在跳转到个人信息页面的时候，初始化个人信息草稿箱
   useEffect(() => {
@@ -18,7 +21,9 @@ export function useProfile() {
 
   // 判断用户是否由信息更新
   const hasChanges = useMemo(() => {
-    if (!userDraft || !user) return false;
+    const isDraftValid = Object.values(userDraft).every(value => value.trim() !== "");
+
+    if (!userDraft || !user || !isDraftValid) return false;
 
     const isNameChanged = userDraft.name !== user.name;
     const isAvatarChanged = userDraft.avatarSeed !== user.avatarSeed;
@@ -75,8 +80,21 @@ export function useProfile() {
       isLink: false,
     },
   ];
-  const handleUpdateUserInfo = () => {
-    console.log("点击更新个人信息");
+  // 更新自己的头像或者名字
+  const handleUpdateUserInfo = async () => {
+    if (!hasChanges || isUpdateInfo) return;
+    try {
+      setIsUpdateInfo(true);
+      const result = await updateUserInfo(userDraft);
+      dispatch(setUserInfo(result));
+      Toast.success(t("user.info_update_success"));
+      navigation.goBack();
+    } catch (err: unknown) {
+      Toast.error(t("user.info_update_failed"));
+      console.error(err);
+    } finally {
+      setIsUpdateInfo(false);
+    }
   };
 
   return { handleGoBack, handleItemPress, userInfoConfigs, hasChanges, handleUpdateUserInfo };
