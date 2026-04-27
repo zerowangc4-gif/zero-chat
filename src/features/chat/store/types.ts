@@ -13,8 +13,8 @@ export interface UserInfo {
 }
 
 export interface FriendInfo extends UserInfo {
-  timestamp: number;
-  alias: string;
+  timestamp?: number;
+  alias?: string;
 }
 
 export interface GroupBasicInfo {

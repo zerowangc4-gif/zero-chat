@@ -18,11 +18,12 @@ import {
   TargetMsg,
   UserInfo,
   updateMessagesStatus,
-  addFriends,
+  setFriends,
   setHaveJoinGroups,
   setGroupMembers,
   insertGroupMessages,
   ContentType,
+  setFriendInfos,
 } from "@/features/chat/store";
 import { all, call, put, select } from "redux-saga/effects";
 import {
@@ -36,6 +37,7 @@ import {
   syncGroupChatMessages,
   sendGroupMessage,
 } from "@/features/chat/services";
+import { addFriends, getAllFriendInfo } from "@/features/user";
 import { MESSAGE_STATUS, MESSAGE_TYPE } from "@/constants";
 import { handleFormatMessage } from "../utils";
 export function* watchChatSaga() {
@@ -53,6 +55,7 @@ export function* watchChatSaga() {
 
 // 上线时初始化状态
 function* handleInitChatData() {
+  yield call(handleGetAllFriendInfo);
   yield call(handleInsertChatMessage);
   yield call(handleSyncGroupChatMessages);
   yield call(handleSyncMessageStatus);
@@ -71,6 +74,17 @@ function* handleSendChatMessage(action: PayloadAction<Message>) {
     yield put(updateMessage(result));
   } catch (error: unknown) {
     yield put(updateMessage({ ...message, status: MESSAGE_STATUS.FAILED }));
+    console.error(error);
+  }
+}
+
+// 上线时同步好友信息
+function* handleGetAllFriendInfo() {
+  try {
+    const result: UserInfo[] = yield call(getAllFriendInfo);
+    yield put(setFriends(result));
+    yield put(setFriendInfos(result));
+  } catch (error: unknown) {
     console.error(error);
   }
 }
@@ -100,13 +114,16 @@ function* handleInsertChatMessage() {
       new Set(result.map((msg: Message) => msg.fromId).filter((id: string) => !friends[id])),
     );
 
-    const results: UserInfo[] = yield all(strangerIds.map(id => call(searchUserResult, id)));
+    if (strangerIds.length > 0) {
+      const results: UserInfo[] = yield call(addFriends, strangerIds);
 
-    const newUserInfos = results.map((item: UserInfo) => {
-      return { ...item, alias: item.name, timestamp: Date.now() };
-    });
-
-    yield put(addFriends(newUserInfos));
+      if (results && results.length > 0) {
+        const newUserInfos = results.map((item: UserInfo) => {
+          return { ...item, alias: item.name, timestamp: Date.now() };
+        });
+        yield put(setFriends(newUserInfos));
+      }
+    }
 
     yield put(insertMessages(result));
 

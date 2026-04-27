@@ -1,1 +1,1 @@
-export * from "./setProfile";
+export * from "./userServices";

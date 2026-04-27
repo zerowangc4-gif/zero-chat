@@ -54,10 +54,24 @@ const chatSlice = createSlice({
       const { fieldKey, value } = action.payload;
       state.userDraft[fieldKey] = value;
     },
-    addFriends: (state, action: PayloadAction<FriendInfo[]>) => {
+    setFriends: (state, action: PayloadAction<FriendInfo[]>) => {
       state.friends = state.friends || {};
       action.payload.forEach((item: FriendInfo) => {
-        state.friends[item.address] = item;
+        state.friends[item.address] = { ...state.friends[item.address], ...item };
+      });
+    },
+    setFriendInfos: (state, action: PayloadAction<UserInfo[]>) => {
+      action.payload.forEach(item => {
+        const existingFriend = state.friends[item.address];
+
+        if (existingFriend) {
+          if (!existingFriend.alias || existingFriend.alias === existingFriend.name) {
+            existingFriend.alias = item.name;
+          }
+
+          existingFriend.name = item.name;
+          existingFriend.avatarSeed = item.avatarSeed;
+        }
       });
     },
     clearGroupMembersDraft: state => {
@@ -173,7 +187,8 @@ export const {
   updateMessage,
   updateMessagesStatus,
   updateHaveReadUserLatestMessage,
-  addFriends,
+  setFriends,
+  setFriendInfos,
   setGroupMembers,
   setUserDraft,
   setUserDraftProperty,

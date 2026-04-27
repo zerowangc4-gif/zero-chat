@@ -65,7 +65,10 @@
     "avatar": "Avatar",
     "name": "Name",
     "address": "Address",
-    "set_user_name": "Edit Name"
+    "set_user_name": "Edit Name",
+    "add_friend_error": "Failed to add friend",
+    "info_update_success": "Information updated successfully",
+    "info_update_failed": "Failed to update information"
   },
   "common": {
     "loading": "loading",

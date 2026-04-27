@@ -1,9 +1,13 @@
 import { useEffect, useState } from "react";
+import { t } from "i18next";
 import { useApp, useInput } from "@/hooks";
+import { Toast } from "@/components";
 import { searchUserResult } from "../services";
-import { UserInfo, addFriends } from "../store";
+import { UserInfo, setFriends } from "../store";
 import { isValidEthereumAddress } from "@/utils";
 import { useAppSelector } from "@/store";
+import { addFriends } from "@/features/user";
+
 export function useAddFriend() {
   const { navigation, dispatch, ROUTES } = useApp();
 
@@ -44,17 +48,32 @@ export function useAddFriend() {
     handleUserInfo(value);
   }, [friendAddress.value, friends, user.address]);
 
-  const handleAddFriend = () => {
-    if (!userInfo) return;
+  // 添加好友
+  const handleAddFriend = async () => {
+    try {
+      if (!userInfo) return;
 
-    const isExistingFriend = !!friends[userInfo.address];
+      const isExistingFriend = !!friends[userInfo.address];
 
-    if (!isExistingFriend) {
-      dispatch(addFriends([{ ...userInfo, alias: userInfo.name, timestamp: Date.now() }]));
+      if (!isExistingFriend) {
+        const result: UserInfo[] = await addFriends([userInfo.address]);
+
+        if (result?.length > 0) {
+          const friendInfos = result.map(item => ({
+            ...item,
+            alias: item.name,
+            timestamp: Date.now(),
+          }));
+          dispatch(setFriends(friendInfos));
+        }
+      }
+      navigation.replace(ROUTES.Chat, {
+        address: userInfo.address,
+      });
+    } catch (err: unknown) {
+      Toast.error(t("user.add_friend_error"));
+      console.error(err);
     }
-    navigation.replace(ROUTES.Chat, {
-      address: userInfo.address,
-    });
   };
 
   // 返回到上一页面
