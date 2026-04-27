@@ -37,8 +37,11 @@ export function useChars() {
           publicKey: publicKey,
           name: name,
           avatarSeed: avatarSeed,
-          lastMsg: message?.content?.text || t("chat.invite_text", { groupName: message?.content.name }),
-          timestamp: message?.timestamp || timestamp,
+          lastMsg:
+            message?.content?.text || message?.content.name
+              ? t("chat.invite_text", { groupName: message?.content.name })
+              : "",
+          timestamp: message?.timestamp || timestamp || Date.now(),
         };
       })
       .sort((sessionA, sessionB) => sessionB.timestamp - sessionA.timestamp);
