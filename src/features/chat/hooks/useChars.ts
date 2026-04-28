@@ -14,6 +14,7 @@ import {
 import { Icon } from "@/constants";
 import { OverlayLayer } from "@/components";
 import { useFocusEffect } from "@react-navigation/native";
+import { getLastFormatMessage } from "../utils";
 
 export function useChars() {
   const { dispatch, navigation, ROUTES } = useApp();
@@ -37,10 +38,7 @@ export function useChars() {
           publicKey: publicKey,
           name: name,
           avatarSeed: avatarSeed,
-          lastMsg:
-            message?.content?.text || message?.content.name
-              ? t("chat.invite_text", { groupName: message?.content.name })
-              : "",
+          lastMsg: getLastFormatMessage(message?.content),
           timestamp: message?.timestamp || timestamp || Date.now(),
         };
       })
