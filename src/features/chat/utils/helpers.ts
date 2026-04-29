@@ -1,3 +1,4 @@
+import { t } from "i18next";
 import { store } from "@/store";
 import { hexlify, randomBytes } from "ethers";
 import { Message, ContentType } from "@/features/chat";
@@ -82,4 +83,17 @@ export function useMessageStatus(status: MessageStatus) {
   };
 
   return iconConfig[status];
+}
+
+export function getLastFormatMessage(content?: ContentType): string {
+  if (!content) {
+    return "";
+  }
+  if (content.text) {
+    return content?.text;
+  }
+
+  if (content.ownerId && content.name) {
+    return t("chat.invite_text", { groupName: content.name });
+  }
 }

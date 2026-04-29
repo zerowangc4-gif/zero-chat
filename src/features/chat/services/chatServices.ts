@@ -1,5 +1,5 @@
 import { apiClient } from "@/api";
-import { Message, TargetMsg, UserInfo, GroupBasicInfo } from "@/features/chat";
+import { Message, TargetMsg, UserInfo, GroupBasicInfo, GroupAllInfo } from "@/features/chat";
 
 // 发送消息
 export async function sendMessage(message: Message): Promise<Message> {
@@ -68,6 +68,15 @@ export async function sendGroupMessage(message: Message): Promise<Message> {
 export async function syncGroupChatMessages(activeChatId: string): Promise<Message[]> {
   const result: Message[] = await apiClient.post("/api/chat/syncGroupChatMessages", {
     activeChatId: activeChatId,
+  });
+  return result;
+}
+
+//获取群所有信息
+export async function getGroupAllInfo(groupId: string, ownerId: string): Promise<GroupAllInfo> {
+  const result: GroupAllInfo = await apiClient.post("/api/chat/getGroupAllInfo", {
+    groupId: groupId,
+    ownerId: ownerId,
   });
   return result;
 }

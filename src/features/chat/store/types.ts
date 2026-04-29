@@ -28,6 +28,12 @@ export interface GroupBasicInfo {
   timestamp: number;
 }
 
+export interface GroupAllInfo {
+  Owner: UserInfo;
+  groupMembers: UserInfo[];
+  groupOwnerMembers: UserInfo[];
+}
+
 export interface InputProps {
   value: string;
   onChange: (text: string) => void;
