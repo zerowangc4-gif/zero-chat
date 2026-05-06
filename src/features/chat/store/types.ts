@@ -90,6 +90,7 @@ export interface State {
   userId: string;
   user: UserInfo;
   userDraft: UserInfo;
+  groupBasicInfoDraft: GroupBasicInfo;
   friends: Record<string, FriendInfo>;
   groupMembers: Record<string, UserInfo>;
   groupMembersDraft: Record<string, UserInfo>;

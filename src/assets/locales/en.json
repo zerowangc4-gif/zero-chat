@@ -55,7 +55,12 @@
     "create_group_fail": "Failed to create group. Please try again later",
     "invite_text": "Invited you to join: {{groupName}}",
     "friend_settings": "Friend Settings",
-    "group_detail": "Group Details"
+    "group_detail": "Group Details",
+    "groupName": "Group Name",
+    "groupIntro": "Group Description",
+    "groupOwner": "Group Owner",
+    "groupAdmins": "Group Admins",
+    "groupMembers": "Group Owner"
   },
   "user": {
     "copy_id": "Copy Account ID",

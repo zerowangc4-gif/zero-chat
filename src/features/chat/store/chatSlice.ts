@@ -26,6 +26,16 @@ const initialState: State = {
     name: "",
     avatarSeed: "",
   },
+  groupBasicInfoDraft: {
+    seqNum: 0,
+    ownerId: "",
+    address: "",
+    publicKey: "",
+    name: "",
+    avatarSeed: "",
+    groupIntro: "",
+    timestamp: 0,
+  },
   friends: {},
   groupMembers: {},
   groupMembersDraft: {},
@@ -49,6 +59,9 @@ const chatSlice = createSlice({
     },
     setUserDraft: (state, action: PayloadAction<UserInfo>) => {
       state.userDraft = action.payload;
+    },
+    setGroupBasicInfoDraft: (state, action: PayloadAction<GroupBasicInfo>) => {
+      state.groupBasicInfoDraft = action.payload;
     },
     setUserDraftProperty: (state, action: PayloadAction<UserInfoProperty>) => {
       const { fieldKey, value } = action.payload;
@@ -192,6 +205,7 @@ export const {
   setGroupMembers,
   setUserDraft,
   setUserDraftProperty,
+  setGroupBasicInfoDraft,
 } = chatSlice.actions;
 
 export const SendChatMessage = createAction<Message>("chat/SendMessage");

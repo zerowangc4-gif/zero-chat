@@ -56,7 +56,12 @@
     "create_group_fail": "群组创建失败，请稍后再试",
     "invite_text": "邀请加入群聊：{{groupName}}",
     "friend_settings": "朋友设置",
-    "group_detail": "群组详情"
+    "group_detail": "群组详情",
+    "groupName": "群聊名称",
+    "groupIntro": "群介绍",
+    "groupOwner": "群主",
+    "groupAdmins": "群管理员",
+    "groupMembers": "群成员"
   },
   "user": {
     "copy_id": "复制账号",
