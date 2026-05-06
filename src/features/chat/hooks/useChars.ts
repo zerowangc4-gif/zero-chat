@@ -10,6 +10,7 @@ import {
   clearGroupMembersDraft,
   clearGroupBasicSettingDraft,
   setUserDraft,
+  setGroupBasicInfoDraft,
 } from "../store";
 import { Icon } from "@/constants";
 import { OverlayLayer } from "@/components";
@@ -78,6 +79,18 @@ export function useChars() {
           publicKey: "",
           name: "",
           avatarSeed: "",
+        }),
+      );
+      dispatch(
+        setGroupBasicInfoDraft({
+          seqNum: 0,
+          ownerId: "",
+          address: "",
+          publicKey: "",
+          name: "",
+          avatarSeed: "",
+          groupIntro: "",
+          timestamp: 0,
         }),
       );
     }, [dispatch]),
