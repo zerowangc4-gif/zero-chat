@@ -15,6 +15,7 @@ export interface MessageListProps {
   inputRef: React.RefObject<TextInput | null>;
   handleGroupLink: (id: string) => () => void;
   onSend: () => void;
+  handleOpenRedPacket: () => void;
 }
 
 export function MessageList({
@@ -28,6 +29,7 @@ export function MessageList({
   inputRef,
   handleGroupLink,
   onSend,
+  handleOpenRedPacket,
 }: MessageListProps) {
   return (
     <>
@@ -48,6 +50,7 @@ export function MessageList({
         setInputSelection={setInputSelection}
         inputRef={inputRef}
         onSend={onSend}
+        handleOpenRedPacket={handleOpenRedPacket}
       />
     </>
   );

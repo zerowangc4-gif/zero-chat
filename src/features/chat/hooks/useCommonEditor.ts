@@ -1,23 +1,67 @@
 import { useApp, useInput } from "@/hooks";
 import { useAppSelector } from "@/store";
-import { setGroupBasicSettingDraft } from "../store";
+import { setGroupBasicSettingDraft, setUserDraftProperty, setHaveJoinGroups } from "../store";
+import { updateGroupInfo } from "../services";
+import { Toast } from "@/components";
+import { t } from "i18next";
+import { useRoute } from "@react-navigation/native";
+import { ROUTES } from "@/navigation";
+
 export function useCommonEditor() {
   const { theme, navigation, route, dispatch } = useApp();
-  const { fieldKey, title, placeholder } = route.params;
-  const GroupBasicSettingInfo = useAppSelector(state => state.chat.groupBasicSettingDraft) || {};
+  const navRoute = useRoute();
+  const { fieldKey, title, placeholder, groupId } = route.params;
+  const target =
+    route.params?.target || (navRoute.name === ROUTES.UserCommonEditor ? "user" : "groupCreate");
+  const { groupBasicSettingDraft, userDraft, haveJoinGroups } = useAppSelector(state => state.chat);
 
-  const activeProperty = useInput(GroupBasicSettingInfo[fieldKey || ""]);
+  const currentValue =
+    target === "user"
+      ? String((userDraft as unknown as Record<string, string> | undefined)?.[fieldKey] || "")
+      : target === "groupEdit"
+        ? String(
+            (haveJoinGroups?.[groupId || ""] as unknown as Record<string, unknown> | undefined)?.[fieldKey] || "",
+          )
+        : groupBasicSettingDraft?.[fieldKey] || "";
 
-  // 返回到上一页面
+  const activeProperty = useInput(currentValue);
+
   const handleGoBack = () => {
     navigation.goBack();
   };
 
-  // 修改属性
-  const handleSetProperty = () => {
+  const handleSetProperty = async () => {
+    if (target === "user") {
+      dispatch(
+        setUserDraftProperty({
+          fieldKey,
+          value: activeProperty.value,
+        }),
+      );
+      navigation.goBack();
+      return;
+    }
+
+    if (target === "groupEdit" && groupId) {
+      try {
+        const result = await updateGroupInfo({
+          groupId,
+          [fieldKey]: activeProperty.value,
+        });
+        dispatch(setHaveJoinGroups(result));
+        Toast.success(t("user.info_update_success"));
+      } catch (err: unknown) {
+        Toast.error(t("user.info_update_failed"));
+        console.error(err);
+        return;
+      }
+      navigation.goBack();
+      return;
+    }
+
     dispatch(
       setGroupBasicSettingDraft({
-        fieldKey: fieldKey,
+        fieldKey,
         value: activeProperty.value,
       }),
     );
@@ -31,7 +75,7 @@ export function useCommonEditor() {
     fieldKey,
     activeProperty,
     handleGoBack,
-    GroupBasicSettingInfo,
+    currentValue,
     handleSetProperty,
   };
 }

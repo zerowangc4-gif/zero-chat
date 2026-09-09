@@ -1,11 +1,10 @@
 import styled, { css, useTheme } from "styled-components/native";
 import IconFont from "@/assets/font/iconfont";
-import { Typography } from "@/components";
+import { BaseInput } from "@/components";
 import { t } from "i18next";
-import { Props } from "./ChatList";
 import { Icon } from "@/constants";
 
-const Container = styled.Pressable`
+const Container = styled.View`
   ${({ theme }) => {
     return css`
       height: ${theme.size.lg}px;
@@ -28,6 +27,7 @@ const SearchContent = styled.View`
     `;
   }}
 `;
+
 const IconBox = styled.View`
   ${({ theme }) => {
     return css`
@@ -37,17 +37,33 @@ const IconBox = styled.View`
   }}
 `;
 
-export function SearchEntry({ handleAddFriend }: Pick<Props, "handleAddFriend">) {
+const InputBox = styled.View`
+  flex: 1;
+  justify-content: center;
+`;
+
+interface Props {
+  keyword: string;
+  setKeyword: (value: string) => void;
+}
+
+export function SearchEntry({ keyword, setKeyword }: Props) {
   const theme = useTheme();
   return (
-    <Container onPress={handleAddFriend}>
+    <Container>
       <SearchContent>
         <IconBox>
           <IconFont name={Icon.search} size={theme.typography.size.md} color={theme.colors.secondaryWord} />
         </IconBox>
-        <Typography type="main" color={theme.colors.secondaryWord}>
-          {t("chat.placeholder_search_address")}
-        </Typography>
+        <InputBox>
+          <BaseInput
+            $size="sm"
+            value={keyword}
+            onChangeText={setKeyword}
+            placeholder={t("chat.search_sessions")}
+            placeholderTextColor={theme.colors.secondaryWord}
+          />
+        </InputBox>
       </SearchContent>
     </Container>
   );

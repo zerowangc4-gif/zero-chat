@@ -1,42 +1,50 @@
+import { Alert } from "react-native";
 import { ROUTES } from "@/navigation";
 import { useApp, useInput } from "@/hooks";
 import {
   Message,
   SendChatMessage,
   SendGroupMessage,
+  SendRedPacket,
   updateMessagesStatus,
   SyncHavedReadLatestMessage,
   setActiveChatId,
-  JoinGroup,
   ContentType,
+  getGroupAllInfo,
+  joinGroup,
+  setHaveJoinGroups,
 } from "@/features/chat";
 import { useAppSelector } from "@/store";
+import { Toast } from "@/components";
+import { payUsdc, payUsdcSplit, getBaseWalletBalances } from "@/features/wallet";
+import { BASE_CHAIN } from "@/constants";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { MESSAGE_STATUS, MESSAGE_TYPE } from "@/constants";
 import { sortMessages, handleFormatMessage } from "../utils";
 import { BackHandler, Keyboard, TextInput } from "react-native";
+import { t } from "i18next";
+import { setWallet } from "../store";
+
 export function useChat() {
   const { route, dispatch, theme, navigation } = useApp<typeof ROUTES.Chat>();
 
   const { address } = route.params;
 
-  const { chatMap, haveReadUserMap, haveJoinGroups, friends, user } = useAppSelector(state => state.chat);
+  const { chatMap, haveReadUserMap, haveJoinGroups, friends, user, wallet } = useAppSelector(state => state.chat);
 
   const chatMessages = chatMap[address];
+  const isGroupChat = !!haveJoinGroups[address];
 
   const messages = useMemo(() => sortMessages(Object.values(chatMessages || [])) || [], [chatMessages]);
 
-  //对于消息时间的是否显示加一个判断值不影响其他的逻辑，仅在渲染的时候起效
   const formatMessages = useMemo(() => {
     const TIME_THRESHOLD = 5 * 60 * 1000;
 
     return messages.map((item: Message, index: number) => {
       const prev = index < messages.length - 1 ? messages[index + 1] : null;
-
       const isTimeout = prev ? item.timestamp - prev.timestamp > TIME_THRESHOLD : true;
-
       return {
         ...item,
         showTime: isTimeout,
@@ -47,16 +55,14 @@ export function useChat() {
   const haveReadlatestMessage = useMemo(() => haveReadUserMap[address] || [], [address, haveReadUserMap]);
 
   const msg = useInput("");
-
+  const redPacketAmount = useInput("");
   const [showEmoji, setShowEmoji] = useState<boolean>(false);
-
+  const [showRedPacket, setShowRedPacket] = useState(false);
+  const [paying, setPaying] = useState(false);
   const [inputSelection, setInputSelection] = useState({ start: 0, end: 0 });
-
   const inputRef = useRef<TextInput | null>(null);
-
   const emojiSubscription = useRef(null);
 
-  // 更新信息已读状态
   useEffect(() => {
     const latestMessage: Message | undefined = messages.find((item: Message) => item.fromId !== user.address);
     if (latestMessage && latestMessage.status !== MESSAGE_STATUS.READ) {
@@ -75,7 +81,6 @@ export function useChat() {
     }
   }, [messages, address, dispatch, haveReadlatestMessage, user.address]);
 
-  // 更新停留在哪个聊天窗口
   useEffect(() => {
     dispatch(setActiveChatId(address));
     return () => {
@@ -83,12 +88,31 @@ export function useChat() {
     };
   }, [address, dispatch]);
 
-  // 发送信息
+  const refreshWallet = useCallback(async () => {
+    try {
+      if (!user.address) {
+        return;
+      }
+      const onChain = await getBaseWalletBalances(user.address);
+      dispatch(
+        setWallet({
+          address: onChain.address,
+          balance: onChain.balance,
+          ethBalance: onChain.ethBalance,
+          earned: wallet?.earned || 0,
+          tokenSymbol: onChain.tokenSymbol,
+          chain: onChain.chain,
+          minAmount: wallet?.minAmount ?? BASE_CHAIN.minAmount,
+        }),
+      );
+    } catch (err) {
+      console.error(err);
+    }
+  }, [dispatch, user.address, wallet?.earned]);
+
   const onSend = async () => {
     const content = { text: msg.value.trim() } as ContentType;
-
     const message: Message = handleFormatMessage(address, content, MESSAGE_TYPE.text);
-
     const isGroupMessage = !!haveJoinGroups[message.toId];
 
     if (isGroupMessage) {
@@ -99,12 +123,10 @@ export function useChat() {
 
     msg.onChange("");
   };
-  // 返回到上一页面
+
   const handleGoBack = () => {
     navigation.goBack();
   };
-
-  // 处理表情面板
 
   const handleEmojiPanel = () => {
     emojiSubscription.current?.remove();
@@ -128,7 +150,6 @@ export function useChat() {
     }
   };
 
-  //选择表情
   const onSelectEmoji = (item: string) => () => {
     const before = msg.value.substring(0, inputSelection.start);
     const after = msg.value.substring(inputSelection.end);
@@ -137,27 +158,24 @@ export function useChat() {
     setInputSelection({ start: nextPos, end: nextPos });
   };
 
-  // 关闭输入页面的面板
   const closeInputPanel = () => {
     setShowEmoji(false);
   };
 
-  // 在退出页面的时候先关闭面板
   const handleBackPress = useCallback(() => {
-    if (showEmoji) {
+    if (showEmoji || showRedPacket) {
       setShowEmoji(false);
+      setShowRedPacket(false);
       return true;
     }
     return false;
-  }, [showEmoji]);
+  }, [showEmoji, showRedPacket]);
 
   useEffect(() => {
     const subscription = BackHandler.addEventListener("hardwareBackPress", handleBackPress);
-
     return () => subscription.remove();
   }, [handleBackPress]);
 
-  // 专门负责在页面销毁时，清理所有残留的订阅
   useEffect(() => {
     return () => {
       emojiSubscription.current?.remove();
@@ -165,27 +183,145 @@ export function useChat() {
     };
   }, []);
 
-  // 处理点击群邀请链接
+  const doJoinGroup = async (content: ContentType) => {
+    const groupId = content.address;
+    if (!groupId || paying) {
+      return;
+    }
+
+    const joinPrice = Number(content.joinPrice || 0);
+    try {
+      setPaying(true);
+      let paymentTxHash: string | undefined;
+
+      if (joinPrice > 0) {
+        if (!content.ownerId) {
+          throw new Error(t("chat.pay_failed"));
+        }
+        Toast.success(t("chat.paying_on_base"));
+        const payment = await payUsdc(content.ownerId, joinPrice);
+        paymentTxHash = payment.paymentTxHash;
+      }
+
+      const result = await joinGroup(groupId, { paymentTxHash });
+      if (result?.address) {
+        dispatch(setHaveJoinGroups(result));
+      }
+      await refreshWallet();
+      navigation.replace(ROUTES.Chat, { address: groupId });
+    } catch (err: unknown) {
+      Toast.error((err as Error).message || t("chat.pay_failed"));
+      console.error(err);
+    } finally {
+      setPaying(false);
+    }
+  };
+
   const handleGroupLink = (id: string) => () => {
-    const groupId = chatMessages?.[id]?.content?.address;
+    const content = chatMessages?.[id]?.content;
+    const groupId = content?.address;
+    if (!groupId) {
+      return;
+    }
 
     const isJoinGroup = haveJoinGroups?.[groupId];
-
     if (isJoinGroup) {
       navigation.replace(ROUTES.Chat, {
         address: groupId,
       });
-    } else {
-      dispatch(JoinGroup(chatMessages[id].content));
+      return;
     }
+
+    const joinPrice = Number(content.joinPrice || 0);
+    if (joinPrice > 0) {
+      Alert.alert(
+        t("chat.paid_group_title"),
+        t("chat.paid_group_confirm", { price: joinPrice, symbol: BASE_CHAIN.tokenSymbol }),
+        [
+          { text: t("common.cancel"), style: "cancel" },
+          {
+            text: t("chat.join_group"),
+            onPress: () => doJoinGroup(content),
+          },
+        ],
+      );
+      return;
+    }
+
+    doJoinGroup(content);
   };
 
-  // 跳转到群详情或者好友设置
   const handleGoNextScreen = () => {
     if (friends[address]) {
       navigation.navigate(ROUTES.FriendSettings, { address: address });
-    } else {
+    } else if (haveJoinGroups[address]) {
       navigation.navigate(ROUTES.GroupInfo, { address: address });
+    }
+  };
+
+  const handleOpenRedPacket = () => {
+    Keyboard.dismiss();
+    setShowEmoji(false);
+    setShowRedPacket(true);
+  };
+
+  const handleSendRedPacket = async () => {
+    const amount = Number(redPacketAmount.value);
+    if (!amount || amount < BASE_CHAIN.minAmount) {
+      Toast.error(t("chat.red_packet_invalid"));
+      return;
+    }
+    if ((wallet?.balance || 0) < amount) {
+      Toast.error(t("chat.red_packet_insufficient"));
+      return;
+    }
+    if (paying) {
+      return;
+    }
+
+    try {
+      setPaying(true);
+      Toast.success(t("chat.paying_on_base"));
+
+      let paymentTxHash: string | undefined;
+      let paymentTxHashes: string[] | undefined;
+
+      if (isGroupChat) {
+        const info = await getGroupAllInfo(address);
+        const recipients = (info.groupMembers || [])
+          .map(item => item.address)
+          .filter(id => id.toLowerCase() !== user.address.toLowerCase());
+        if (recipients.length === 0) {
+          throw new Error(t("chat.red_packet_no_members"));
+        }
+        const payment = await payUsdcSplit(recipients, amount);
+        paymentTxHashes = payment.paymentTxHashes;
+      } else {
+        const payment = await payUsdc(address, amount);
+        paymentTxHash = payment.paymentTxHash;
+        paymentTxHashes = [payment.paymentTxHash];
+      }
+
+      const message = handleFormatMessage(
+        address,
+        {
+          amount,
+          text: t("chat.red_packet"),
+          paymentTxHash,
+          paymentTxHashes,
+          tokenSymbol: BASE_CHAIN.tokenSymbol,
+        },
+        MESSAGE_TYPE.redPacket,
+      );
+      dispatch(SendRedPacket(message));
+      redPacketAmount.onChange("");
+      setShowRedPacket(false);
+      await refreshWallet();
+    } catch (err: unknown) {
+      Toast.error((err as Error).message || t("chat.pay_failed"));
+      console.error(err);
+    } finally {
+      setPaying(false);
     }
   };
 
@@ -204,5 +340,13 @@ export function useChat() {
     inputRef,
     handleGroupLink,
     handleGoNextScreen,
+    handleOpenRedPacket,
+    showRedPacket,
+    setShowRedPacket,
+    redPacketAmount,
+    handleSendRedPacket,
+    wallet,
+    isGroupChat,
+    paying,
   };
 }

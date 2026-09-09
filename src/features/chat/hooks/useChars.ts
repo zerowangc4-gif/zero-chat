@@ -7,30 +7,34 @@ import {
   UserInfo,
   Message,
   ChatSession,
+  ChatType,
   clearGroupMembersDraft,
   clearGroupBasicSettingDraft,
   setUserDraft,
   setGroupBasicInfoDraft,
+  EMPTY_GROUP_BASIC_INFO,
 } from "../store";
 import { Icon } from "@/constants";
 import { OverlayLayer } from "@/components";
 import { useFocusEffect } from "@react-navigation/native";
 import { getLastFormatMessage } from "../utils";
 
-export function useChars() {
+export function useChats() {
   const { dispatch, navigation, ROUTES } = useApp();
 
   const { friends, haveJoinGroups, lastMessageMap } = useAppSelector(state => state.chat);
 
   const [isMenuVisible, setMenuVisible] = useState<boolean>(false);
+  const [keyword, setKeyword] = useState("");
 
-  // 好友列表
   const chatSessions: ChatSession[] = useMemo(() => {
     const currentLastMsgMap = lastMessageMap || {};
 
     return Object.keys({ ...friends, ...haveJoinGroups })
       .map((address: string) => {
-        const { avatarSeed, publicKey, timestamp } = friends[address] || haveJoinGroups[address];
+        const isGroup = !!haveJoinGroups[address];
+        const source = friends[address] || haveJoinGroups[address];
+        const { avatarSeed, publicKey, timestamp } = source;
         const name = friends[address] ? friends[address].alias : haveJoinGroups[address].name;
 
         const message: Message = currentLastMsgMap[address];
@@ -41,33 +45,37 @@ export function useChars() {
           avatarSeed: avatarSeed,
           lastMsg: getLastFormatMessage(message?.content),
           timestamp: message?.timestamp || timestamp || Date.now(),
+          chatType: isGroup ? ChatType.GROUP : ChatType.SINGLE,
         };
       })
+      .filter(session => {
+        if (!keyword.trim()) {
+          return true;
+        }
+        const q = keyword.trim().toLowerCase();
+        return session.name?.toLowerCase().includes(q) || session.address.toLowerCase().includes(q);
+      })
       .sort((sessionA, sessionB) => sessionB.timestamp - sessionA.timestamp);
-  }, [friends, haveJoinGroups, lastMessageMap]);
+  }, [friends, haveJoinGroups, lastMessageMap, keyword]);
 
-  //  跳转到聊天页面
   const handlePressItem = (item: UserInfo) => () => {
     navigation.navigate(ROUTES.Chat, {
       address: item.address,
     });
   };
 
-  //  跳转到加好友页面
   const handleAddFriend = () => {
     navigation.navigate(ROUTES.AddFriend);
     setMenuVisible(false);
     OverlayLayer.hide();
   };
 
-  //  跳转到创建群页面页面
   const handleCreateGroup = () => {
-    navigation.navigate(ROUTES.StartGroup);
+    navigation.navigate(ROUTES.StartGroup, { mode: "create" });
     setMenuVisible(false);
     OverlayLayer.hide();
   };
 
-  //执行清理工作
   useFocusEffect(
     useCallback(() => {
       dispatch(setActiveChatId(""));
@@ -81,29 +89,16 @@ export function useChars() {
           avatarSeed: "",
         }),
       );
-      dispatch(
-        setGroupBasicInfoDraft({
-          seqNum: 0,
-          ownerId: "",
-          address: "",
-          publicKey: "",
-          name: "",
-          avatarSeed: "",
-          groupIntro: "",
-          timestamp: 0,
-        }),
-      );
+      dispatch(setGroupBasicInfoDraft(EMPTY_GROUP_BASIC_INFO));
     }, [dispatch]),
   );
 
-  //  页面卸载的时候关闭遮罩层
   useEffect(() => {
     return () => {
       OverlayLayer.hide();
     };
   }, []);
 
-  //打开遮罩层，和菜单
   const handleShowChatsMenu = () => {
     setMenuVisible(true);
     OverlayLayer.show(() => {
@@ -111,13 +106,11 @@ export function useChars() {
     });
   };
 
-  // 菜单数据
   const menuItems = [
     { iconName: Icon.addFriend, text: t("chat.menu_item_add_friend"), onPress: handleAddFriend },
     { iconName: Icon.chat, text: t("chat.menu_item_start_group"), onPress: handleCreateGroup },
   ];
 
-  // 跳转到个人详情页
   const handleGoProfile = () => {
     navigation.navigate(ROUTES.Profile);
   };
@@ -130,5 +123,9 @@ export function useChars() {
     isMenuVisible,
     handleShowChatsMenu,
     handleGoProfile,
+    keyword,
+    setKeyword,
   };
 }
+
+export const useChars = useChats;

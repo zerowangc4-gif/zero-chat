@@ -21,9 +21,15 @@ export type RootStackParamList = {
   [ROUTES.MainTab]: NavigatorScreenParams<MainTabParamList>;
   [ROUTES.Chat]: { address: string };
   [ROUTES.AddFriend]: undefined;
-  [ROUTES.StartGroup]: undefined;
+  [ROUTES.StartGroup]: { mode?: "create" | "invite"; groupId?: string } | undefined;
   [ROUTES.GroupSettings]: undefined;
-  [ROUTES.CommonEditor]: { fieldKey: string; title: string; placeholder: string };
+  [ROUTES.CommonEditor]: {
+    fieldKey: string;
+    title: string;
+    placeholder: string;
+    target?: "user" | "groupCreate" | "groupEdit";
+    groupId?: string;
+  };
   [ROUTES.FriendSettings]: { address: string };
   [ROUTES.GroupInfo]: { address: string };
   [ROUTES.Profile]: undefined;

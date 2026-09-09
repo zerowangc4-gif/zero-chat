@@ -10,6 +10,7 @@ export const EVENT = {
     chatMessage: "chat_message",
     groupChatMessage: "group_chat_message",
     syncMessageStatus: "sync_message_status",
+    groupRemoved: "group_removed",
   },
   user: {
     updateFriendInfo: "update_friendInfo",

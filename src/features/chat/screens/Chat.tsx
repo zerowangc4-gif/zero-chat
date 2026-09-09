@@ -1,5 +1,5 @@
 import { BaseScreen, Main } from "@/components";
-import { ChatHeader, MessageList } from "../components";
+import { ChatHeader, MessageList, RedPacketModal } from "../components";
 import { useChat } from "../hooks";
 
 export function Chat() {
@@ -16,6 +16,12 @@ export function Chat() {
     inputRef,
     handleGroupLink,
     handleGoNextScreen,
+    handleOpenRedPacket,
+    showRedPacket,
+    setShowRedPacket,
+    redPacketAmount,
+    handleSendRedPacket,
+    wallet,
   } = useChat();
   return (
     <BaseScreen>
@@ -32,8 +38,16 @@ export function Chat() {
           setInputSelection={setInputSelection}
           inputRef={inputRef}
           handleGroupLink={handleGroupLink}
+          handleOpenRedPacket={handleOpenRedPacket}
         />
       </Main>
+      <RedPacketModal
+        visible={showRedPacket}
+        amount={redPacketAmount}
+        balance={wallet?.balance}
+        onClose={() => setShowRedPacket(false)}
+        onSend={handleSendRedPacket}
+      />
     </BaseScreen>
   );
 }
