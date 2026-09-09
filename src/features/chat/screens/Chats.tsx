@@ -1,6 +1,6 @@
 import { BaseScreen, Header, Main, Portal } from "@/components";
 import { AccountInfo, HeaderAction, ChatList, ChatsMenu } from "../components";
-import { useChars } from "../hooks";
+import { useChats } from "../hooks";
 
 export function Chats() {
   const {
@@ -11,7 +11,9 @@ export function Chats() {
     handleShowChatsMenu,
     menuItems,
     handleGoProfile,
-  } = useChars();
+    keyword,
+    setKeyword,
+  } = useChats();
   return (
     <BaseScreen>
       <Header
@@ -24,7 +26,13 @@ export function Chats() {
             <ChatsMenu menuItems={menuItems} />
           </Portal>
         )}
-        <ChatList chatSessions={chatSessions} handlePressItem={handlePressItem} handleAddFriend={handleAddFriend} />
+        <ChatList
+          chatSessions={chatSessions}
+          handlePressItem={handlePressItem}
+          handleAddFriend={handleAddFriend}
+          keyword={keyword}
+          setKeyword={setKeyword}
+        />
       </Main>
     </BaseScreen>
   );

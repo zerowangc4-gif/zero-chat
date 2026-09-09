@@ -14,6 +14,8 @@ import {
   InitChatData,
   CreateGroup,
   JoinGroup,
+  InviteGroupMembers,
+  SendRedPacket,
   updateHaveReadUserLatestMessage,
   TargetMsg,
   UserInfo,
@@ -24,6 +26,8 @@ import {
   insertGroupMessages,
   ContentType,
   setFriendInfos,
+  setWallet,
+  WalletInfo,
 } from "@/features/chat/store";
 import { all, call, put, select } from "redux-saga/effects";
 import {
@@ -36,10 +40,13 @@ import {
   joinGroup,
   syncGroupChatMessages,
   sendGroupMessage,
+  getWallet,
+  sendRedPacket,
 } from "@/features/chat/services";
 import { addFriends, getAllFriendInfo } from "@/features/user";
 import { MESSAGE_STATUS, MESSAGE_TYPE } from "@/constants";
 import { handleFormatMessage } from "../utils";
+
 export function* watchChatSaga() {
   yield onActions({
     [SendChatMessage.type]: handleSendChatMessage,
@@ -49,19 +56,29 @@ export function* watchChatSaga() {
     [InitChatData.type]: handleInitChatData,
     [CreateGroup.type]: handleCreateGroup,
     [JoinGroup.type]: handleJoinGroup,
+    [InviteGroupMembers.type]: handleInviteGroupMembers,
+    [SendRedPacket.type]: handleSendRedPacket,
     [SyncGroupChatMessages.type]: handleSyncGroupChatMessages,
   });
 }
 
-// 上线时初始化状态
 function* handleInitChatData() {
   yield call(handleGetAllFriendInfo);
+  yield call(handleLoadWallet);
   yield call(handleInsertChatMessage);
   yield call(handleSyncGroupChatMessages);
   yield call(handleSyncMessageStatus);
 }
 
-// 发送信息
+function* handleLoadWallet() {
+  try {
+    const wallet: WalletInfo = yield call(getWallet);
+    yield put(setWallet(wallet));
+  } catch (error: unknown) {
+    console.error(error);
+  }
+}
+
 function* handleSendChatMessage(action: PayloadAction<Message>) {
   if (!action.payload) {
     return;
@@ -78,7 +95,6 @@ function* handleSendChatMessage(action: PayloadAction<Message>) {
   }
 }
 
-// 上线时同步好友信息
 function* handleGetAllFriendInfo() {
   try {
     const result: UserInfo[] = yield call(getAllFriendInfo);
@@ -89,7 +105,6 @@ function* handleGetAllFriendInfo() {
   }
 }
 
-// 同步信息
 function* handleInsertChatMessage() {
   try {
     const { activeChatId, friends } = yield select(state => state.chat);
@@ -98,15 +113,19 @@ function* handleInsertChatMessage() {
     if (!result || result.length === 0) {
       return;
     }
-    // 检测邀请
     for (const message of result) {
       switch (message.type) {
-        case MESSAGE_TYPE.joinGroupNotification:
+        case MESSAGE_TYPE.joinGroupNotification: {
+          const joinPrice = Number(message.content?.joinPrice || 0);
+          if (joinPrice > 0) {
+            break;
+          }
           yield call(handleJoinGroup, {
-            payload: message,
+            payload: { content: message.content },
             type: JoinGroup.type,
           });
           break;
+        }
       }
     }
 
@@ -137,7 +156,6 @@ function* handleInsertChatMessage() {
   }
 }
 
-// 同步已经读过的最新信息
 function* handleSyncHavedReadLatestMessage(action: PayloadAction<Message>) {
   try {
     if (!action.payload) {
@@ -151,7 +169,6 @@ function* handleSyncHavedReadLatestMessage(action: PayloadAction<Message>) {
   }
 }
 
-// 同步离线时的信息状态
 function* handleSyncMessageStatus() {
   try {
     const targetMsgs: TargetMsg[] = yield call(syncMessageStatus);
@@ -164,7 +181,6 @@ function* handleSyncMessageStatus() {
   }
 }
 
-// 创建群组
 function* handleCreateGroup(action: PayloadAction<GroupBasicInfo>) {
   try {
     if (!action.payload) {
@@ -172,48 +188,65 @@ function* handleCreateGroup(action: PayloadAction<GroupBasicInfo>) {
     }
     yield put(setHaveJoinGroups(action.payload));
     const { groupMembersDraft } = yield select(state => state.chat);
-
-    const content = action.payload as ContentType;
-
-    const memberIds = Object.keys(groupMembersDraft || {});
-
-    const messages = memberIds.map(id =>
-      handleFormatMessage(id as string, content, MESSAGE_TYPE.joinGroupNotification),
-    );
-
-    yield all(
-      messages.map(msg =>
-        call(handleSendChatMessage, {
-          payload: msg,
-          type: SendChatMessage.type,
-        }),
-      ),
-    );
+    yield call(sendJoinInvites, action.payload, Object.keys(groupMembersDraft || {}));
   } catch (error: unknown) {
     console.error(error);
   }
 }
 
-// 加入聊天群
-function* handleJoinGroup(action: PayloadAction<Message>) {
+function* sendJoinInvites(group: GroupBasicInfo, memberIds: string[]) {
+  const content = group as ContentType;
+  const messages = memberIds.map(id =>
+    handleFormatMessage(id, content, MESSAGE_TYPE.joinGroupNotification),
+  );
+
+  yield all(
+    messages.map(msg =>
+      call(handleSendChatMessage, {
+        payload: msg,
+        type: SendChatMessage.type,
+      }),
+    ),
+  );
+}
+
+function* handleInviteGroupMembers(action: PayloadAction<{ groupId: string; memberIds: string[] }>) {
   try {
-    if (!action.payload) {
+    const { groupId, memberIds } = action.payload;
+    const { haveJoinGroups } = yield select(state => state.chat);
+    const group: GroupBasicInfo | undefined = haveJoinGroups[groupId];
+    if (!group || !memberIds.length) {
       return;
     }
-    const { address } = action.payload.content;
+    yield call(sendJoinInvites, group, memberIds);
+  } catch (error: unknown) {
+    console.error(error);
+  }
+}
+
+function* handleJoinGroup(action: PayloadAction<{ content: ContentType; paymentTxHash?: string }>) {
+  try {
+    if (!action.payload?.content) {
+      return;
+    }
+    const address = action.payload.content.address;
     const { haveJoinGroups } = yield select(state => state.chat);
 
     if (!address || haveJoinGroups[address]) {
       return;
     }
-    const result = yield call(joinGroup, address);
-    yield put(setHaveJoinGroups(result));
+    const result: GroupBasicInfo = yield call(joinGroup, address, {
+      paymentTxHash: action.payload.paymentTxHash,
+    });
+    if (result?.address) {
+      yield put(setHaveJoinGroups(result));
+      yield call(handleLoadWallet);
+    }
   } catch (error: unknown) {
     console.error(error);
   }
 }
 
-// 发送群信息
 function* handleSendGroupMessage(action: PayloadAction<Message>) {
   if (!action.payload) {
     return;
@@ -230,7 +263,38 @@ function* handleSendGroupMessage(action: PayloadAction<Message>) {
   }
 }
 
-// 同步群离线信息
+function* handleSendRedPacket(action: PayloadAction<Message>) {
+  if (!action.payload) {
+    return;
+  }
+  const message: Message = action.payload;
+  const { haveJoinGroups } = yield select(state => state.chat);
+  const sendToGroup = !!haveJoinGroups[message.toId];
+
+  try {
+    if (sendToGroup) {
+      yield put(insertGroupMessages([message]));
+    } else {
+      yield put(insertMessages([message]));
+    }
+    const result: Message = yield call(
+      sendRedPacket,
+      message,
+      Number(message.content.amount || 0),
+      sendToGroup,
+      {
+        paymentTxHashes: message.content.paymentTxHashes,
+        paymentTxHash: message.content.paymentTxHash,
+      },
+    );
+    yield put(updateMessage(result));
+    yield call(handleLoadWallet);
+  } catch (error: unknown) {
+    yield put(updateMessage({ ...message, status: MESSAGE_STATUS.FAILED }));
+    console.error(error);
+  }
+}
+
 function* handleSyncGroupChatMessages() {
   try {
     const { activeChatId, groupMembers } = yield select(state => state.chat);

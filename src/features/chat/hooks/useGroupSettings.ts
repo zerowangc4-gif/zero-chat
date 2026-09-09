@@ -5,10 +5,11 @@ import { CreateGroupWallet } from "@/features/wallet";
 import { Toast } from "@/components";
 import { useAppSelector } from "@/store";
 import { CommonActions } from "@react-navigation/native";
+
 export function useGroupSettings() {
   const { navigation, t, ROUTES, dispatch } = useApp();
   const { user, groupBasicSettingDraft } = useAppSelector(state => state.chat);
-  // 返回到上一页面
+
   const handleGoBack = () => {
     navigation.goBack();
   };
@@ -18,6 +19,7 @@ export function useGroupSettings() {
       fieldKey: item.fieldKey,
       title: item.title,
       placeholder: item.placeholder,
+      target: "groupCreate",
     });
   };
 
@@ -26,7 +28,7 @@ export function useGroupSettings() {
       const GroupSeqNum = await getGroupSeqNum();
       const walletInfo = await CreateGroupWallet(GroupSeqNum);
 
-      const { name, groupIntro } = groupBasicSettingDraft;
+      const { name, groupIntro, joinPrice } = groupBasicSettingDraft;
 
       if (!walletInfo || !name || !groupIntro) {
         throw new Error(t("chat.create_group_fail"));
@@ -37,6 +39,7 @@ export function useGroupSettings() {
         name: name,
         groupIntro: groupIntro,
         timestamp: Date.now(),
+        joinPrice: String(Math.max(0, Number(joinPrice) || 0)),
       };
       const result: GroupBasicInfo = await createGroup(groupBasicInfo);
 
@@ -45,7 +48,6 @@ export function useGroupSettings() {
       }
       dispatch(CreateGroup(result));
 
-      // 回退的时候返回列表页
       navigation.dispatch(
         CommonActions.reset({
           index: 1,
@@ -66,7 +68,6 @@ export function useGroupSettings() {
     }
   };
 
-  //初始群信息
   const basicGroupInfo: EditableProperty[] = [
     {
       label: t("chat.group_name"),
@@ -80,6 +81,13 @@ export function useGroupSettings() {
       fieldKey: "groupIntro",
       title: t("chat.set_group_intro"),
       placeholder: t("chat.set_group_intro_placeholder"),
+      onpress: handleGoCommonEditor,
+    },
+    {
+      label: t("chat.join_price"),
+      fieldKey: "joinPrice",
+      title: t("chat.set_join_price"),
+      placeholder: t("chat.set_join_price_placeholder"),
       onpress: handleGoCommonEditor,
     },
   ];

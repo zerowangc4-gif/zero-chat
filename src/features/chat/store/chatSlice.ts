@@ -8,12 +8,14 @@ import {
   GroupBasicInfo,
   GroupBasicProperty,
   State,
+  ContentType,
+  WalletInfo,
+  EMPTY_GROUP_BASIC_INFO,
 } from "./types";
 import { MESSAGE_STATUS, STATUS_WEIGHT } from "@/constants";
-import { sortMessages } from "../utils";
+import { sortMessages, resolveChatId } from "../utils";
 
 const initialState: State = {
-  userId: "",
   user: {
     address: "",
     publicKey: "",
@@ -26,6 +28,7 @@ const initialState: State = {
     name: "",
     avatarSeed: "",
   },
+  groupBasicInfoDraft: EMPTY_GROUP_BASIC_INFO,
   friends: {},
   groupMembers: {},
   groupMembersDraft: {},
@@ -35,6 +38,7 @@ const initialState: State = {
   chatMap: {},
   lastMessageMap: {},
   haveReadUserMap: {},
+  wallet: null,
 };
 
 const chatSlice = createSlice({
@@ -49,6 +53,9 @@ const chatSlice = createSlice({
     },
     setUserDraft: (state, action: PayloadAction<UserInfo>) => {
       state.userDraft = action.payload;
+    },
+    setGroupBasicInfoDraft: (state, action: PayloadAction<GroupBasicInfo>) => {
+      state.groupBasicInfoDraft = action.payload;
     },
     setUserDraftProperty: (state, action: PayloadAction<UserInfoProperty>) => {
       const { fieldKey, value } = action.payload;
@@ -91,11 +98,22 @@ const chatSlice = createSlice({
       const { address } = action.payload;
       state.haveJoinGroups[address] = action.payload;
     },
+    removeHaveJoinGroup(state, action: PayloadAction<string>) {
+      delete state.haveJoinGroups[action.payload];
+      delete state.chatMap[action.payload];
+      delete state.lastMessageMap[action.payload];
+      if (state.activeChatId === action.payload) {
+        state.activeChatId = "";
+      }
+    },
     setGroupMembers(state, action: PayloadAction<UserInfo[]>) {
       state.groupMembers = state.groupMembers || {};
       action.payload.forEach((item: UserInfo) => {
         state.groupMembers[item.address] = item;
       });
+    },
+    setWallet(state, action: PayloadAction<WalletInfo>) {
+      state.wallet = action.payload;
     },
     setActiveChatId: (state, action: PayloadAction<string>) => {
       if (state.activeChatId === action.payload) {
@@ -106,7 +124,7 @@ const chatSlice = createSlice({
 
     insertMessages: (state, action: PayloadAction<Message[]>) => {
       action.payload.forEach((item: Message) => {
-        const chatId = item.fromId === state.user.address ? item.toId : item.fromId;
+        const chatId = resolveChatId(item, state.user.address, state.haveJoinGroups);
 
         if (!state.chatMap[chatId]) {
           state.chatMap[chatId] = {};
@@ -137,7 +155,10 @@ const chatSlice = createSlice({
 
     updateMessage: (state, action: PayloadAction<Message>) => {
       const message: Message = action.payload;
-      const chatId = message.fromId === state.user.address ? message.toId : message.fromId;
+      const chatId = resolveChatId(message, state.user.address, state.haveJoinGroups);
+      if (!state.chatMap[chatId]) {
+        state.chatMap[chatId] = {};
+      }
       state.chatMap[chatId][message.id] = message;
       const messages: Message[] = sortMessages([state.lastMessageMap[chatId] || message, message]);
       state.lastMessageMap[chatId] = messages[0];
@@ -167,7 +188,7 @@ const chatSlice = createSlice({
     },
     updateHaveReadUserLatestMessage: (state, action: PayloadAction<Message>) => {
       const message: Message = action.payload;
-      const chatId = state.haveJoinGroups[message.toId] ? message.toId : message.fromId;
+      const chatId = resolveChatId(message, state.user.address, state.haveJoinGroups);
       state.haveReadUserMap[chatId] = message;
     },
   },
@@ -182,6 +203,7 @@ export const {
   setGroupBasicSettingDraft,
   setGroupMembersDraft,
   setHaveJoinGroups,
+  removeHaveJoinGroup,
   insertMessages,
   insertGroupMessages,
   updateMessage,
@@ -192,6 +214,8 @@ export const {
   setGroupMembers,
   setUserDraft,
   setUserDraftProperty,
+  setGroupBasicInfoDraft,
+  setWallet,
 } = chatSlice.actions;
 
 export const SendChatMessage = createAction<Message>("chat/SendMessage");
@@ -204,10 +228,19 @@ export const InitChatData = createAction("chat/initChatData");
 
 export const CreateGroup = createAction<GroupBasicInfo>("chat/CreateGroup");
 
-export const JoinGroup = createAction<GroupBasicInfo>("chat/JoinGroup");
+export const JoinGroup = createAction<{
+  content: ContentType;
+  paymentTxHash?: string;
+}>("chat/JoinGroup");
 
 export const SendGroupMessage = createAction<Message>("chat/SendGroupMessage");
 
 export const SyncGroupChatMessages = createAction("chat/SyncGroupChatMessages");
+
+export const InviteGroupMembers = createAction<{ groupId: string; memberIds: string[] }>(
+  "chat/InviteGroupMembers",
+);
+
+export const SendRedPacket = createAction<Message>("chat/SendRedPacket");
 
 export default chatSlice.reducer;

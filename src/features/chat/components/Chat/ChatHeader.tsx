@@ -13,7 +13,7 @@ export function ChatHeader({ handleGoBack, handleGoNextScreen }: Props) {
   const { friends, haveJoinGroups } = useAppSelector(state => state.chat);
   const { address } = route.params;
 
-  const name = friends[address] ? friends[address].alias : haveJoinGroups[address].name;
+  const name = friends[address]?.alias || haveJoinGroups[address]?.name || address;
 
   return (
     <Header

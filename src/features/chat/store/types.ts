@@ -26,18 +26,43 @@ export interface GroupBasicInfo {
   avatarSeed: string;
   groupIntro: string;
   timestamp: number;
+  joinPrice?: string;
 }
 
+export const EMPTY_GROUP_BASIC_INFO: GroupBasicInfo = {
+  seqNum: 0,
+  ownerId: "",
+  address: "",
+  publicKey: "",
+  name: "",
+  avatarSeed: "",
+  groupIntro: "",
+  timestamp: 0,
+  joinPrice: "0",
+};
+
 export interface GroupAllInfo {
-  Owner: UserInfo;
+  owner: UserInfo;
+  group: GroupBasicInfo;
   groupMembers: UserInfo[];
   groupOwnerMembers: UserInfo[];
+}
+
+export interface WalletInfo {
+  address: string;
+  balance: number;
+  ethBalance?: number;
+  earned: number;
+  tokenSymbol?: string;
+  chain?: string;
+  minAmount?: number;
 }
 
 export interface InputProps {
   value: string;
   onChange: (text: string) => void;
 }
+
 export interface TargetMsg {
   chatId: string;
   id: string;
@@ -49,6 +74,7 @@ export interface ChatSession extends UserInfo {
   alias?: string;
   timestamp: number;
   lastMsg: string;
+  chatType: ChatType;
 }
 
 export interface EditableProperty {
@@ -58,6 +84,7 @@ export interface EditableProperty {
   placeholder: string;
   onpress: (item: Omit<EditableProperty, "onpress" | "label">) => () => void;
 }
+
 export interface GroupBasicProperty {
   fieldKey: string;
   value: string;
@@ -68,11 +95,25 @@ export interface UserInfoProperty {
   value: string;
 }
 
-interface TextContent {
-  text: string;
-}
+export type EditorTarget = "user" | "groupCreate" | "groupEdit";
 
-export interface ContentType extends TextContent, GroupBasicInfo {}
+export interface ContentType {
+  text?: string;
+  amount?: number;
+  packetId?: string;
+  paymentTxHash?: string;
+  paymentTxHashes?: string[];
+  tokenSymbol?: string;
+  seqNum?: number;
+  ownerId?: string;
+  address?: string;
+  publicKey?: string;
+  name?: string;
+  avatarSeed?: string;
+  groupIntro?: string;
+  timestamp?: number;
+  joinPrice?: string;
+}
 
 export interface Message {
   id: string;
@@ -87,9 +128,9 @@ export interface Message {
 }
 
 export interface State {
-  userId: string;
   user: UserInfo;
   userDraft: UserInfo;
+  groupBasicInfoDraft: GroupBasicInfo;
   friends: Record<string, FriendInfo>;
   groupMembers: Record<string, UserInfo>;
   groupMembersDraft: Record<string, UserInfo>;
@@ -99,4 +140,5 @@ export interface State {
   chatMap: Record<string, Record<string, Message>>;
   haveReadUserMap: Record<string, Message>;
   lastMessageMap: Record<string, Message>;
+  wallet: WalletInfo | null;
 }

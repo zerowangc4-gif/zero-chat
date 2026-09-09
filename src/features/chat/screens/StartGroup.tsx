@@ -7,7 +7,7 @@ import { useStartGroup } from "../hooks";
 
 export function StartGroup() {
   const theme = useTheme();
-  const { handleGoBack, groupMembers, handleSelectGroupMember, handleGoGroupSettings } = useStartGroup();
+  const { handleGoBack, groupMembers, handleSelectGroupMember, handleGoGroupSettings, mode } = useStartGroup();
   return (
     <BaseScreen>
       <Header
@@ -19,10 +19,13 @@ export function StartGroup() {
             onPress={handleGoBack}
           />
         }
-        title={t("chat.start_group")}
+        title={mode === "invite" ? t("chat.invite_members") : t("chat.start_group")}
         rightElement={
           Object.values(groupMembers || {}).length > 0 && (
-            <StartGroupRightAction handleGoGroupSettings={handleGoGroupSettings} />
+            <StartGroupRightAction
+              handleGoGroupSettings={handleGoGroupSettings}
+              label={mode === "invite" ? t("chat.invite_members") : t("chat.next")}
+            />
           )
         }
       />

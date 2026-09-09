@@ -45,10 +45,11 @@ export function useProfile() {
         break;
 
       case "name":
-        navigation.navigate(ROUTES.UserCommonEditor, {
+        navigation.navigate(ROUTES.CommonEditor, {
           fieldKey: fieldKey,
           title: t("user.set_user_name"),
           placeholder: t("user.set_user_name"),
+          target: "user",
         });
         break;
 

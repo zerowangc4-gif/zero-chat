@@ -1,7 +1,8 @@
 import styled, { css, useTheme } from "styled-components/native";
 import { Avatar, Typography } from "@/components";
-import { ChatSession } from "../../store";
+import { ChatSession, ChatType } from "../../store";
 import { getFormatTime } from "@/utils";
+import { t } from "i18next";
 
 const Container = styled.Pressable`
   ${({ theme }) => css`
@@ -34,9 +35,24 @@ const TitleRow = styled.View`
   justify-content: space-between;
 `;
 
-const NameText = styled(Typography)`
+const NameRow = styled.View`
   flex: 1;
+  flex-direction: row;
+  align-items: center;
   margin-right: ${({ theme }) => theme.spacing.step.sm}px;
+  gap: ${({ theme }) => theme.spacing.step.xs}px;
+`;
+
+const NameText = styled(Typography)`
+  flex-shrink: 1;
+`;
+
+const Badge = styled.View`
+  ${({ theme }) => css`
+    padding: 0 ${theme.spacing.step.xxs}px;
+    border-radius: ${theme.radii.scale.xs}px;
+    background-color: ${theme.colors.fillSecondary};
+  `}
 `;
 
 const TimeText = styled(Typography)`
@@ -49,6 +65,7 @@ interface Props extends ChatSession {
 
 export function ChatItem(props: Props) {
   const theme = useTheme();
+  const isGroup = props.chatType === ChatType.GROUP;
 
   return (
     <Container
@@ -63,9 +80,18 @@ export function ChatItem(props: Props) {
 
       <Content>
         <TitleRow>
-          <NameText type="main" weight="bold" numberOfLines={1}>
-            {props.name}
-          </NameText>
+          <NameRow>
+            {isGroup && (
+              <Badge>
+                <Typography type="caption" color={theme.colors.secondaryWord}>
+                  {t("chat.group_badge")}
+                </Typography>
+              </Badge>
+            )}
+            <NameText type="main" weight="bold" numberOfLines={1}>
+              {props.name}
+            </NameText>
+          </NameRow>
 
           <TimeText type="caption" color={theme.colors.secondaryWord} numberOfLines={1}>
             {getFormatTime(props.timestamp)}

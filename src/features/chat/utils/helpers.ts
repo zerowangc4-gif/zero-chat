@@ -1,7 +1,7 @@
 import { t } from "i18next";
 import { store } from "@/store";
 import { hexlify, randomBytes } from "ethers";
-import { Message, ContentType } from "@/features/chat";
+import { GroupBasicInfo, Message, ContentType } from "@/features/chat";
 import { MESSAGE_STATUS, MessageType, MessageStatus, Icon } from "@/constants";
 
 import { useTheme } from "styled-components/native";
@@ -10,16 +10,15 @@ export function generateId(length: number = 16): string {
   return hexlify(randomBytes(length));
 }
 
-export function generateSessionSeqNum(chatId: string): string {
-  const { chatMap } = store.getState().chat;
-
-  if (!chatMap[chatId] || !chatMap[chatId].length) {
-    return [0, Date.now()].join("_");
+export function resolveChatId(
+  message: Message,
+  userAddress: string,
+  haveJoinGroups: Record<string, GroupBasicInfo>,
+): string {
+  if (haveJoinGroups[message.toId]) {
+    return message.toId;
   }
-
-  const message: Message = chatMap[chatId][0];
-
-  return [String(message.sessionSeqNum).split("_")[0], Date.now()].join("_");
+  return message.fromId === userAddress ? message.toId : message.fromId;
 }
 
 export function sortMessages(messages: Message[]): Message[] {
@@ -35,9 +34,21 @@ export function sortMessages(messages: Message[]): Message[] {
   });
 }
 
+export function generateSessionSeqNum(chatId: string): string {
+  const { chatMap } = store.getState().chat;
+  const messages = Object.values(chatMap[chatId] || {});
+
+  if (messages.length === 0) {
+    return [0, Date.now()].join("_");
+  }
+
+  const latest = sortMessages(messages)[0];
+  return [String(latest.sessionSeqNum).split("_")[0] || "0", Date.now()].join("_");
+}
+
 export function handleFormatMessage(toId: string, content: ContentType, type: MessageType): Message {
   const { user } = store.getState().chat;
-  const message = {
+  return {
     id: generateId(),
     fromId: user.address,
     toId: toId,
@@ -47,8 +58,6 @@ export function handleFormatMessage(toId: string, content: ContentType, type: Me
     type: type,
     status: MESSAGE_STATUS.PENDING,
   };
-
-  return message;
 }
 
 export function useMessageStatus(status: MessageStatus) {
@@ -89,11 +98,17 @@ export function getLastFormatMessage(content?: ContentType): string {
   if (!content) {
     return "";
   }
-  if (content.text) {
-    return content?.text;
+  if (content.packetId && content.amount) {
+    return t("chat.red_packet_preview", {
+      amount: content.amount,
+      symbol: content.tokenSymbol || "USDC",
+    });
   }
-
+  if (content.text) {
+    return content.text;
+  }
   if (content.ownerId && content.name) {
     return t("chat.invite_text", { groupName: content.name });
   }
+  return "";
 }

@@ -1,18 +1,11 @@
-import { BaseScreen, Header, Main, ActionIcon, Input } from "@/components";
+import { BaseScreen, Header, Main, ActionIcon, Input, HeaderTextAction } from "@/components";
 import { useCommonEditor } from "../hooks";
-import { SetPropertyRightAction } from "../components";
 import { Icon } from "@/constants";
+import { t } from "i18next";
+
 export function CommonEditor() {
-  const {
-    theme,
-    title,
-    placeholder,
-    fieldKey,
-    activeProperty,
-    handleGoBack,
-    GroupBasicSettingInfo,
-    handleSetProperty,
-  } = useCommonEditor();
+  const { theme, title, placeholder, activeProperty, handleGoBack, currentValue, handleSetProperty } =
+    useCommonEditor();
   return (
     <BaseScreen>
       <Header
@@ -26,8 +19,10 @@ export function CommonEditor() {
         }
         title={title}
         rightElement={
-          activeProperty.value !== (GroupBasicSettingInfo[fieldKey] || "") &&
-          !!activeProperty.value && <SetPropertyRightAction handleSetProperty={handleSetProperty} />
+          activeProperty.value !== (currentValue || "") &&
+          !!activeProperty.value && (
+            <HeaderTextAction label={t("chat.next")} onPress={handleSetProperty} />
+          )
         }
       />
       <Main hasHeader={true}>

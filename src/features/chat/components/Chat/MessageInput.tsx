@@ -65,6 +65,7 @@ export function MessageInput({
   setInputSelection,
   inputRef,
   onSend,
+  handleOpenRedPacket,
 }: Omit<MessageListProps, "messages" | "handleGroupLink">) {
   const theme = useTheme();
   const insets = useSafeAreaInsets();
@@ -80,7 +81,7 @@ export function MessageInput({
       name: msg.value.trim() ? Icon.send : Icon.chatAdd,
       size: theme.typography.size.lg,
       color: msg.value.trim() ? theme.palette.brand : theme.colors.baseInverse,
-      onPress: msg.value.trim() ? onSend : null,
+      onPress: msg.value.trim() ? onSend : handleOpenRedPacket,
     },
   ];
 

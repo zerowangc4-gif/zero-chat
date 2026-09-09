@@ -7,6 +7,7 @@ import { MESSAGE_TYPE } from "@/constants";
 import { Avatar, Typography } from "@/components";
 import { TextContent } from "./TextContent";
 import { InviteMessageContent } from "./InviteMessageContent";
+import { RedPacketContent } from "./RedPacketContent";
 import { getFormatTime } from "@/utils";
 
 const Container = styled.View`
@@ -98,9 +99,12 @@ export function MessageItem({ message, handleGroupLink }: MessageItemProps) {
               isMe={isMe}
               status={message.status}
               id={message.id}
-              name={message.content.name}
+              name={message.content.name || ""}
               handleGroupLink={handleGroupLink}
             />
+          )}
+          {message.type === MESSAGE_TYPE.redPacket && (
+            <RedPacketContent isMe={isMe} status={message.status} amount={message.content.amount} />
           )}
         </TextWrapper>
       </MessageWrapper>

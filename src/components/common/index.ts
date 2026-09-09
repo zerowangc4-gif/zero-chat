@@ -5,3 +5,5 @@ export * from "./Toast";
 export * from "./Avatar";
 export * from "./BaseInput";
 export * from "./ActionIcon";
+export * from "./HeaderTextAction";
+export * from "./InfoRow";
